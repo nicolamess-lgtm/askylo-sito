@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="it" data-stile="oro" data-tema="scuro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,119 +8,161 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='32' y='44' font-size='36' font-family='Georgia,serif' font-style='italic' text-anchor='middle' fill='%23e3b341'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<script>
+  /* Lo stile si sceglie solo con #prova nell'indirizzo; la scelta resta nel browser.
+     Chi arriva senza #prova vede lo stile pubblico e basta. */
+  (function () {
+    var h = document.documentElement, mem = {};
+    try { mem = JSON.parse(localStorage.getItem('askylo_prova') || '{}'); } catch (e) {}
+    if (location.hash === '#prova') { mem.attivo = true; try { localStorage.setItem('askylo_prova', JSON.stringify(mem)); } catch (e) {} }
+    if (mem.attivo) {
+      h.setAttribute('data-prova', '1');
+      if (mem.stile) h.setAttribute('data-stile', mem.stile);
+      if (mem.tema) h.setAttribute('data-tema', mem.tema);
+    }
+  })();
+</script>
 <style>
+  /* =========================================================
+     Tre stili, una pagina. Ogni stile ridefinisce i colori e i
+     caratteri; la struttura è la stessa.
+       oro      — come askylo.com: scuro, oro, serif con corsivo
+       carta    — la mia proposta: carta chiara, verde bosco, serif
+       minimal  — bianco, essenziale, con la modalità notturna
+     ========================================================= */
   :root {
-    --sfondo: #0f0f10;
-    --carta: #171718;
-    --bordo: #2a2a2c;
-    --testo: #f3efe6;
-    --tenue: #a39e93;
-    --oro: #e3b341;
-    --oro-scuro: #b98a1f;
+    --sfondo: #0f0f10; --carta: #171718; --bordo: #2a2a2c;
+    --testo: #f3efe6; --tenue: #a39e93;
+    --accento: #e3b341; --accento-forte: #b98a1f; --su-accento: #111;
+    --evidenza: linear-gradient(135deg, #1b1a16 0%, #171718 60%);
+    --serif: Fraunces, Georgia, serif; --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --titolo: var(--serif); --raggio: 18px; --corsivo: italic;
   }
+  :root[data-stile="carta"] {
+    --sfondo: #f6f1e8; --carta: #fffdf8; --bordo: #e2d9c8;
+    --testo: #1d2a22; --tenue: #6b7066;
+    --accento: #1f5c45; --accento-forte: #143e2f; --su-accento: #fff;
+    --evidenza: linear-gradient(135deg, #e9efe8 0%, #fffdf8 60%);
+    --titolo: Newsreader, Georgia, serif; --raggio: 14px;
+  }
+  :root[data-stile="carta"][data-tema="scuro"] {
+    --sfondo: #141a17; --carta: #1b231f; --bordo: #2b3630;
+    --testo: #eee9dd; --tenue: #9aa39c;
+    --accento: #8fc9ab; --accento-forte: #b9e3cb; --su-accento: #10201a;
+    --evidenza: linear-gradient(135deg, #1f2a24 0%, #1b231f 60%);
+  }
+  :root[data-stile="minimal"] {
+    --sfondo: #ffffff; --carta: #f5f5f7; --bordo: #e8e8ed;
+    --testo: #1d1d1f; --tenue: #6e6e73;
+    --accento: #0071e3; --accento-forte: #0060c0; --su-accento: #fff;
+    --evidenza: #f5f5f7;
+    --titolo: var(--sans); --raggio: 20px; --corsivo: normal;
+  }
+  :root[data-stile="minimal"][data-tema="scuro"] {
+    --sfondo: #000000; --carta: #1c1c1e; --bordo: #2c2c2e;
+    --testo: #f5f5f7; --tenue: #98989d;
+    --accento: #2997ff; --accento-forte: #4aa8ff; --su-accento: #000;
+    --evidenza: #1c1c1e;
+  }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    margin: 0;
-    background: var(--sfondo);
-    color: var(--testo);
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-    font-size: 17px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
+    margin: 0; background: var(--sfondo); color: var(--testo);
+    font-family: var(--sans); font-size: 17px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; transition: background .25s, color .25s;
   }
   a { color: inherit; }
   .pagina { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 
   /* testata */
-  header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 22px 0;
-  }
-  .marchio {
-    display: flex; align-items: center; gap: 10px;
-    font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 22px;
-    text-decoration: none; letter-spacing: -0.01em;
-  }
-  .marchio .segno {
-    width: 30px; height: 30px; border-radius: 8px;
-    background: var(--oro); color: #111;
-    display: grid; place-items: center;
-    font-style: italic; font-size: 20px; line-height: 1;
-  }
-  .marchio small { font-family: Inter, sans-serif; font-weight: 500; font-size: 13px; color: var(--tenue); margin-left: 2px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .marchio { display: flex; align-items: center; gap: 10px; font-family: var(--titolo); font-weight: 600; font-size: 22px; text-decoration: none; letter-spacing: -0.01em; }
+  .marchio .segno { width: 30px; height: 30px; border-radius: 8px; background: var(--accento); color: var(--su-accento); display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1; }
+  .marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--tenue); margin-left: 2px; }
   nav a { color: var(--tenue); text-decoration: none; font-size: 15px; font-weight: 500; }
   nav a:hover { color: var(--testo); }
 
   /* apertura */
   .apertura { padding: 72px 0 56px; }
-  .occhiello {
-    color: var(--oro); font-size: 12px; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 18px;
-  }
-  h1 {
-    font-family: Fraunces, Georgia, serif; font-weight: 500;
-    font-size: clamp(38px, 6.4vw, 64px); line-height: 1.05;
-    letter-spacing: -0.02em; margin: 0 0 22px; max-width: 760px;
-  }
-  h1 em { font-style: italic; color: var(--oro); }
+  .occhiello { color: var(--accento); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 18px; }
+  h1 { font-family: var(--titolo); font-weight: 500; font-size: clamp(38px, 6.4vw, 64px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 22px; max-width: 760px; }
+  h1 em { font-style: var(--corsivo); color: var(--accento); }
   .apertura p { color: var(--tenue); max-width: 560px; margin: 0; font-size: 18px; }
 
   /* le app */
   .sezione { padding: 24px 0 40px; }
-  .sezione h2 {
-    font-family: Fraunces, Georgia, serif; font-weight: 500;
-    font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--tenue); margin: 0 0 18px;
-    display: flex; align-items: center; gap: 14px;
-  }
+  .sezione h2 { font-family: var(--titolo); font-weight: 500; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tenue); margin: 0 0 18px; display: flex; align-items: center; gap: 14px; }
   .sezione h2::after { content: ""; flex: 1; height: 1px; background: var(--bordo); }
   .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
-
-  .app {
-    position: relative; display: flex; flex-direction: column; gap: 14px;
-    background: var(--carta); border: 1px solid var(--bordo); border-radius: 18px;
-    padding: 24px; min-height: 230px; text-decoration: none;
-    transition: transform .18s ease, border-color .18s ease;
-  }
-  a.app:hover, a.app:focus-visible { transform: translateY(-3px); border-color: var(--oro-scuro); outline: none; }
-  .app .icona {
-    width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center;
-    font-size: 24px; background: #222; border: 1px solid var(--bordo);
-  }
-  .app .icona.oro { background: var(--oro); color: #111; font-family: Fraunces, serif; font-style: italic; font-weight: 600; }
-  .app h3 { margin: 0; font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; }
+  .app { position: relative; display: flex; flex-direction: column; gap: 14px; background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 24px; min-height: 230px; text-decoration: none; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  a.app:hover, a.app:focus-visible { transform: translateY(-3px); border-color: var(--accento-forte); outline: none; }
+  .app .icona { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; font-size: 24px; background: var(--sfondo); border: 1px solid var(--bordo); }
+  .app .icona.oro { background: var(--accento); color: var(--su-accento); font-family: var(--serif); font-style: italic; font-weight: 600; }
+  .app h3 { margin: 0; font-family: var(--titolo); font-weight: 600; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; }
   .app .cosa { margin: 0; color: var(--tenue); font-size: 15.5px; flex: 1; }
   .app .riga { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 500; }
-  .app .vai { color: var(--oro); }
+  .app .vai { color: var(--accento); }
   .app .vai::after { content: " →"; }
-  .app .presto {
-    color: var(--tenue); font-size: 13px;
-    display: inline-flex; align-items: center; gap: 7px;
-  }
-  .app .presto::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--oro); opacity: .7; }
-  .app.attesa { opacity: .78; }
-  .app.attesa h3 { color: #d8d3c8; }
-  .app.in-evidenza { grid-column: 1 / -1; background: linear-gradient(135deg, #1b1a16 0%, var(--carta) 60%); }
+  .app .presto { color: var(--tenue); font-size: 13px; display: inline-flex; align-items: center; gap: 7px; }
+  .app .presto::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accento); opacity: .7; }
+  .app.attesa { opacity: .82; }
+  .app.in-evidenza { grid-column: 1 / -1; background: var(--evidenza); }
   .app.in-evidenza .corpo { display: flex; flex-direction: column; gap: 14px; }
   @media (min-width: 720px) {
     .app.in-evidenza { flex-direction: row; align-items: center; gap: 28px; padding: 32px; min-height: 0; }
-    .app.in-evidenza .corpo { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .app.in-evidenza .corpo { flex: 1; gap: 12px; }
     .app.in-evidenza h3 { font-size: 34px; }
     .app.in-evidenza .icona { width: 64px; height: 64px; border-radius: 17px; font-size: 32px; }
   }
 
   /* chiusura */
   .chi { padding: 56px 0 24px; border-top: 1px solid var(--bordo); margin-top: 40px; }
-  .chi h2 { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: 30px; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .chi h2 { font-family: var(--titolo); font-weight: 500; font-size: 30px; margin: 0 0 14px; letter-spacing: -0.01em; }
   .chi p { color: var(--tenue); max-width: 640px; margin: 0; }
   footer { padding: 28px 0 40px; color: var(--tenue); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   footer a { text-decoration: none; }
   footer a:hover { color: var(--testo); }
+
+  /* ---- ritocchi per stile ---- */
+  :root[data-stile="carta"] .app { box-shadow: 0 1px 2px rgba(29, 42, 34, .05); }
+  :root[data-stile="carta"] a.app:hover { box-shadow: 0 10px 30px rgba(29, 42, 34, .10); }
+  :root[data-stile="carta"] h1 { font-weight: 500; }
+  :root[data-stile="carta"] .app h3 { font-weight: 500; font-size: 28px; }
+  :root[data-stile="minimal"] .app { border-color: transparent; padding: 28px; }
+  :root[data-stile="minimal"] a.app:hover { border-color: transparent; box-shadow: 0 12px 40px rgba(0, 0, 0, .10); }
+  :root[data-stile="minimal"] h1 { font-weight: 600; letter-spacing: -0.03em; }
+  :root[data-stile="minimal"] .app h3 { font-weight: 600; font-size: 24px; letter-spacing: -0.02em; }
+  :root[data-stile="minimal"] .occhiello { letter-spacing: 0; text-transform: none; font-size: 17px; font-weight: 500; }
+  :root[data-stile="minimal"] .sezione h2 { font-size: 13px; letter-spacing: .04em; }
+  :root[data-stile="minimal"] .sezione h2::after { display: none; }
+  :root[data-stile="minimal"] .app .icona { background: var(--sfondo); border-color: transparent; }
+  :root[data-stile="minimal"] .app .icona.oro { background: var(--accento); color: var(--su-accento); }
+  :root[data-stile="minimal"] .marchio .segno { border-radius: 50%; }
+  :root[data-stile="minimal"] .chi { border-top: none; }
+
+  /* ---- i pulsanti di prova: solo con #prova ---- */
+  .prova { display: none; position: fixed; top: 14px; right: 14px; z-index: 10; gap: 6px; align-items: center; padding: 6px; border-radius: 999px; background: var(--carta); border: 1px solid var(--bordo); box-shadow: 0 8px 30px rgba(0, 0, 0, .18); font-size: 13px; }
+  :root[data-prova] .prova { display: flex; }
+  :root[data-prova] header { padding-right: 300px; }
+  .prova button { border: 0; background: transparent; color: var(--tenue); font: inherit; font-weight: 500; padding: 6px 11px; border-radius: 999px; cursor: pointer; }
+  .prova button[aria-pressed="true"] { background: var(--accento); color: var(--su-accento); }
+  .prova .sep { width: 1px; height: 18px; background: var(--bordo); margin: 0 2px; }
+  @media (max-width: 720px) { .prova { top: auto; bottom: 14px; right: 14px; left: 14px; justify-content: center; } :root[data-prova] header { padding-right: 0; } }
 </style>
 </head>
 <body>
+
+<div class="prova" role="group" aria-label="Prova degli stili">
+  <button data-stile="oro">Oro</button>
+  <button data-stile="carta">Carta</button>
+  <button data-stile="minimal">Minimal</button>
+  <span class="sep"></span>
+  <button data-tema="chiaro" title="Giorno">☀︎</button>
+  <button data-tema="scuro" title="Notte">☾</button>
+</div>
+
 <div class="pagina">
 
   <header>
@@ -196,5 +238,27 @@
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var h = document.documentElement, barra = document.querySelector('.prova');
+    if (!h.hasAttribute('data-prova')) return;
+    // lo stile Oro è solo scuro: il tema vale per Carta e Minimal
+    function segna() {
+      barra.querySelectorAll('[data-stile]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.stile === h.dataset.stile); });
+      barra.querySelectorAll('[data-tema]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.tema === h.dataset.tema); b.disabled = h.dataset.stile === 'oro'; });
+    }
+    function salva() {
+      try { localStorage.setItem('askylo_prova', JSON.stringify({ attivo: true, stile: h.dataset.stile, tema: h.dataset.tema })); } catch (e) {}
+    }
+    barra.addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.stile) { h.dataset.stile = b.dataset.stile; if (b.dataset.stile === 'oro') h.dataset.tema = 'scuro'; if (b.dataset.stile !== 'oro' && !h.dataset.temaScelto) h.dataset.tema = 'chiaro'; }
+      if (b.dataset.tema) { h.dataset.tema = b.dataset.tema; h.dataset.temaScelto = '1'; }
+      segna(); salva();
+    });
+    segna();
+  })();
+</script>
 </body>
 </html>
