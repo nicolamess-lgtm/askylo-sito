@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askylo Studio — le app della famiglia Askylo</title>
+<meta name="description" content="Askylo Studio costruisce app semplici per chi lavora con le persone: eventi, studi, fermenti, memorie. Qui trovi tutto quello che abbiamo fatto e quello che sta arrivando.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='32' y='44' font-size='36' font-family='Georgia,serif' font-style='italic' text-anchor='middle' fill='%23e3b341'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sfondo: #0f0f10;
+    --carta: #171718;
+    --bordo: #2a2a2c;
+    --testo: #f3efe6;
+    --tenue: #a39e93;
+    --oro: #e3b341;
+    --oro-scuro: #b98a1f;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--sfondo);
+    color: var(--testo);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .pagina { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* testata */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
+  }
+  .marchio {
+    display: flex; align-items: center; gap: 10px;
+    font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 22px;
+    text-decoration: none; letter-spacing: -0.01em;
+  }
+  .marchio .segno {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--oro); color: #111;
+    display: grid; place-items: center;
+    font-style: italic; font-size: 20px; line-height: 1;
+  }
+  .marchio small { font-family: Inter, sans-serif; font-weight: 500; font-size: 13px; color: var(--tenue); margin-left: 2px; }
+  nav a { color: var(--tenue); text-decoration: none; font-size: 15px; font-weight: 500; }
+  nav a:hover { color: var(--testo); }
+
+  /* apertura */
+  .apertura { padding: 72px 0 56px; }
+  .occhiello {
+    color: var(--oro); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 18px;
+  }
+  h1 {
+    font-family: Fraunces, Georgia, serif; font-weight: 500;
+    font-size: clamp(38px, 6.4vw, 64px); line-height: 1.05;
+    letter-spacing: -0.02em; margin: 0 0 22px; max-width: 760px;
+  }
+  h1 em { font-style: italic; color: var(--oro); }
+  .apertura p { color: var(--tenue); max-width: 560px; margin: 0; font-size: 18px; }
+
+  /* le app */
+  .sezione { padding: 24px 0 40px; }
+  .sezione h2 {
+    font-family: Fraunces, Georgia, serif; font-weight: 500;
+    font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--tenue); margin: 0 0 18px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .sezione h2::after { content: ""; flex: 1; height: 1px; background: var(--bordo); }
+  .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+
+  .app {
+    position: relative; display: flex; flex-direction: column; gap: 14px;
+    background: var(--carta); border: 1px solid var(--bordo); border-radius: 18px;
+    padding: 24px; min-height: 230px; text-decoration: none;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  a.app:hover, a.app:focus-visible { transform: translateY(-3px); border-color: var(--oro-scuro); outline: none; }
+  .app .icona {
+    width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center;
+    font-size: 24px; background: #222; border: 1px solid var(--bordo);
+  }
+  .app .icona.oro { background: var(--oro); color: #111; font-family: Fraunces, serif; font-style: italic; font-weight: 600; }
+  .app h3 { margin: 0; font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; }
+  .app .cosa { margin: 0; color: var(--tenue); font-size: 15.5px; flex: 1; }
+  .app .riga { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 500; }
+  .app .vai { color: var(--oro); }
+  .app .vai::after { content: " →"; }
+  .app .presto {
+    color: var(--tenue); font-size: 13px;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .app .presto::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--oro); opacity: .7; }
+  .app.attesa { opacity: .78; }
+  .app.attesa h3 { color: #d8d3c8; }
+  .app.in-evidenza { grid-column: 1 / -1; background: linear-gradient(135deg, #1b1a16 0%, var(--carta) 60%); }
+  .app.in-evidenza .corpo { display: flex; flex-direction: column; gap: 14px; }
+  @media (min-width: 720px) {
+    .app.in-evidenza { flex-direction: row; align-items: center; gap: 28px; padding: 32px; min-height: 0; }
+    .app.in-evidenza .corpo { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .app.in-evidenza h3 { font-size: 34px; }
+    .app.in-evidenza .icona { width: 64px; height: 64px; border-radius: 17px; font-size: 32px; }
+  }
+
+  /* chiusura */
+  .chi { padding: 56px 0 24px; border-top: 1px solid var(--bordo); margin-top: 40px; }
+  .chi h2 { font-family: Fraunces, Georgia, serif; font-weight: 500; font-size: 30px; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .chi p { color: var(--tenue); max-width: 640px; margin: 0; }
+  footer { padding: 28px 0 40px; color: var(--tenue); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--testo); }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <header>
+    <a class="marchio" href="#"><span class="segno">A</span>Askylo <small>Studio</small></a>
+    <nav><a href="#app">Le app</a></nav>
+  </header>
+
+  <section class="apertura">
+    <p class="occhiello">Askylo Studio · Le app</p>
+    <h1>App piccole, per lavori <em>fatti di persone.</em></h1>
+    <p>Costruiamo strumenti semplici per chi sta davanti a un pubblico, a un cliente, a un genitore. Questa pagina raccoglie quelli pronti e quelli che stanno arrivando.</p>
+  </section>
+
+  <section class="sezione" id="app">
+    <h2>Pronte</h2>
+    <div class="griglia">
+
+      <a class="app" href="https://www.askylo.com">
+        <div class="icona oro">A</div>
+        <h3>Askylo</h3>
+        <p class="cosa">Domande dal vivo per i tuoi eventi. Il pubblico scansiona un QR, chiede e vota; l'IA raggruppa tutto per tema, così chi è sul palco risponde a ciò che conta.</p>
+        <div class="riga"><span class="vai">Vai ad Askylo</span></div>
+      </a>
+
+      <a class="app" href="https://eat-me-project.lovable.app/">
+        <div class="icona">🫙</div>
+        <h3>Mangiami</h3>
+        <p class="cosa">La mappa dei fermenti vivi. Trova una madre vicino a te, regala un pezzo del tuo lievito o del tuo kefir, lasciali in custodia quando parti. Sempre in dono, mai in vendita.</p>
+        <div class="riga"><span class="vai">Vai a Mangiami</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="sezione">
+    <h2>In arrivo</h2>
+    <div class="griglia">
+
+      <div class="app attesa in-evidenza">
+        <div class="icona">📒</div>
+        <div class="corpo">
+          <h3>Askylo Studio</h3>
+          <p class="cosa">Il gestionale per chi lavora con clienti su appuntamento: agenda, schede, pagamenti, e una pagina personale per ogni cliente, dove ritrova le sue sedute e dice la sua. Parla dieci lingue e lavora anche senza rete.</p>
+          <div class="riga"><span class="presto">Disponibile a breve</span></div>
+        </div>
+      </div>
+
+      <div class="app attesa">
+        <div class="icona">🧵</div>
+        <h3>Filo</h3>
+        <p class="cosa">Rileggi le tue chat con metodo. Carichi l'esportazione, scegli cosa cercare, e porti al tuo avvocato solo i fatti: una cronologia ordinata di episodi, con data, ora e citazioni. Uno strumento di riordino, non un parere legale.</p>
+        <div class="riga"><span class="presto">Disponibile a breve</span></div>
+      </div>
+
+      <div class="app attesa">
+        <div class="icona">📖</div>
+        <h3>Le mie memorie</h3>
+        <p class="cosa">Una domanda alla volta, a voce: la vita di tuo padre o di tua madre diventa un libro. Gli mandi un link, lui risponde con due bottoni, e ogni risposta resta, con la sua voce.</p>
+        <div class="riga"><span class="presto">Disponibile a breve</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="chi">
+    <h2>Chi c'è dietro</h2>
+    <p>Askylo Studio è un laboratorio indipendente italiano. Ogni app nasce da un bisogno visto da vicino, si prova con chi lo vive, e cresce solo se serve davvero.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 Askylo Studio</span>
+    <span><a href="https://www.askylo.com">askylo.com</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
