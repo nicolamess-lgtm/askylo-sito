@@ -254,6 +254,59 @@
   html.js .sv.in { opacity: 1; transform: none; }
   html.js .sv.r2 { transition-delay: .1s; }
   html.js .sv.r3 { transition-delay: .2s; }
+  /* I mestieri: la finestra che si apre dalla carta di Askylo Studio */
+  #studio { cursor: pointer; }
+  #studio a, #studio button { cursor: pointer; }
+  .nota .entra { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-forte); }
+  .nota .entra:hover { text-decoration-color: var(--giallo); }
+  button.pulsante { font-family: inherit; cursor: pointer; }
+  .azioni.centro { justify-content: center; }
+  body.ferma { overflow: hidden; }
+  .mestieri { width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 22px 26px 28px; border: 1px solid var(--line); border-radius: var(--r3);
+    background: var(--card); color: var(--ink); box-shadow: var(--ombra); overflow: auto; }
+  .mestieri::backdrop { background: rgba(10,12,18,.62); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .mestieri[open] { animation: ms-entra .22s ease; }
+  @keyframes ms-entra { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+  .ms-testa { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; min-height: 40px; }
+  .ms-btn { font: 500 14px/1 var(--sans); color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; cursor: pointer; }
+  .ms-btn:hover { color: var(--ink); border-color: var(--line-forte); }
+  .ms-chiudi { margin-left: auto; }
+  .ms-passo h2 { font-family: var(--serif); font-size: clamp(26px, 4vw, 34px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 6px; }
+  .ms-sotto { color: var(--muted); margin: 0 0 20px; }
+  .ms-griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .ms-mestiere { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; text-align: left; min-height: 132px; padding: 18px; border-radius: var(--r2);
+    background: var(--secondary); border: 1px solid var(--line); color: var(--ink); font: 600 16px/1.25 var(--sans); cursor: pointer; transition: transform .18s ease, border-color .18s, box-shadow .18s; }
+  button.ms-mestiere:hover, button.ms-mestiere:focus-visible { transform: translateY(-2px); border-color: var(--giallo); box-shadow: var(--anello); outline: none; }
+  .ms-ico { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; font-size: 28px; background: var(--card); border: 1px solid var(--line); flex: none; }
+  .ms-mestiere.spento { opacity: .5; cursor: default; }
+  .ms-presto { position: absolute; top: 14px; right: 14px; font: 600 11px/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; color: var(--giallo-ink); background: var(--giallo); padding: 5px 8px; border-radius: 999px; }
+  .ms-scelto { display: flex; align-items: center; gap: 14px; margin: 4px 0 20px; }
+  .ms-scelto h2 { margin: 0; }
+  .ms-strada { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: var(--r2); border: 1px solid var(--line); background: var(--secondary); color: var(--ink); text-decoration: none;
+    transition: transform .18s ease, border-color .18s, box-shadow .18s; }
+  a.ms-strada:hover, a.ms-strada:focus-visible { transform: translateY(-2px); border-color: var(--giallo); outline: none; }
+  .ms-strada.prima { background: var(--giallo); color: var(--giallo-ink); border-color: var(--giallo); min-height: 104px; box-shadow: 0 10px 26px -10px rgba(242,183,5,.7); }
+  .ms-strada.prima small { color: inherit; opacity: .78; }
+  .ms-strada.spenta { opacity: .45; filter: grayscale(.6); cursor: not-allowed; }
+  .ms-s-ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; background: var(--card); border: 1px solid var(--line); flex: none; }
+  .ms-strada.prima .ms-s-ico { background: rgba(255,255,255,.35); border-color: transparent; }
+  .ms-s-testo { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+  .ms-s-testo b { font: 600 18px/1.2 var(--sans); }
+  .ms-strada.prima .ms-s-testo b { font-size: 20px; }
+  .ms-s-testo small { font-size: 14px; color: var(--muted); line-height: 1.35; }
+  .ms-strada .freccia { font-size: 20px; transition: transform .18s; }
+  a.ms-strada:hover .freccia { transform: translateX(3px); }
+  :root[dir="rtl"] .ms-strada .freccia, :root[dir="rtl"] .ms-btn .freccia { transform: scaleX(-1); }
+  .ms-due { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  @media (max-width: 720px) {
+    .mestieri { padding: 16px 16px 22px; width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
+    .ms-griglia { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ms-mestiere { min-height: 118px; padding: 14px; font-size: 15px; }
+    .ms-due { grid-template-columns: 1fr; }
+    .ms-strada { padding: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .mestieri[open] { animation: none; } .ms-mestiere, .ms-strada { transition: none; } }
+
   @media (prefers-reduced-motion: reduce) {
     html.js .sv { opacity: 1; transform: none; transition: none; }
     .mock .m-live::before { animation: none; }
@@ -355,10 +408,11 @@
         <li data-t="duo.studio.3">Lavora anche senza rete, in dieci lingue</li>
       </ul>
       <div class="azioni">
-        <a class="pulsante primo" href="https://app.askylostudio.it"><span data-t="ap.entra">Entra nell'app</span> <span class="freccia">→</span></a>
+        <button class="pulsante primo" type="button" data-mestieri><span data-t="ms.scegli">Scegli il tuo mestiere</span> <span class="freccia">→</span></button>
         <a class="pulsante secondo" href="#funzioni" data-t="ap.scopri">Scopri cosa fa</a>
       </div>
       <p class="nota" data-t="ap.nota">Si usa dal telefono e dal computer, anche senza rete.</p>
+      <p class="nota"><a class="entra" href="https://app.askylostudio.it" data-t="ms.entra">Hai già un account? Entra nell'app</a></p>
       <div class="mock mock-studio" aria-hidden="true">
         <div class="m-agenda">
           <div class="m-ora">9:00</div><div class="m-app c1" translate="no">Marco · <span data-t="m.tratt1">Schiena</span></div>
@@ -428,7 +482,10 @@
     <section class="invito sv">
       <h2 data-t="cta.titolo2">Provalo con <em>il tuo studio.</em></h2>
       <p data-t="cta.testo">Registrarsi è gratis e ci vuole un minuto. Lo studio nuovo parte vuoto: i dati sono solo i tuoi.</p>
-      <a class="pulsante primo" href="https://app.askylostudio.it"><span data-t="ap.entra">Entra nell'app</span> <span class="freccia">→</span></a>
+      <div class="azioni centro">
+        <a class="pulsante primo" href="https://app.askylostudio.it"><span data-t="ap.entra">Entra nell'app</span> <span class="freccia">→</span></a>
+        <button class="pulsante secondo" type="button" data-mestieri><span data-t="ms.demo">Guarda un gestionale demo</span></button>
+      </div>
     </section>
   </section>
 
@@ -489,6 +546,48 @@
 
 </main>
 
+<!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade:
+     cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
+     Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria e demo/ballo per gli altri. -->
+<dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
+  <div class="ms-testa">
+    <button type="button" class="ms-btn" id="ms_indietro" hidden><span class="freccia">←</span> <span data-t="ms.indietro">Tutti i mestieri</span></button>
+    <button type="button" class="ms-btn ms-chiudi" id="ms_chiudi"><span data-t="ms.chiudi">Chiudi</span> <span aria-hidden="true">✕</span></button>
+  </div>
+  <div class="ms-passo" id="ms_elenco">
+    <p class="occhiello" translate="no">Askylo Studio</p>
+    <h2 id="ms_titolo" data-t="ms.titolo">Che lavoro fai?</h2>
+    <p class="ms-sotto" data-t="ms.testo">Per ogni mestiere un gestionale pronto. Guardalo con tre anni di dati inventati, poi comincia con il tuo.</p>
+    <div class="ms-griglia">
+      <button type="button" class="ms-mestiere" data-mestiere="olistico"><span class="ms-ico" aria-hidden="true">🪷</span><span class="ms-nome" data-t="ms.olistici">Operatori olistici</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="estetista"><span class="ms-ico" aria-hidden="true">💅</span><span class="ms-nome" data-t="ms.estetiste">Estetiste e centri estetici</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="massofisio"><span class="ms-ico" aria-hidden="true">💆</span><span class="ms-nome" data-t="ms.massofisio">Massofisioterapisti</span></button>
+      <div class="ms-mestiere spento" aria-disabled="true"><span class="ms-ico" aria-hidden="true">🦴</span><span class="ms-nome" data-t="ms.fisio">Fisioterapisti e osteopati</span><span class="ms-presto" data-t="ms.presto">A breve</span></div>
+      <button type="button" class="ms-mestiere" data-mestiere="gelateria"><span class="ms-ico" aria-hidden="true">🍦</span><span class="ms-nome" data-t="ms.gelaterie">Gelaterie</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="ballo"><span class="ms-ico" aria-hidden="true">💃</span><span class="ms-nome" data-t="ms.ballo">Scuole e insegnanti di ballo &amp; aerofitness</span></button>
+    </div>
+  </div>
+  <div class="ms-passo" id="ms_strade" hidden>
+    <div class="ms-scelto"><span class="ms-ico" id="ms_ico" aria-hidden="true"></span><h2 id="ms_nome"></h2></div>
+    <a class="ms-strada prima" id="ms_comincia" href="https://app.askylostudio.it/">
+      <span class="ms-s-ico" aria-hidden="true">🚀</span>
+      <span class="ms-s-testo"><b data-t="ms.comincia">Comincia gratis con il tuo gestionale avanzato</b><small data-t="ms.comincia.d">Ti registri in un minuto. Lo studio nuovo parte vuoto: i dati sono solo tuoi.</small></span>
+      <span class="freccia" aria-hidden="true">→</span>
+    </a>
+    <div class="ms-due">
+      <div class="ms-strada spenta" aria-disabled="true">
+        <span class="ms-s-ico" aria-hidden="true">🎬</span>
+        <span class="ms-s-testo"><b data-t="ms.tutorial">Tutorial</b><small data-t="ms.tutorial.d">In preparazione: arrivano presto.</small></span>
+      </div>
+      <a class="ms-strada" id="ms_demo" href="https://app.askylostudio.it/">
+        <span class="ms-s-ico" aria-hidden="true">👀</span>
+        <span class="ms-s-testo"><b data-t="ms.demo">Guarda un gestionale demo</b><small data-t="ms.demo.d">Tre anni di lavoro inventati: apri le schede, prova tutto. Non si salva nulla.</small></span>
+        <span class="freccia" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</dialog>
+
 <script>
   /* Lingue: l'italiano è nell'HTML (così la pagina si legge anche senza JavaScript),
      le altre stanno in lingue/<codice>.js, un dizionario { id: testo } che si carica solo quando serve.
@@ -525,6 +624,7 @@
       sel.value = cod;
       corrente = cod;
       etichettaTema();
+      nomeMestiere();
     }
 
     function carica(cod, fatto) {
@@ -605,6 +705,47 @@
     } else {
       sv.forEach(function (e) { e.classList.add('in'); });
     }
+
+    /* I mestieri: la finestra, il mestiere scelto e le sue tre strade. Anche la carta di
+       Askylo Studio la apre, cliccata fuori dai pulsanti. #mestieri e #mestieri/<mestiere>
+       la aprono da un link. */
+    var APP = 'https://app.askylostudio.it/';
+    var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
+                 gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/' };
+    var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');
+    var indietro = document.getElementById('ms_indietro');
+    var scelto = '';
+    // il nome e l'icona del mestiere scelto: copiati dalla sua casella, già nella lingua della pagina (anche quando la lingua arriva dopo)
+    function nomeMestiere() {
+      var b = fin && scelto && fin.querySelector('[data-mestiere="' + scelto + '"]'); if (!b) return;
+      document.getElementById('ms_ico').textContent = b.querySelector('.ms-ico').textContent;
+      document.getElementById('ms_nome').innerHTML = b.querySelector('.ms-nome').innerHTML;
+    }
+    function passo(k) {
+      var b = k && fin.querySelector('[data-mestiere="' + k + '"]');
+      elenco.hidden = !!b; strade.hidden = !b; indietro.hidden = !b;
+      if (!b) { scelto = ''; return; }
+      scelto = k; nomeMestiere();
+      document.getElementById('ms_comincia').href = APP + '?mestiere=' + k;
+      document.getElementById('ms_demo').href = DEMO[k];
+      document.getElementById('ms_comincia').focus();
+    }
+    function apri(k) {
+      passo(k || '');
+      if (fin.showModal) { if (!fin.open) fin.showModal(); } else fin.setAttribute('open', '');
+      document.body.classList.add('ferma');
+    }
+    function chiudi() { if (fin.close) fin.close(); else fin.removeAttribute('open'); }
+    fin.addEventListener('close', function () { document.body.classList.remove('ferma'); });
+    Array.prototype.slice.call(document.querySelectorAll('[data-mestieri]')).forEach(function (b) { b.addEventListener('click', function () { apri(); }); });
+    Array.prototype.slice.call(fin.querySelectorAll('button[data-mestiere]')).forEach(function (b) { b.addEventListener('click', function () { passo(b.getAttribute('data-mestiere')); }); });
+    indietro.addEventListener('click', function () { passo(''); });
+    document.getElementById('ms_chiudi').addEventListener('click', chiudi);
+    // un clic sullo sfondo chiude
+    fin.addEventListener('click', function (e) { if (e.target === fin) chiudi(); });
+    document.getElementById('studio').addEventListener('click', function (e) { if (!e.target.closest('a, button, select')) apri(); });
+    var daLink = /^#mestieri(?:\/([a-z]+))?$/.exec(location.hash);
+    if (daLink) apri(DEMO[daLink[1]] ? daLink[1] : '');
   })();
 </script>
 </body>
