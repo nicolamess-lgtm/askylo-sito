@@ -1,18 +1,35 @@
 # Askylo Studio — il sito
 
-La pagina di presentazione di Askylo Studio (il gestionale per chi lavora con
-i clienti), su askylostudio.it, con in fondo le altre app della famiglia Askylo.
-Pubblicata da GitHub Pages a ogni push su `main`. L'app vera sta su
-`app.askylostudio.it` (repository privato `askylo-studio`).
+La pagina di presentazione della famiglia Askylo, su askylostudio.it. In cima
+i due strumenti: **Askylo** (askylo.com, le domande dal vivo del pubblico) e
+**Askylo Studio** (il gestionale per chi lavora con i clienti), ognuno con
+una finta schermata fatta solo di CSS; poi il gestionale nel dettaglio (cosa
+fa, per chi, come si parte), la sezione di Askylo (sala, aula, libri) e, in
+fondo, le altre app della famiglia. Pubblicata da GitHub Pages a ogni push su
+`main`. L'app vera sta su `app.askylostudio.it` (repository privato
+`askylo-studio`).
 
-Una pagina sola, `index.html`, senza compilazione: si apre così com'è.
+Una pagina sola, `index.html`, senza compilazione: si apre così com'è. Per
+guardarla in locale basta un server statico, per esempio
+`python3 -m http.server 8765`.
+
+## Lo stile
+
+È il system design Asky, lo stesso dell'app e di askylo.com: di notte la
+«Sala» (blu notte `#12141C`, zafferano `#FFC61A` con generosità), di giorno
+«Carta» (crema `#FAF7F0`, inchiostro `#1A2233`, zafferano con parsimonia).
+Fraunces per titoli e numeri, DM Sans per il resto; angoli 14 / 18 / 22 e
+un'ombra leggera. I colori stanno tutti nelle variabili in cima a
+`index.html`: un pezzo nuovo usa quelle (`--card`, `--line`, `--giallo`,
+`--accento`) e prende giorno e notte da solo. Le sezioni compaiono
+scorrendo (`.sv`), solo con JavaScript e non per chi ha chiesto meno
+movimento.
 
 ## Giorno e notte
 
 Il pulsante con sole e luna funziona come sulle altre pagine Askylo: la scelta
 resta nel browser (`asky-theme`: `light` o `dark`); senza scelta la pagina
-segue il tema del sistema (`prefers-color-scheme`). Lo stile è l'«Oro» di
-sempre: scuro con l'oro di notte, carta calda con l'oro scuro di giorno.
+segue il tema del sistema (`prefers-color-scheme`).
 
 ## Lingue
 

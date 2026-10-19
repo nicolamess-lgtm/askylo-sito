@@ -11,7 +11,8 @@ const html = readFileSync(join(radice, 'index.html'), 'utf8');
 
 // id messi nell'HTML + id che usa lo script (titolo, descrizione, pulsanti)
 const idHtml = new Map();
-for (const m of html.matchAll(/data-t="([^"]+)"[^>]*>([\s\S]*?)<\/(?:a|h1|h2|h3|p|li|span)>/g)) idHtml.set(m[1], m[2].trim());
+// il contenuto arriva fino alla chiusura dello stesso tag (dentro può esserci solo <em>)
+for (const m of html.matchAll(/<([a-z0-9]+)[^>]*\sdata-t="([^"]+)"[^>]*>([\s\S]*?)<\/\1>/g)) idHtml.set(m[2], m[3].trim());
 const idScript = ['meta.titolo', 'meta.desc', 'tema.giorno', 'tema.notte', 'lingua.etichetta'];
 const attesi = new Set([...idHtml.keys(), ...idScript]);
 
