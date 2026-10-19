@@ -1,263 +1,610 @@
 <!doctype html>
-<html lang="it" data-stile="oro" data-tema="scuro">
+<html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Askylo Studio — le app della famiglia Askylo</title>
-<meta name="description" content="Askylo Studio costruisce app semplici per chi lavora con le persone: eventi, studi, fermenti, memorie. Qui trovi tutto quello che abbiamo fatto e quello che sta arrivando.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='32' y='44' font-size='36' font-family='Georgia,serif' font-style='italic' text-anchor='middle' fill='%23e3b341'%3EA%3C/text%3E%3C/svg%3E">
+<title>Askylo Studio — il gestionale per chi lavora con i clienti</title>
+<meta name="description" content="Agenda, schede clienti e una pagina personale per ogni cliente. Per estetiste, massaggiatori, personal trainer, parrucchieri, insegnanti di ripetizione, scuole di ballo e aero fitness: il cliente entra e in trenta secondi sai tutto di lui.">
+<meta name="theme-color" content="#12141C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312141C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='600' text-anchor='middle' fill='%23FFC61A'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
 <script>
-  /* Lo stile si sceglie solo con #prova nell'indirizzo; la scelta resta nel browser.
-     Chi arriva senza #prova vede lo stile pubblico e basta. */
+  /* Il tema si decide prima del disegno, per non far lampeggiare la pagina.
+     Scelta ricordata come su askylo.com (asky-theme: light | dark); senza scelta segue il sistema.
+     «js» su <html> accende le animazioni di comparsa: senza JavaScript tutto è visibile da subito. */
   (function () {
-    var h = document.documentElement, mem = {};
-    try { mem = JSON.parse(localStorage.getItem('askylo_prova') || '{}'); } catch (e) {}
-    if (location.hash === '#prova') { mem.attivo = true; try { localStorage.setItem('askylo_prova', JSON.stringify(mem)); } catch (e) {} }
-    if (mem.attivo) {
-      h.setAttribute('data-prova', '1');
-      if (mem.stile) h.setAttribute('data-stile', mem.stile);
-      if (mem.tema) h.setAttribute('data-tema', mem.tema);
-    }
+    var h = document.documentElement, p = null;
+    h.className = 'js';
+    try { p = localStorage.getItem('asky-theme'); } catch (e) {}
+    if (p === 'light' || p === 'dark') h.setAttribute('data-tema', p);
   })();
 </script>
 <style>
-  /* =========================================================
-     Tre stili, una pagina. Ogni stile ridefinisce i colori e i
-     caratteri; la struttura è la stessa.
-       oro      — come askylo.com: scuro, oro, serif con corsivo
-       carta    — la mia proposta: carta chiara, verde bosco, serif
-       minimal  — bianco, essenziale, con la modalità notturna
-     ========================================================= */
+  /* System design Asky (AGENTS.md §48 di Askylo Studio): di notte la «Sala», blu notte e
+     zafferano con generosità; di giorno «Carta», crema e inchiostro, zafferano con parsimonia.
+     Fraunces per i titoli e i numeri, DM Sans per il resto; angoli 14 / 18 / 22, ombra leggera. */
   :root {
-    --sfondo: #0f0f10; --carta: #171718; --bordo: #2a2a2c;
-    --testo: #f3efe6; --tenue: #a39e93;
-    --accento: #e3b341; --accento-forte: #b98a1f; --su-accento: #111;
-    --evidenza: linear-gradient(135deg, #1b1a16 0%, #171718 60%);
-    --serif: Fraunces, Georgia, serif; --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-    --titolo: var(--serif); --raggio: 18px; --corsivo: italic;
+    --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
+    --ink: #F3EFE6; --muted: #9AA0B4;
+    --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+    --ombra: 0 1px 2px rgba(0,0,0,.25), 0 18px 44px -18px rgba(0,0,0,.6);
+    --anello: 0 0 0 1.5px var(--giallo), 0 0 36px -8px rgba(255,198,26,.55);
+    --alone: rgba(255,198,26,.13);
+    --serif: Fraunces, Georgia, "Times New Roman", serif;
+    --sans: "DM Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --r1: 14px; --r2: 18px; --r3: 22px;
+    color-scheme: dark;
   }
-  :root[data-stile="carta"] {
-    --sfondo: #f6f1e8; --carta: #fffdf8; --bordo: #e2d9c8;
-    --testo: #1d2a22; --tenue: #6b7066;
-    --accento: #1f5c45; --accento-forte: #143e2f; --su-accento: #fff;
-    --evidenza: linear-gradient(135deg, #e9efe8 0%, #fffdf8 60%);
-    --titolo: Newsreader, Georgia, serif; --raggio: 14px;
+  :root[data-tema="light"], :root:not([data-tema]).giorno {
+    --bg: #FAF7F0; --card: #fff; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
+    --ink: #1A2233; --muted: #6B7280;
+    --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+    --ombra: 0 1px 2px rgba(26,34,51,.05), 0 10px 28px -10px rgba(26,34,51,.14);
+    --anello: 0 0 0 1.5px #F2B705, 0 0 28px -6px rgba(242,183,5,.45);
+    --alone: rgba(242,183,5,.22);
+    color-scheme: light;
   }
-  :root[data-stile="carta"][data-tema="scuro"] {
-    --sfondo: #141a17; --carta: #1b231f; --bordo: #2b3630;
-    --testo: #eee9dd; --tenue: #9aa39c;
-    --accento: #8fc9ab; --accento-forte: #b9e3cb; --su-accento: #10201a;
-    --evidenza: linear-gradient(135deg, #1f2a24 0%, #1b231f 60%);
-  }
-  :root[data-stile="minimal"] {
-    --sfondo: #ffffff; --carta: #f5f5f7; --bordo: #e8e8ed;
-    --testo: #1d1d1f; --tenue: #6e6e73;
-    --accento: #0071e3; --accento-forte: #0060c0; --su-accento: #fff;
-    --evidenza: #f5f5f7;
-    --titolo: var(--sans); --raggio: 20px; --corsivo: normal;
-  }
-  :root[data-stile="minimal"][data-tema="scuro"] {
-    --sfondo: #000000; --carta: #1c1c1e; --bordo: #2c2c2e;
-    --testo: #f5f5f7; --tenue: #98989d;
-    --accento: #2997ff; --accento-forte: #4aa8ff; --su-accento: #000;
-    --evidenza: #1c1c1e;
+  @media (prefers-color-scheme: light) {
+    :root:not([data-tema]) {
+      --bg: #FAF7F0; --card: #fff; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
+      --ink: #1A2233; --muted: #6B7280;
+      --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+      --ombra: 0 1px 2px rgba(26,34,51,.05), 0 10px 28px -10px rgba(26,34,51,.14);
+      --anello: 0 0 0 1.5px #F2B705, 0 0 28px -6px rgba(242,183,5,.45);
+      --alone: rgba(242,183,5,.22);
+      color-scheme: light;
+    }
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0; background: var(--sfondo); color: var(--testo);
-    font-family: var(--sans); font-size: 17px; line-height: 1.55;
-    -webkit-font-smoothing: antialiased; transition: background .25s, color .25s;
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.55; font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased; transition: background .3s, color .3s; overflow-x: hidden;
   }
   a { color: inherit; }
-  .pagina { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  :focus-visible { outline: 2px solid var(--giallo); outline-offset: 3px; border-radius: 6px; }
+  .pagina { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  em { font-style: italic; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em; margin: 0; font-optical-sizing: auto; }
+  .occhiello { display: inline-flex; align-items: center; gap: 8px; color: var(--accento); font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 16px; }
+  .occhiello::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--giallo); box-shadow: 0 0 12px var(--giallo); }
+  .tenue { color: var(--muted); }
+
+  /* l'alone di zafferano dietro l'apertura: generoso di notte, discreto di giorno */
+  .alone { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .alone::before { content: ""; position: absolute; left: 50%; top: -340px; width: 1100px; height: 760px; transform: translateX(-50%); background: radial-gradient(closest-side, var(--alone), transparent 70%); filter: blur(10px); }
+  .alone::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 56px 56px; opacity: .25; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 100%); mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 20%, transparent 100%); }
+  body { position: relative; }
 
   /* testata */
-  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
-  .marchio { display: flex; align-items: center; gap: 10px; font-family: var(--titolo); font-weight: 600; font-size: 22px; text-decoration: none; letter-spacing: -0.01em; }
-  .marchio .segno { width: 30px; height: 30px; border-radius: 8px; background: var(--accento); color: var(--su-accento); display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1; }
-  .marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--tenue); margin-left: 2px; }
-  nav a { color: var(--tenue); text-decoration: none; font-size: 15px; font-weight: 500; }
-  nav a:hover { color: var(--testo); }
+  .testata { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color .3s, background .3s; }
+  .testata.scesa { border-bottom-color: var(--line); background: color-mix(in srgb, var(--bg) 78%, transparent); }
+  .testata .pagina { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 68px; }
+  .marchio { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 22px; text-decoration: none; letter-spacing: -0.01em; white-space: nowrap; }
+  .marchio .segno { width: 32px; height: 32px; border-radius: 9px; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-style: italic; font-size: 21px; line-height: 1; box-shadow: 0 6px 18px -6px rgba(242,183,5,.6); }
+  .marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); margin-inline-start: 2px; }
+  .destra { display: flex; align-items: center; gap: 18px; }
+  nav { display: flex; gap: 4px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 500; padding: 8px 12px; border-radius: 999px; transition: color .2s, background .2s; }
+  nav a:hover { color: var(--ink); background: var(--secondary); }
+  .comandi { display: flex; align-items: center; gap: 8px; }
+  .comandi select, .comandi button {
+    height: 38px; border-radius: 999px; border: 1px solid var(--line-forte); background: var(--card);
+    color: var(--ink); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color .2s, box-shadow .2s;
+  }
+  .comandi select { padding: 0 12px; max-width: 150px; }
+  .comandi button { width: 38px; display: grid; place-items: center; padding: 0; color: var(--accento); }
+  .comandi select:hover, .comandi button:hover { border-color: var(--giallo); }
+  .comandi svg { width: 18px; height: 18px; }
+  :root[data-notte] #tema .sole { display: block; }
+  :root[data-notte] #tema .luna { display: none; }
+  :root:not([data-notte]) #tema .sole { display: none; }
+  :root:not([data-notte]) #tema .luna { display: block; }
+
+  /* pulsanti */
+  .pulsante { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 24px; border-radius: 999px; font-weight: 600; font-size: 16px; text-decoration: none; border: 1px solid transparent; transition: transform .18s ease, box-shadow .18s ease, background .18s, border-color .18s; white-space: nowrap; }
+  .pulsante.primo { background: var(--giallo); color: var(--giallo-ink); box-shadow: 0 10px 26px -10px rgba(242,183,5,.7); }
+  .pulsante.primo:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -10px rgba(242,183,5,.8); }
+  .pulsante.secondo { color: var(--ink); border-color: var(--line-forte); background: transparent; }
+  .pulsante.secondo:hover { border-color: var(--giallo); transform: translateY(-2px); }
+  .pulsante .freccia { display: inline-block; transition: transform .18s; }
+  .pulsante:hover .freccia { transform: translateX(3px); }
+  :root[dir="rtl"] .pulsante .freccia { transform: scaleX(-1); }
+  :root[dir="rtl"] .pulsante:hover .freccia { transform: scaleX(-1) translateX(3px); }
 
   /* apertura */
-  .apertura { padding: 72px 0 56px; }
-  .occhiello { color: var(--accento); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 18px; }
-  h1 { font-family: var(--titolo); font-weight: 500; font-size: clamp(38px, 6.4vw, 64px); line-height: 1.05; letter-spacing: -0.02em; margin: 0 0 22px; max-width: 760px; }
-  h1 em { font-style: var(--corsivo); color: var(--accento); }
-  .apertura p { color: var(--tenue); max-width: 560px; margin: 0; font-size: 18px; }
+  .apertura { padding: 84px 0 40px; text-align: center; }
+  .apertura h1 { font-size: clamp(42px, 7.2vw, 88px); line-height: 1.0; max-width: 920px; margin: 0 auto 22px; }
+  .apertura h1 em { color: var(--accento); }
+  .apertura .testo { color: var(--muted); max-width: 640px; margin: 0 auto; font-size: 19px; }
+  .apertura .occhiello { justify-content: center; }
 
-  /* le app */
-  .sezione { padding: 24px 0 40px; }
-  .sezione h2 { font-family: var(--titolo); font-weight: 500; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tenue); margin: 0 0 18px; display: flex; align-items: center; gap: 14px; }
-  .sezione h2::after { content: ""; flex: 1; height: 1px; background: var(--bordo); }
-  .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
-  .app { position: relative; display: flex; flex-direction: column; gap: 14px; background: var(--carta); border: 1px solid var(--bordo); border-radius: var(--raggio); padding: 24px; min-height: 230px; text-decoration: none; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
-  a.app:hover, a.app:focus-visible { transform: translateY(-3px); border-color: var(--accento-forte); outline: none; }
-  .app .icona { width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; font-size: 24px; background: var(--sfondo); border: 1px solid var(--bordo); }
-  .app .icona.oro { background: var(--accento); color: var(--su-accento); font-family: var(--serif); font-style: italic; font-weight: 600; }
-  .app h3 { margin: 0; font-family: var(--titolo); font-weight: 600; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; }
-  .app .cosa { margin: 0; color: var(--tenue); font-size: 15.5px; flex: 1; }
-  .app .riga { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 500; }
+  /* i due strumenti */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 36px 0 20px; }
+  .strumento { position: relative; display: flex; flex-direction: column; gap: 14px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r3); padding: 30px 30px 24px; box-shadow: var(--ombra); transition: transform .25s ease, box-shadow .25s ease, border-color .25s; overflow: hidden; }
+  .strumento::before { content: ""; position: absolute; inset: 0; background: radial-gradient(600px 240px at 100% 0%, var(--accento-soft), transparent 70%); opacity: .7; pointer-events: none; }
+  .strumento:hover { transform: translateY(-4px); box-shadow: var(--anello), var(--ombra); border-color: transparent; }
+  .strumento > * { position: relative; }
+  .strumento .occhiello { margin-bottom: 0; }
+  .strumento .nome { display: flex; align-items: center; gap: 14px; }
+  .strumento .nome h2 { font-size: clamp(30px, 3.4vw, 40px); font-weight: 600; letter-spacing: -0.02em; }
+  .strumento .icona { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; font-size: 26px; background: var(--secondary); border: 1px solid var(--line); flex: none; }
+  .strumento .icona.oro { background: var(--giallo); color: var(--giallo-ink); font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 30px; box-shadow: 0 10px 26px -10px rgba(242,183,5,.8); }
+  .strumento .claim { font-family: var(--serif); font-size: clamp(22px, 2.3vw, 27px); line-height: 1.2; letter-spacing: -0.015em; font-weight: 500; margin: 4px 0 0; }
+  .strumento .claim em { color: var(--accento); }
+  .strumento .cosa { margin: 0; color: var(--muted); font-size: 16px; }
+  .punti { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 9px; }
+  .punti li { display: flex; gap: 10px; align-items: flex-start; font-size: 15.5px; }
+  .punti li::before { content: "✓"; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accento-soft); color: var(--accento); font-size: 13px; font-weight: 700; display: grid; place-items: center; margin-top: 2px; }
+  .azioni { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .nota { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .strumento .mock { margin-top: auto; }
+
+  /* le finte schermate: solo CSS, nessuna immagine */
+  .mock { background: var(--secondary); border: 1px solid var(--line); border-radius: var(--r2); padding: 16px; font-size: 13px; line-height: 1.35; user-select: none; margin-top: 10px; }
+  .mock .m-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; color: var(--muted); font-weight: 600; font-size: 12px; }
+  .mock .m-top .m-tit { flex: 1; color: var(--ink); }
+  .mock .m-live { color: var(--accento); display: inline-flex; align-items: center; gap: 6px; }
+  .mock .m-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--giallo); box-shadow: 0 0 10px var(--giallo); animation: batte 1.6s ease-in-out infinite; }
+  @keyframes batte { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  .m-qr { width: 26px; height: 26px; border-radius: 5px; flex: none; background:
+    linear-gradient(var(--ink), var(--ink)) 2px 2px / 7px 7px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 17px 2px / 7px 7px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 2px 17px / 7px 7px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 13px 13px / 3px 3px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 19px 16px / 5px 3px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 12px 20px / 3px 4px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 12px 3px / 3px 3px no-repeat,
+    var(--card); border: 1px solid var(--line); }
+  .m-q { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+  .m-q b { color: var(--accento); font-weight: 700; white-space: nowrap; font-family: var(--serif); font-size: 14px; }
+  .m-q.dim { opacity: .6; }
+  .m-chip { display: inline-flex; align-items: center; gap: 7px; background: var(--giallo); color: var(--giallo-ink); font-weight: 700; font-size: 12.5px; padding: 8px 14px; border-radius: 999px; margin-top: 4px; }
+  .mock-studio { display: grid; grid-template-columns: 1.15fr 1fr; gap: 12px; }
+  .m-agenda { display: grid; grid-template-columns: auto 1fr; gap: 7px 10px; align-items: center; }
+  .m-ora { color: var(--muted); font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .m-app { background: var(--card); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; border-inline-start: 4px solid var(--giallo); font-weight: 600; }
+  .m-app.c2 { border-inline-start-color: #5FB783; }
+  .m-app.libero { border-inline-start-color: var(--line-forte); color: var(--muted); font-weight: 500; border-style: dashed; background: transparent; }
+  .m-scheda { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .m-nome { font-family: var(--serif); font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .m-nome::before { content: ""; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--giallo), #F08A3E); flex: none; }
+  .m-riga { display: flex; flex-direction: column; gap: 1px; }
+  .m-riga span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+  .m-riga b { font-weight: 600; }
+  .m-riga b.soldi { font-family: var(--serif); font-size: 20px; color: var(--accento); }
+
+  /* i numeri */
+  .numeri { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 24px 0 8px; border: 1px solid var(--line); border-radius: var(--r3); background: var(--card); overflow: hidden; }
+  .numeri > div { padding: 24px 22px; border-inline-end: 1px solid var(--line); }
+  .numeri > div:last-child { border-inline-end: 0; }
+  .numeri b { display: block; font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .numeri b em { color: var(--accento); font-style: italic; }
+  .numeri span { color: var(--muted); font-size: 14px; display: block; }
+
+  /* sezioni */
+  .sezione { padding: 72px 0 8px; }
+  .sezione .testa { max-width: 720px; margin-bottom: 32px; }
+  .sezione .testa h2 { font-size: clamp(30px, 4.2vw, 46px); line-height: 1.08; }
+  .sezione .testa h2 em { color: var(--accento); }
+  .sezione .testa p { color: var(--muted); margin: 14px 0 0; font-size: 17px; max-width: 600px; }
+  .griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .scheda { position: relative; display: flex; flex-direction: column; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r2); padding: 24px; transition: transform .22s ease, border-color .22s, box-shadow .22s; }
+  .scheda:hover { transform: translateY(-3px); border-color: var(--line-forte); box-shadow: var(--ombra); }
+  .scheda .ico { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 22px; background: var(--secondary); border: 1px solid var(--line); margin-bottom: 4px; }
+  .scheda h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.15; }
+  .scheda p { margin: 0; color: var(--muted); font-size: 15.5px; }
+  .scheda.larga { grid-column: span 2; }
+
+  /* per chi */
+  .chip { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 18px; padding: 0; list-style: none; }
+  .chip li { padding: 10px 18px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-weight: 500; font-size: 15.5px; transition: border-color .2s, transform .2s; }
+  .chip li:hover { border-color: var(--giallo); transform: translateY(-2px); }
+
+  /* come si parte */
+  .passi { counter-reset: passo; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 0; margin: 0; list-style: none; }
+  .passi li { counter-increment: passo; position: relative; background: var(--card); border: 1px solid var(--line); border-radius: var(--r2); padding: 26px 24px 24px; }
+  .passi li::before { content: counter(passo); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--giallo); color: var(--giallo-ink); font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 18px; margin-bottom: 16px; }
+  .passi h3 { margin: 0 0 6px; font-size: 21px; font-weight: 600; }
+  .passi p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+  /* invito */
+  .invito { position: relative; margin: 48px 0 0; padding: 56px 28px; border-radius: 28px; border: 1px solid var(--line); background: var(--card); text-align: center; box-shadow: var(--ombra); overflow: hidden; }
+  .invito::before { content: ""; position: absolute; inset: -40% -10% auto; height: 120%; background: radial-gradient(closest-side, var(--alone), transparent 70%); pointer-events: none; }
+  .invito > * { position: relative; }
+  .invito h2 { font-size: clamp(30px, 5vw, 50px); line-height: 1.05; margin: 0 0 12px; }
+  .invito h2 em { color: var(--accento); }
+  .invito p { color: var(--muted); max-width: 520px; margin: 0 auto 26px; }
+
+  /* Askylo, la sezione sua */
+  .askylo-band { margin-top: 72px; border-top: 1px solid var(--line); }
+  .askylo-band .sezione { padding-top: 64px; }
+  .askylo-band .griglia { grid-template-columns: repeat(3, 1fr); }
+  .askylo-band .azioni { margin-top: 28px; }
+
+  /* le altre app */
+  .app { display: flex; flex-direction: column; gap: 10px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r2); padding: 22px; text-decoration: none; transition: transform .2s ease, border-color .2s; }
+  a.app:hover, a.app:focus-visible { transform: translateY(-3px); border-color: var(--giallo); outline: none; }
+  .app .icona { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 21px; background: var(--secondary); border: 1px solid var(--line); }
+  .app h3 { font-size: 21px; font-weight: 600; }
+  .app .cosa { margin: 0; color: var(--muted); font-size: 15px; flex: 1; }
+  .app .riga { font-size: 14px; font-weight: 600; }
   .app .vai { color: var(--accento); }
   .app .vai::after { content: " →"; }
-  .app .presto { color: var(--tenue); font-size: 13px; display: inline-flex; align-items: center; gap: 7px; }
-  .app .presto::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accento); opacity: .7; }
-  .app.attesa { opacity: .82; }
-  .app.in-evidenza { grid-column: 1 / -1; background: var(--evidenza); }
-  .app.in-evidenza .corpo { display: flex; flex-direction: column; gap: 14px; }
-  @media (min-width: 720px) {
-    .app.in-evidenza { flex-direction: row; align-items: center; gap: 28px; padding: 32px; min-height: 0; }
-    .app.in-evidenza .corpo { flex: 1; gap: 12px; }
-    .app.in-evidenza h3 { font-size: 34px; }
-    .app.in-evidenza .icona { width: 64px; height: 64px; border-radius: 17px; font-size: 32px; }
-  }
+  :root[dir="rtl"] .app .vai::after { content: " ←"; }
+  .app .presto { color: var(--muted); font-size: 13px; display: inline-flex; align-items: center; gap: 7px; font-weight: 500; }
+  .app .presto::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--giallo); opacity: .7; }
+  .app.attesa { opacity: .85; }
 
   /* chiusura */
-  .chi { padding: 56px 0 24px; border-top: 1px solid var(--bordo); margin-top: 40px; }
-  .chi h2 { font-family: var(--titolo); font-weight: 500; font-size: 30px; margin: 0 0 14px; letter-spacing: -0.01em; }
-  .chi p { color: var(--tenue); max-width: 640px; margin: 0; }
-  footer { padding: 28px 0 40px; color: var(--tenue); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .chi { padding: 64px 0 24px; border-top: 1px solid var(--line); margin-top: 64px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; align-items: start; }
+  .chi h2 { font-size: 30px; }
+  .chi p { color: var(--muted); margin: 0; font-size: 17px; }
+  footer { padding: 28px 0 44px; color: var(--muted); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
   footer a { text-decoration: none; }
-  footer a:hover { color: var(--testo); }
+  footer a:hover { color: var(--ink); }
+  footer .link { display: flex; gap: 18px; flex-wrap: wrap; }
 
-  /* ---- ritocchi per stile ---- */
-  :root[data-stile="carta"] .app { box-shadow: 0 1px 2px rgba(29, 42, 34, .05); }
-  :root[data-stile="carta"] a.app:hover { box-shadow: 0 10px 30px rgba(29, 42, 34, .10); }
-  :root[data-stile="carta"] h1 { font-weight: 500; }
-  :root[data-stile="carta"] .app h3 { font-weight: 500; font-size: 28px; }
-  :root[data-stile="minimal"] .app { border-color: transparent; padding: 28px; }
-  :root[data-stile="minimal"] a.app:hover { border-color: transparent; box-shadow: 0 12px 40px rgba(0, 0, 0, .10); }
-  :root[data-stile="minimal"] h1 { font-weight: 600; letter-spacing: -0.03em; }
-  :root[data-stile="minimal"] .app h3 { font-weight: 600; font-size: 24px; letter-spacing: -0.02em; }
-  :root[data-stile="minimal"] .occhiello { letter-spacing: 0; text-transform: none; font-size: 17px; font-weight: 500; }
-  :root[data-stile="minimal"] .sezione h2 { font-size: 13px; letter-spacing: .04em; }
-  :root[data-stile="minimal"] .sezione h2::after { display: none; }
-  :root[data-stile="minimal"] .app .icona { background: var(--sfondo); border-color: transparent; }
-  :root[data-stile="minimal"] .app .icona.oro { background: var(--accento); color: var(--su-accento); }
-  :root[data-stile="minimal"] .marchio .segno { border-radius: 50%; }
-  :root[data-stile="minimal"] .chi { border-top: none; }
+  /* comparsa scorrendo: solo con JavaScript e solo per chi non ha chiesto meno movimento */
+  html.js .sv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  html.js .sv.in { opacity: 1; transform: none; }
+  html.js .sv.r2 { transition-delay: .1s; }
+  html.js .sv.r3 { transition-delay: .2s; }
+  @media (prefers-reduced-motion: reduce) {
+    html.js .sv { opacity: 1; transform: none; transition: none; }
+    .mock .m-live::before { animation: none; }
+    .pulsante, .strumento, .scheda, .chip li, .app { transition: none; }
+  }
 
-  /* ---- i pulsanti di prova: solo con #prova ---- */
-  .prova { display: none; position: fixed; top: 14px; right: 14px; z-index: 10; gap: 6px; align-items: center; padding: 6px; border-radius: 999px; background: var(--carta); border: 1px solid var(--bordo); box-shadow: 0 8px 30px rgba(0, 0, 0, .18); font-size: 13px; }
-  :root[data-prova] .prova { display: flex; }
-  :root[data-prova] header { padding-right: 300px; }
-  .prova button { border: 0; background: transparent; color: var(--tenue); font: inherit; font-weight: 500; padding: 6px 11px; border-radius: 999px; cursor: pointer; }
-  .prova button[aria-pressed="true"] { background: var(--accento); color: var(--su-accento); }
-  .prova .sep { width: 1px; height: 18px; background: var(--bordo); margin: 0 2px; }
-  @media (max-width: 720px) { .prova { top: auto; bottom: 14px; right: 14px; left: 14px; justify-content: center; } :root[data-prova] header { padding-right: 0; } }
+  @media (max-width: 960px) {
+    .duo, .griglia, .askylo-band .griglia { grid-template-columns: 1fr 1fr; }
+    .numeri { grid-template-columns: 1fr 1fr; }
+    .numeri > div:nth-child(2) { border-inline-end: 0; }
+    .numeri > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .scheda.larga { grid-column: auto; }
+    .passi { grid-template-columns: 1fr; }
+    .chi { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    nav { display: none; }
+    .marchio small { display: none; }
+    .testata .pagina { height: 60px; }
+    .apertura { padding: 52px 0 28px; }
+    .apertura .testo { font-size: 17px; }
+    .duo, .griglia, .askylo-band .griglia { grid-template-columns: 1fr; }
+    .strumento { padding: 24px 20px 20px; }
+    .mock-studio { grid-template-columns: 1fr; }
+    .numeri { grid-template-columns: 1fr 1fr; }
+    .numeri b { font-size: 26px; }
+    .sezione { padding-top: 56px; }
+    .comandi select { max-width: 120px; }
+    .invito { padding: 44px 20px; }
+    .pulsante { width: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<div class="prova" role="group" aria-label="Prova degli stili">
-  <button data-stile="oro">Oro</button>
-  <button data-stile="carta">Carta</button>
-  <button data-stile="minimal">Minimal</button>
-  <span class="sep"></span>
-  <button data-tema="chiaro" title="Giorno">☀︎</button>
-  <button data-tema="scuro" title="Notte">☾</button>
-</div>
+<div class="alone" aria-hidden="true"></div>
 
-<div class="pagina">
+<header class="testata" id="testata">
+  <div class="pagina">
+    <a class="marchio" href="#" translate="no"><span class="segno">A</span>Askylo <small>Studio</small></a>
+    <div class="destra">
+      <nav aria-label="Menu">
+        <a href="#askylo" translate="no">Askylo</a>
+        <a href="#studio" translate="no">Askylo Studio</a>
+        <a href="#famiglia" data-t="nav.famiglia">Altre app</a>
+      </nav>
+      <div class="comandi">
+        <select id="lingua" aria-label="Lingua" translate="no"></select>
+        <button id="tema" type="button" aria-label="Passa alla notte" title="Passa alla notte">
+          <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="sole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
 
-  <header>
-    <a class="marchio" href="#"><span class="segno">A</span>Askylo <small>Studio</small></a>
-    <nav><a href="#app">Le app</a></nav>
-  </header>
+<main class="pagina">
 
   <section class="apertura">
-    <p class="occhiello">Askylo Studio · Le app</p>
-    <h1>Fatte per chi lavora <em>con le persone.</em></h1>
-    <p>Costruiamo strumenti semplici per chi sta davanti a un pubblico, a un cliente, a un genitore. Questa pagina raccoglie quelli pronti e quelli che stanno arrivando.</p>
+    <p class="occhiello sv" data-t="hero.occhiello">Un laboratorio, due strumenti</p>
+    <h1 class="sv" data-t="hero.titolo">Fatte per chi lavora <em>con le persone.</em></h1>
+    <p class="testo sv r2" data-t="hero.testo">Askylo porta sul palco le domande del pubblico. Askylo Studio tiene l'agenda e le schede di chi riceve su appuntamento. Due strumenti, la stessa idea: semplici, veloci, tuoi.</p>
   </section>
 
-  <section class="sezione" id="app">
-    <h2>Pronte</h2>
+  <section class="duo" aria-label="Askylo e Askylo Studio">
+
+    <article class="strumento sv" id="askylo">
+      <p class="occhiello" data-t="duo.askylo.occhiello">askylo.com · Domande dal vivo</p>
+      <div class="nome"><div class="icona oro" translate="no">A</div><h2 translate="no">Askylo</h2></div>
+      <p class="claim" data-t="duo.askylo.claim">Cento domande in sala. <em>Quattro temi</em> in un tocco.</p>
+      <p class="cosa" data-t="fam.askylo.d">Domande dal vivo per i tuoi eventi. Il pubblico scansiona un QR, chiede e vota; l'IA raggruppa tutto per tema, così chi è sul palco risponde a ciò che conta.</p>
+      <ul class="punti">
+        <li data-t="duo.askylo.1">Un QR, nessuna app da installare</li>
+        <li data-t="duo.askylo.2">Il pubblico chiede e vota con un tocco</li>
+        <li data-t="duo.askylo.3">L'IA raggruppa per tema: in sala, in aula, nei libri</li>
+      </ul>
+      <div class="azioni">
+        <a class="pulsante primo" href="https://www.askylo.com"><span data-t="duo.askylo.vai">Vai su askylo.com</span> <span class="freccia">→</span></a>
+        <a class="pulsante secondo" href="#dal-vivo" data-t="duo.askylo.come">Come funziona</a>
+      </div>
+      <div class="mock mock-askylo" aria-hidden="true">
+        <div class="m-top"><span class="m-qr"></span><span class="m-tit" data-t="m.evento">Serata · Sala grande</span><span class="m-live" data-t="m.live">dal vivo</span></div>
+        <div class="m-q"><span data-t="m.q1">Quando arriva la versione per le scuole?</span><b>▲ 42</b></div>
+        <div class="m-q"><span data-t="m.q2">Come gestite la privacy dei dati?</span><b>▲ 31</b></div>
+        <div class="m-q dim"><span data-t="m.q3">Si può usare senza installare nulla?</span><b>▲ 18</b></div>
+        <div class="m-chip">✦ <span data-t="m.ia">Raggruppa con IA · 4 temi</span></div>
+      </div>
+    </article>
+
+    <article class="strumento sv r2" id="studio">
+      <p class="occhiello" data-t="ap.occhiello">Il gestionale per chi lavora con i clienti</p>
+      <div class="nome"><div class="icona">📒</div><h2 translate="no">Askylo Studio</h2></div>
+      <p class="claim" data-t="ap.titolo">Il cliente entra. In trenta secondi sai <em>tutto di lui.</em></p>
+      <p class="cosa" data-t="ap.testo">Agenda, schede clienti e una pagina personale per ogni cliente. Per chi lavora su appuntamento: estetiste, massaggiatori, personal trainer, parrucchieri, insegnanti di ripetizione, scuole di ballo e aero fitness.</p>
+      <ul class="punti">
+        <li data-t="duo.studio.1">Agenda, schede e pagamenti in un posto solo</li>
+        <li data-t="duo.studio.2">Una pagina personale per ogni cliente, con un link suo</li>
+        <li data-t="duo.studio.3">Lavora anche senza rete, in dieci lingue</li>
+      </ul>
+      <div class="azioni">
+        <a class="pulsante primo" href="https://app.askylostudio.it"><span data-t="ap.entra">Entra nell'app</span> <span class="freccia">→</span></a>
+        <a class="pulsante secondo" href="#funzioni" data-t="ap.scopri">Scopri cosa fa</a>
+      </div>
+      <p class="nota" data-t="ap.nota">Si usa dal telefono e dal computer, anche senza rete.</p>
+      <div class="mock mock-studio" aria-hidden="true">
+        <div class="m-agenda">
+          <div class="m-ora">9:00</div><div class="m-app c1" translate="no">Marco · <span data-t="m.tratt1">Schiena</span></div>
+          <div class="m-ora">10:30</div><div class="m-app c2" translate="no">Valeria · <span data-t="m.tratt2">Viso</span></div>
+          <div class="m-ora">12:00</div><div class="m-app libero"><span data-t="m.libero">libero</span></div>
+        </div>
+        <div class="m-scheda">
+          <div class="m-nome" translate="no">Valeria R.</div>
+          <div class="m-riga"><span data-t="m.ultimo">Ultimo pagamento</span><b class="soldi">60 €</b></div>
+          <div class="m-riga"><span data-t="m.indicazioni">Indicazioni</span><b data-t="m.pressione">Pressione leggera, evitare le spalle</b></div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="numeri sv" aria-label="In numeri">
+    <div><b data-t="n.1.b"><em>30</em> secondi</b><span data-t="n.1.d">per avere davanti quanto ha pagato e le indicazioni</span></div>
+    <div><b data-t="n.2.b"><em>10</em> lingue</b><span data-t="n.2.d">nell'app e nella pagina del cliente</span></div>
+    <div><b data-t="n.3.b">Senza rete</b><span data-t="n.3.d">l'archivio sta sul tuo dispositivo e risponde subito</span></div>
+    <div><b data-t="n.4.b">Ogni domenica</b><span data-t="n.4.d">una copia completa dell'archivio, per email</span></div>
+  </section>
+
+  <section class="sezione" id="funzioni">
+    <div class="testa sv">
+      <p class="occhiello" translate="no">Askylo Studio</p>
+      <h2 data-t="fn.titolo2">Tutto quello che serve, <em>niente di più.</em></h2>
+      <p data-t="fn.testo">Nato in uno studio vero, per chi ha il cliente davanti e il telefono in mano.</p>
+    </div>
     <div class="griglia">
-
-      <a class="app" href="https://www.askylo.com">
-        <div class="icona oro">A</div>
-        <h3>Askylo</h3>
-        <p class="cosa">Domande dal vivo per i tuoi eventi. Il pubblico scansiona un QR, chiede e vota; l'IA raggruppa tutto per tema, così chi è sul palco risponde a ciò che conta.</p>
-        <div class="riga"><span class="vai">Vai ad Askylo</span></div>
-      </a>
-
-      <a class="app" href="https://eat-me-project.lovable.app/">
-        <div class="icona">🫙</div>
-        <h3>Mangiami</h3>
-        <p class="cosa">La mappa dei fermenti vivi. Trova una madre vicino a te, regala un pezzo del tuo lievito o del tuo kefir, lasciali in custodia quando parti. Sempre in dono, mai in vendita.</p>
-        <div class="riga"><span class="vai">Vai a Mangiami</span></div>
-      </a>
-
+      <div class="scheda sv"><div class="ico">📅</div><h3 data-t="fn.agenda.t">Un'agenda che si legge</h3><p data-t="fn.agenda.d">Giorno, settimana e mese, con la sala e il trattamento di ogni seduta. Sul telefono è veloce, sul computer usa tutto lo spazio.</p></div>
+      <div class="scheda sv r2"><div class="ico">🗂</div><h3 data-t="fn.scheda.t">La scheda in trenta secondi</h3><p data-t="fn.scheda.d">Quanto ha pagato l'ultima volta, le indicazioni sui suoi trattamenti, le sedute passate: tutto davanti, appena il cliente entra.</p></div>
+      <div class="scheda sv r3"><div class="ico">🔗</div><h3 data-t="fn.pagina.t">Una pagina per ogni cliente</h3><p data-t="fn.pagina.d">Con un link solo suo, il cliente ritrova le sue sedute, sceglie le preferenze prima di venire e racconta com'è andata.</p></div>
+      <div class="scheda sv"><div class="ico">📶</div><h3 data-t="fn.rete.t">Lavora anche senza rete</h3><p data-t="fn.rete.d">L'archivio sta sul tuo dispositivo: l'app risponde subito e, quando la connessione torna, riparte da sola.</p></div>
+      <div class="scheda sv r2"><div class="ico">💬</div><h3 data-t="fn.chiedi.t">Chiedi all'agenda</h3><p data-t="fn.chiedi.d">Scrivi una domanda come la faresti a una persona, per esempio «chi non viene da due mesi?», e ottieni la risposta.</p></div>
+      <div class="scheda sv r3"><div class="ico">🌍</div><h3 data-t="fn.lingue.t">Nella tua lingua</h3><p data-t="fn.lingue.d">L'app parla dieci lingue, e anche la pagina del cliente. Trattamenti, sale e domande li scrivi tu, come li chiami tu.</p></div>
+      <div class="scheda larga sv"><div class="ico">🔒</div><h3 data-t="fn.dati.t">I dati restano tuoi</h3><p data-t="fn.dati.d">Il database sta in Europa. Ogni domenica ricevi per email una copia completa dell'archivio. I dati dei tuoi clienti sono dello studio, e di nessun altro.</p></div>
+      <div class="scheda sv r2"><div class="ico">✍️</div><h3 data-t="fn.modifiche.t">Chiedi una modifica</h3><p data-t="pc.nota">Se ti serve qualcosa che manca, lo chiedi dall'app: la risposta arriva in due o tre giorni lavorativi.</p></div>
     </div>
   </section>
 
-  <section class="sezione">
-    <h2>In arrivo</h2>
+  <section class="sezione" id="per-chi">
+    <div class="testa sv">
+      <p class="occhiello" data-t="pc.titolo">Per chi</p>
+      <h2 data-t="pc.titolo2">Per chi riceve <em>su appuntamento.</em></h2>
+    </div>
+    <ul class="chip sv">
+      <li data-t="pc.1">Estetiste e centri estetici</li>
+      <li data-t="pc.2">Massaggiatori e operatori del benessere</li>
+      <li data-t="pc.3">Personal trainer</li>
+      <li data-t="pc.4">Parrucchieri e barbieri</li>
+      <li data-t="pc.5">Insegnanti di ripetizione</li>
+      <li data-t="pc.6">Scuole di ballo e aero fitness</li>
+    </ul>
+  </section>
+
+  <section class="sezione" id="come">
+    <div class="testa sv">
+      <p class="occhiello" data-t="st.titolo">Come si parte</p>
+      <h2 data-t="st.titolo2">Pronto in <em>un pomeriggio.</em></h2>
+    </div>
+    <ol class="passi">
+      <li class="sv"><h3 data-t="st.1.t">Ti registri</h3><p data-t="st.1.d">In un minuto, con la tua email.</p></li>
+      <li class="sv r2"><h3 data-t="st.2.t">Rispondi a poche domande</h3><p data-t="st.2.d">Una guida ti accompagna passo per passo: trattamenti, sale, orari. Dopo i primi due capitoli l'agenda è già pronta.</p></li>
+      <li class="sv r3"><h3 data-t="st.3.t">Cominci a lavorare</h3><p data-t="st.3.d">Il primo cliente lo inserisci mentre è davanti a te.</p></li>
+    </ol>
+    <section class="invito sv">
+      <h2 data-t="cta.titolo2">Provalo con <em>il tuo studio.</em></h2>
+      <p data-t="cta.testo">Registrarsi è gratis e ci vuole un minuto. Lo studio nuovo parte vuoto: i dati sono solo i tuoi.</p>
+      <a class="pulsante primo" href="https://app.askylostudio.it"><span data-t="ap.entra">Entra nell'app</span> <span class="freccia">→</span></a>
+    </section>
+  </section>
+
+  <div class="askylo-band" id="dal-vivo">
+    <section class="sezione">
+      <div class="testa sv">
+        <p class="occhiello" data-t="ask.occhiello">Askylo · Eventi, aule, libri</p>
+        <h2 data-t="ask.titolo">Dalla sala al prossimo talk, <em>senza perdere una domanda.</em></h2>
+        <p data-t="ask.testo">Chi è sul palco non riesce a leggere cento domande. Askylo le raccoglie dal telefono del pubblico, le fa votare e le raggruppa per tema: quattro temi, un tocco, e si risponde a ciò che conta.</p>
+      </div>
+      <div class="griglia">
+        <div class="scheda sv"><div class="ico">🎤</div><h3 data-t="ask.1.t">In sala</h3><p data-t="ask.1.d">Il pubblico inquadra il QR e scrive dal telefono. Le domande arrivano in tempo reale e il relatore le vede già ordinate per tema.</p></div>
+        <div class="scheda sv r2"><div class="ico">🎓</div><h3 data-t="ask.2.t">In aula</h3><p data-t="ask.2.d">Gli studenti chiedono senza alzare la mano. Chi insegna vede cosa non è chiaro mentre spiega, non all'esame.</p></div>
+        <div class="scheda sv r3"><div class="ico">📘</div><h3 data-t="ask.3.t">Nei libri</h3><p data-t="ask.3.d">Un QR in copertina o a fine capitolo. Chi legge chiede, l'autore risponde una volta e la risposta resta per tutti i lettori successivi.</p></div>
+      </div>
+      <div class="azioni sv">
+        <a class="pulsante primo" href="https://www.askylo.com"><span data-t="duo.askylo.vai">Vai su askylo.com</span> <span class="freccia">→</span></a>
+      </div>
+    </section>
+  </div>
+
+  <section class="sezione" id="famiglia">
+    <div class="testa sv">
+      <p class="occhiello" data-t="nav.famiglia">Altre app</p>
+      <h2 data-t="fam.titolo">Le altre app della famiglia Askylo</h2>
+    </div>
     <div class="griglia">
-
-      <div class="app attesa in-evidenza">
-        <div class="icona">📒</div>
-        <div class="corpo">
-          <h3>Askylo Studio</h3>
-          <p class="cosa">Il gestionale per chi lavora con clienti su appuntamento: agenda, schede, pagamenti, e una pagina personale per ogni cliente, dove ritrova le sue sedute e dice la sua. Parla dieci lingue e lavora anche senza rete.</p>
-          <div class="riga"><span class="presto">Disponibile a breve</span></div>
-        </div>
-      </div>
-
-      <div class="app attesa">
+      <a class="app sv" href="https://eat-me-project.lovable.app/">
+        <div class="icona">🫙</div>
+        <h3 translate="no">Mangiami</h3>
+        <p class="cosa" data-t="fam.mangiami.d">La mappa dei fermenti vivi. Trova una madre vicino a te, regala un pezzo del tuo lievito o del tuo kefir, lasciali in custodia quando parti. Sempre in dono, mai in vendita.</p>
+        <div class="riga"><span class="vai" data-t="fam.mangiami.vai">Vai a Mangiami</span></div>
+      </a>
+      <div class="app attesa sv r2">
         <div class="icona">🧵</div>
-        <h3>Filo</h3>
-        <p class="cosa">Rileggi le tue chat con metodo. Carichi l'esportazione, scegli cosa cercare, e porti al tuo avvocato solo i fatti: una cronologia ordinata di episodi, con data, ora e citazioni. Uno strumento di riordino, non un parere legale.</p>
-        <div class="riga"><span class="presto">Disponibile a breve</span></div>
+        <h3 translate="no">Filo</h3>
+        <p class="cosa" data-t="fam.filo.d">Rileggi le tue chat con metodo. Carichi l'esportazione, scegli cosa cercare, e porti al tuo avvocato solo i fatti: una cronologia ordinata di episodi, con data, ora e citazioni. Uno strumento di riordino, non un parere legale.</p>
+        <div class="riga"><span class="presto" data-t="fam.presto">Disponibile a breve</span></div>
       </div>
-
-      <div class="app attesa">
+      <div class="app attesa sv r3">
         <div class="icona">📖</div>
-        <h3>Le mie memorie</h3>
-        <p class="cosa">Una domanda alla volta, a voce: la vita di tuo padre o di tua madre diventa un libro. Gli mandi un link, lui risponde con due bottoni, e ogni risposta resta, con la sua voce.</p>
-        <div class="riga"><span class="presto">Disponibile a breve</span></div>
+        <h3 data-t="fam.memorie.n">Le mie memorie</h3>
+        <p class="cosa" data-t="fam.memorie.d">Una domanda alla volta, a voce: la vita di tuo padre o di tua madre diventa un libro. Gli mandi un link, lui risponde con due bottoni, e ogni risposta resta, con la sua voce.</p>
+        <div class="riga"><span class="presto" data-t="fam.presto">Disponibile a breve</span></div>
       </div>
-
     </div>
   </section>
 
   <section class="chi">
-    <h2>Chi c'è dietro</h2>
-    <p>Askylo Studio è un laboratorio indipendente italiano. Ogni app nasce da un bisogno visto da vicino, si prova con chi lo vive, e cresce solo se serve davvero.</p>
+    <h2 data-t="chi.titolo">Chi c'è dietro</h2>
+    <p data-t="chi.testo">Askylo Studio è un laboratorio indipendente italiano. Ogni app nasce da un bisogno visto da vicino, si prova con chi lo vive, e cresce solo se serve davvero.</p>
   </section>
 
   <footer>
-    <span>© 2026 Askylo Studio</span>
-    <span><a href="https://www.askylo.com">askylo.com</a></span>
+    <span translate="no">© 2026 Askylo Studio</span>
+    <span class="link" translate="no"><a href="https://www.askylo.com">askylo.com</a><a href="https://app.askylostudio.it">app.askylostudio.it</a></span>
   </footer>
 
-</div>
+</main>
 
 <script>
+  /* Lingue: l'italiano è nell'HTML (così la pagina si legge anche senza JavaScript),
+     le altre stanno in lingue/<codice>.js, un dizionario { id: testo } che si carica solo quando serve.
+     Gli id sono quelli di data-t. Un id senza traduzione resta in italiano. */
   (function () {
-    var h = document.documentElement, barra = document.querySelector('.prova');
-    if (!h.hasAttribute('data-prova')) return;
-    // lo stile Oro è solo scuro: il tema vale per Carta e Minimal
-    function segna() {
-      barra.querySelectorAll('[data-stile]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.stile === h.dataset.stile); });
-      barra.querySelectorAll('[data-tema]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.tema === h.dataset.tema); b.disabled = h.dataset.stile === 'oro'; });
+    var LINGUE = [
+      ['it', 'Italiano'], ['en', 'English'], ['fr', 'Français'], ['es', 'Español'], ['de', 'Deutsch'],
+      ['pl', 'Polski'], ['ru', 'Русский'], ['zh', '中文'], ['ja', '日本語'], ['ar', 'العربية'],
+      ['ro', 'Română'], ['uk', 'Українська'], ['nl', 'Nederlands'], ['da', 'Dansk'], ['sv', 'Svenska'], ['sq', 'Shqip']
+    ];
+    var CODICI = LINGUE.map(function (l) { return l[0]; });
+    var RTL = { ar: 1 };
+    window.LINGUE_SITO = window.LINGUE_SITO || {};
+    var elementi = Array.prototype.slice.call(document.querySelectorAll('[data-t]'));
+    var origine = elementi.map(function (e) { return e.innerHTML; });
+    var titolo0 = document.title;
+    var meta = document.querySelector('meta[name="description"]');
+    var desc0 = meta.getAttribute('content');
+    var corrente = 'it';
+
+    var sel = document.getElementById('lingua');
+    LINGUE.forEach(function (l) { var o = document.createElement('option'); o.value = l[0]; o.textContent = l[1]; sel.appendChild(o); });
+
+    function dizionario(cod) { return cod === 'it' ? {} : (window.LINGUE_SITO[cod] || null); }
+
+    function applica(cod) {
+      var d = dizionario(cod) || {};
+      elementi.forEach(function (e, i) { var v = d[e.getAttribute('data-t')]; e.innerHTML = v != null ? v : origine[i]; });
+      document.title = d['meta.titolo'] || titolo0;
+      meta.setAttribute('content', d['meta.desc'] || desc0);
+      var h = document.documentElement;
+      h.setAttribute('lang', cod);
+      h.setAttribute('dir', RTL[cod] ? 'rtl' : 'ltr');
+      sel.value = cod;
+      corrente = cod;
+      etichettaTema();
     }
-    function salva() {
-      try { localStorage.setItem('askylo_prova', JSON.stringify({ attivo: true, stile: h.dataset.stile, tema: h.dataset.tema })); } catch (e) {}
+
+    function carica(cod, fatto) {
+      if (cod === 'it' || window.LINGUE_SITO[cod]) return fatto();
+      var s = document.createElement('script');
+      s.src = 'lingue/' + cod + '.js';
+      s.onload = fatto;
+      s.onerror = function () { fatto(); }; // dizionario non raggiunto: si resta in italiano
+      document.head.appendChild(s);
     }
-    barra.addEventListener('click', function (e) {
-      var b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.stile) { h.dataset.stile = b.dataset.stile; if (b.dataset.stile === 'oro') h.dataset.tema = 'scuro'; if (b.dataset.stile !== 'oro' && !h.dataset.temaScelto) h.dataset.tema = 'chiaro'; }
-      if (b.dataset.tema) { h.dataset.tema = b.dataset.tema; h.dataset.temaScelto = '1'; }
-      segna(); salva();
+
+    function scegli(cod, ricorda) {
+      carica(cod, function () {
+        applica(window.LINGUE_SITO[cod] || cod === 'it' ? cod : 'it');
+        if (ricorda) { try { localStorage.setItem('asky-lang', cod); } catch (e) {} }
+      });
+    }
+
+    function iniziale() {
+      var q = (location.search.match(/[?&]lingua=([a-z]{2})/) || [])[1];
+      if (q && CODICI.indexOf(q) >= 0) return q;
+      try { var m = localStorage.getItem('asky-lang'); if (m && CODICI.indexOf(m) >= 0) return m; } catch (e) {}
+      var pref = navigator.languages || [navigator.language || 'it'];
+      for (var i = 0; i < pref.length; i++) {
+        var c = String(pref[i]).toLowerCase().split('-')[0];
+        if (CODICI.indexOf(c) >= 0) return c;
+      }
+      return 'it';
+    }
+
+    sel.addEventListener('change', function () { scegli(sel.value, true); });
+
+    /* Tema: sole e luna come sulle altre pagine Askylo. Senza scelta segue il sistema. */
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var btn = document.getElementById('tema');
+    var h = document.documentElement;
+    var barra = document.querySelector('meta[name="theme-color"]');
+    function notte() {
+      var p = h.getAttribute('data-tema');
+      return p ? p === 'dark' : mq.matches;
+    }
+    function segnaTema() {
+      var n = notte();
+      if (n) h.setAttribute('data-notte', ''); else h.removeAttribute('data-notte');
+      if (barra) barra.setAttribute('content', n ? '#12141C' : '#FAF7F0');
+      etichettaTema();
+    }
+    function etichettaTema() {
+      var d = dizionario(corrente) || {};
+      var t = notte() ? (d['tema.giorno'] || 'Passa al giorno') : (d['tema.notte'] || 'Passa alla notte');
+      btn.setAttribute('aria-label', t); btn.setAttribute('title', t);
+      sel.setAttribute('aria-label', d['lingua.etichetta'] || 'Lingua');
+    }
+    btn.addEventListener('click', function () {
+      var p = notte() ? 'light' : 'dark';
+      h.setAttribute('data-tema', p);
+      try { localStorage.setItem('asky-theme', p); } catch (e) {}
+      segnaTema();
     });
-    segna();
+    var cambio = function () { segnaTema(); };
+    if (mq.addEventListener) mq.addEventListener('change', cambio); else if (mq.addListener) mq.addListener(cambio);
+
+    segnaTema();
+    var ini = iniziale();
+    sel.value = ini;
+    if (ini !== 'it') scegli(ini, false);
+
+    /* La testata prende il bordo quando si scorre; le sezioni compaiono entrando nello schermo. */
+    var testata = document.getElementById('testata');
+    var scesa = function () { testata.classList.toggle('scesa', window.scrollY > 8); };
+    window.addEventListener('scroll', scesa, { passive: true }); scesa();
+    var sv = Array.prototype.slice.call(document.querySelectorAll('.sv'));
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (voci) {
+        voci.forEach(function (v) { if (v.isIntersecting) { v.target.classList.add('in'); io.unobserve(v.target); } });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      sv.forEach(function (e) { io.observe(e); });
+    } else {
+      sv.forEach(function (e) { e.classList.add('in'); });
+    }
   })();
 </script>
 </body>
