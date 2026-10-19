@@ -25,6 +25,18 @@ un'ombra leggera. I colori stanno tutti nelle variabili in cima a
 scorrendo (`.sv`), solo con JavaScript e non per chi ha chiesto meno
 movimento.
 
+## I mestieri e le demo
+
+La carta di Askylo Studio (il pulsante «Scegli il tuo mestiere», o un clic sulla
+carta) apre la finestra dei mestieri (`#mestieri`): operatori olistici,
+estetiste, massofisioterapisti, gelaterie, scuole e insegnanti di ballo &
+aerofitness; fisioterapisti e osteopati sono «A breve». Ogni mestiere ha tre
+strade: **comincia gratis** (l'app, con `?mestiere=<chiave>`), **tutorial**
+(spento finché non ci sono) e **guarda un gestionale demo**. Le demo stanno
+sull'app (`DEMO` nello script): `?demo=olistico|estetista|massofisio` è il
+gestionale vero su un archivio inventato, `demo/gelateria/` e `demo/ballo/`
+sono gestionali a parte. Un link diretto: `#mestieri/gelateria`.
+
 ## Giorno e notte
 
 Il pulsante con sole e luna funziona come sulle altre pagine Askylo: la scelta
