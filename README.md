@@ -37,6 +37,21 @@ sull'app (`DEMO` nello script): `?demo=olistico|estetista|massofisio` è il
 gestionale vero su un archivio inventato, `demo/gelateria/` e `demo/ballo/`
 sono gestionali a parte. Un link diretto: `#mestieri/gelateria`.
 
+### Le pagine dei mestieri
+
+Le scuole di ballo e le gelaterie hanno anche una pagina che racconta cosa
+cambia per loro: `scuole-di-ballo/` e `gelaterie/` (sul modello della pagina
+riservata di Askylo Studio per gli studi di massaggi, su askylo.com). Nella
+finestra dei mestieri c'è «Scopri cosa cambia» solo per i mestieri in
+`PAGINE` dello script. Stile e script in comune stanno in `mestieri/`
+(`mestiere.css`, `mestiere.js`): stessi token della landing, giorno e notte
+con la stessa scelta (`asky-theme`). Dentro i telefoni disegnati, la pagina
+del cliente com'è nella demo (la scuola di ballo con la grafica «Accademia
+Clave», la gelateria in Asky «Carta»). L'app non si lascia incorporare da
+un altro sito (`X-Frame-Options`), quindi i telefoni sono disegnati e i
+pulsanti aprono le demo vere. Le pagine sono in italiano; numeri e persone
+sono quelli inventati delle demo.
+
 ## Giorno e notte
 
 Il pulsante con sole e luna funziona come sulle altre pagine Askylo: la scelta

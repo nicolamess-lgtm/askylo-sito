@@ -298,6 +298,8 @@
   a.ms-strada:hover .freccia { transform: translateX(3px); }
   :root[dir="rtl"] .ms-strada .freccia, :root[dir="rtl"] .ms-btn .freccia { transform: scaleX(-1); }
   .ms-due { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .ms-strada.scopri { margin-top: 12px; border-color: var(--line-forte); background: linear-gradient(120deg, var(--accento-soft), var(--secondary) 60%); }
+  .ms-strada[hidden], .ms-strada [data-per][hidden] { display: none; }
   @media (max-width: 720px) {
     .mestieri { padding: 16px 16px 22px; width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
     .ms-griglia { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -546,7 +548,8 @@
 
 </main>
 
-<!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade:
+<!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade
+     (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
      Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria e demo/ballo per gli altri. -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
@@ -572,6 +575,14 @@
     <a class="ms-strada prima" id="ms_comincia" href="https://app.askylostudio.it/">
       <span class="ms-s-ico" aria-hidden="true">🚀</span>
       <span class="ms-s-testo"><b data-t="ms.comincia">Comincia gratis con il tuo gestionale avanzato</b><small data-t="ms.comincia.d">Ti registri in un minuto. Lo studio nuovo parte vuoto: i dati sono solo tuoi.</small></span>
+      <span class="freccia" aria-hidden="true">→</span>
+    </a>
+    <a class="ms-strada scopri" id="ms_scopri" href="#" hidden>
+      <span class="ms-s-ico" aria-hidden="true">✨</span>
+      <span class="ms-s-testo">
+        <b><span data-per="ballo" data-t="ms.scopri.ballo">Scopri cosa cambia nella tua scuola</span><span data-per="gelateria" data-t="ms.scopri.gelateria">Scopri cosa cambia nella tua gelateria</span></b>
+        <small><span data-per="ballo" data-t="ms.scopri.ballo.d">Il video della figura sulla pagina di ogni allievo, la bilancia di coppia, un'agenda per ogni insegnante.</span><span data-per="gelateria" data-t="ms.scopri.gelateria.d">La tessera senza nome sul telefono, il voto a ogni gusto, venti modi di far tornare i clienti.</span></small>
+      </span>
       <span class="freccia" aria-hidden="true">→</span>
     </a>
     <div class="ms-due">
@@ -712,6 +723,8 @@
     var APP = 'https://app.askylostudio.it/';
     var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
                  gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/' };
+    // le pagine che raccontano un mestiere, qui sul sito: per ora le scuole di ballo e le gelaterie
+    var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/' };
     var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');
     var indietro = document.getElementById('ms_indietro');
     var scelto = '';
@@ -728,6 +741,9 @@
       scelto = k; nomeMestiere();
       document.getElementById('ms_comincia').href = APP + '?mestiere=' + k;
       document.getElementById('ms_demo').href = DEMO[k];
+      var scopri = document.getElementById('ms_scopri');
+      scopri.hidden = !PAGINE[k];
+      if (PAGINE[k]) { scopri.href = PAGINE[k]; Array.prototype.slice.call(scopri.querySelectorAll('[data-per]')).forEach(function (e) { e.hidden = e.getAttribute('data-per') !== k; }); }
       document.getElementById('ms_comincia').focus();
     }
     function apri(k) {

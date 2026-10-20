@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Askylo Studio per le scuole di ballo</title>
+<meta name="description" content="Il gestionale delle scuole di ballo e aerofitness: ogni allievo ha la sua pagina col video della figura, «Non ci sono» detto prima della lezione, la bilancia di coppia, l'agenda master e un'agenda per ogni insegnante.">
+<meta name="theme-color" content="#0E1016">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FFC61A'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='700' text-anchor='middle' fill='%2312141C'%3Ea%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&family=Syne:wght@700;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  (function () { var h = document.documentElement, p = null; h.className = 'js'; try { p = localStorage.getItem('asky-theme'); } catch (e) {} if (p === 'light' || p === 'dark') h.setAttribute('data-tema', p); })();
+</script>
+<link rel="stylesheet" href="../mestieri/mestiere.css">
+<style>
+  /* Dentro i telefoni la pagina dell'allievo com'è nella demo: la grafica di «Accademia Clave»,
+     scura con l'accento rosa (Syne per i titoli, Figtree per il testo). */
+  .clave { background: #14121A; color: #EEEBF4; font-family: Figtree, var(--sans); }
+  .clave .t { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #A49EB3; }
+  .clave .t b { color: #EEEBF4; font: 800 12px/1 Syne, var(--sans); }
+  .clave h4 { font: 800 25px/1.05 Syne, var(--sans); margin: 2px 0 0; letter-spacing: -.01em; }
+  .clave .sott { color: #A49EB3; font-size: 12px; }
+  .clave .box { background: #1D1A26; border-radius: 16px; padding: 12px; display: grid; gap: 8px; }
+  .clave .box h5 { margin: 0; font: 800 14px/1.15 Syne, var(--sans); }
+  .clave .chiara { background: #EEEBF4; color: #14121A; }
+  .clave .chiara .ok { font: 700 10px/1 Figtree, var(--sans); letter-spacing: .08em; text-transform: uppercase; opacity: .65; }
+  .clave .quando { font: 800 19px/1.05 Syne, var(--sans); }
+  .clave .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .clave .duo span { border: 1.5px solid currentColor; border-radius: 10px; padding: 8px 4px; text-align: center; font-weight: 700; font-size: 12px; }
+  .clave .duo span.on { background: #FF5C7E; border-color: #FF5C7E; color: #1A0710; }
+  .clave .risp { font-size: 11.5px; border: 1px solid rgba(20,18,26,.18); background: rgba(20,18,26,.06); border-radius: 9px; padding: 8px; }
+  .clave .risp i { display: inline-block; margin-top: 6px; font-style: normal; background: #FF5C7E; color: #1A0710; font-weight: 700; padding: 5px 9px; border-radius: 8px; }
+  .clave .video { position: relative; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: radial-gradient(120% 90% at 20% 10%, rgba(240,98,74,.75), transparent 60%), radial-gradient(100% 100% at 90% 90%, rgba(155,116,230,.8), transparent 65%), #1C1826; }
+  .clave .video::after { content: ""; position: absolute; inset: 0; margin: auto; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M7 5l8 5-8 5z' fill='%231C1826'/%3E%3C/svg%3E") center / 20px no-repeat; }
+  .clave .video b { position: absolute; left: 10px; bottom: 9px; color: #fff; font: 800 14px/1.1 Syne, var(--sans); text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+  .clave .video b small { display: block; font: 500 10.5px Figtree, var(--sans); }
+  .clave .video .p { position: absolute; left: 0; bottom: 0; height: 3px; background: #fff; width: 0; animation: video 6s linear infinite; }
+  @keyframes video { to { width: 100%; } }
+  .clave .nota { color: #F0AE45; font-size: 11.5px; margin: 0; }
+  .clave .fig { display: flex; align-items: center; gap: 8px; background: #25212F; border-radius: 9px; padding: 6px 8px; font-size: 12px; }
+  .clave .fig .s { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 800; flex: none; }
+  .clave .fig.f .s { background: #5BCB8A; color: #1D1A26; }
+  .clave .fig.o .s { background: #FF5C7E; color: #1A0710; }
+  .clave .fig.r .s { background: #F0AE45; color: #1A0710; }
+  .clave .fig.d { opacity: .5; } .clave .fig.d .s { border: 1.5px dashed #A49EB3; }
+  .clave .fig small { margin-left: auto; color: #A49EB3; font-size: 10.5px; }
+  .clave .barra { height: 6px; border-radius: 99px; background: #25212F; overflow: hidden; }
+  .clave .barra i { display: block; height: 100%; width: 30%; background: #FF5C7E; }
+  .clave .cifre3 { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 4px; }
+  .clave .cifre3 b { display: block; font: 800 20px/1.1 Syne, var(--sans); }
+  .clave .cifre3 span { font-size: 10px; color: #A49EB3; }
+  .clave .gradini { display: flex; gap: 3px; }
+  .clave .gradini div { flex: 1; border-radius: 7px; padding: 5px 3px; text-align: center; font-size: 10px; background: #25212F; line-height: 1.2; }
+  .clave .gradini b { display: block; font-size: 10.5px; }
+  .clave .gradini .f { background: rgba(91,203,138,.16); color: #5BCB8A; }
+  .clave .gradini .o { background: #FF5C7E; color: #1A0710; }
+  .clave .gradini .p { border: 1px dashed #3a3448; background: none; color: #A49EB3; }
+  .clave .punti { display: flex; gap: 4px; flex-wrap: wrap; }
+  .clave .punti i { width: 9px; height: 9px; border-radius: 50%; background: #5BCB8A; }
+  .clave .punti i.a { background: #FF7079; } .clave .punti i.g { background: #F0AE45; }
+  .clave .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .clave .seg span { border: 1px solid #2F2A3B; border-radius: 8px; padding: 7px 2px; text-align: center; font-size: 10.5px; font-weight: 600; }
+  .clave .seg span.on { border-color: #FF5C7E; background: #3A1621; color: #FF5C7E; }
+  .clave .sel { border: 1px solid #2F2A3B; border-radius: 8px; padding: 7px 8px; font-size: 11px; background: #25212F; }
+  .clave .link { color: #FF5C7E; font-weight: 700; font-size: 11.5px; }
+  .clave .ev { display: grid; grid-template-columns: 34px 1fr auto; gap: 8px; align-items: center; background: #25212F; border-radius: 10px; padding: 7px 8px; }
+  .clave .ev .d { text-align: center; line-height: 1; } .clave .ev .d b { display: block; font: 800 17px/1 Syne, var(--sans); } .clave .ev .d span { font-size: 9px; text-transform: uppercase; color: #A49EB3; }
+  .clave .ev .x { font-size: 10.5px; color: #A49EB3; } .clave .ev .x strong { display: block; color: #EEEBF4; font-size: 12px; }
+  .clave .ev em { font-style: normal; border: 1.5px solid #FF5C7E; color: #FF5C7E; border-radius: 8px; padding: 4px 7px; font-weight: 700; font-size: 10.5px; }
+  .clave .ev em.on { background: #FF5C7E; color: #1A0710; }
+  .clave .ok-r { display: flex; justify-content: space-between; font-size: 12px; }
+  .clave .ok-r .y { color: #5BCB8A; font-weight: 700; } .clave .ok-r .w { color: #F0AE45; font-weight: 700; }
+
+  /* la bilancia di coppia */
+  .settim { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  @media (max-width: 600px) { .settim { grid-template-columns: 1fr; } }
+  .corso { background: var(--bg); border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 12px; padding: 10px 11px; display: grid; gap: 4px; }
+  .corso b { font-size: 14.5px; }
+  .corso small { color: var(--muted); font-size: 12.5px; }
+  .corso.rosso { box-shadow: 0 0 0 1.5px var(--rosso); }
+  .bil { display: flex; align-items: center; gap: 7px; font: 600 12.5px/1 ui-monospace, Menlo, monospace; margin-top: 4px; }
+  .bil .tr { flex: 1; height: 7px; border-radius: 99px; overflow: hidden; display: flex; background: var(--secondary); }
+  .bil .g { background: var(--ink); } .bil .s { background: var(--c); opacity: .65; }
+  .bil.off { color: var(--rosso); }
+  .bil .m { font-family: var(--sans); font-size: 11.5px; }
+  .avviso { margin-top: 12px; padding: 12px 14px; border-radius: 12px; font-size: 14.5px; }
+  .avviso.r { background: var(--rosso-soft); color: var(--rosso); }
+  .avviso.v { background: var(--verde-soft); color: var(--verde); }
+
+  /* la rete degli insegnanti */
+  .rete-box { position: relative; background: radial-gradient(500px 300px at 50% 50%, var(--accento-soft), transparent 70%), var(--card); border: 1px solid var(--line); border-radius: var(--r3); padding: 10px; box-shadow: var(--ombra); }
+  .rete-box svg { width: 100%; height: auto; display: block; }
+  .rete-box .filo { stroke: var(--line-forte); fill: none; transition: stroke .2s, opacity .2s; }
+  .rete-box .filo.coppia { stroke: #FF5C7E; stroke-width: 3; opacity: .7; }
+  .rete-box .filo.sost { stroke-dasharray: 3 6; }
+  .rete-box .filo.acceso { stroke: var(--giallo); opacity: 1; stroke-width: 2.6; }
+  .rete-box .nodo { cursor: pointer; transition: opacity .2s; }
+  .rete-box .nodo circle { fill: var(--card); stroke-width: 3; }
+  .rete-box .nodo text { font: 700 12px var(--sans); fill: var(--ink); text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .rete-box .nodo .nm { font: 600 11px var(--sans); fill: var(--muted); }
+  .rete-box .nodo.spento { opacity: .2; }
+  .rete-box .centro circle { fill: var(--giallo); }
+  .rete-box .centro text { font: 700 12px var(--serif); fill: var(--giallo-ink); text-anchor: middle; dominant-baseline: central; }
+  .rete-box .aiuto { position: absolute; left: 14px; bottom: 10px; font-size: 12.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="pagina">
+    <a class="marchio" href="https://askylostudio.it/"><span class="q">a</span><b>Askylo <i>Studio</i></b></a>
+    <nav class="nav">
+      <a href="#allievo">La pagina dell'allievo</a>
+      <a href="#coppie">La bilancia di coppia</a>
+      <a href="#insegnanti">Gli insegnanti</a>
+      <a href="#chiedi">Chiedi</a>
+      <a class="sempre" href="https://app.askylostudio.it/demo/ballo/">Guarda la demo</a>
+    </nav>
+    <button class="tema" type="button" data-tema-btn aria-label="Giorno o notte">☀</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="pagina">
+    <div>
+      <p class="occhiello">Per scuole e insegnanti di ballo &amp; aerofitness</p>
+      <h1>La scuola dove gli allievi <span class="giallo">ripassano da casa.</span></h1>
+      <p class="lead">Corsi, presenze e quote, come ogni gestionale. Poi quello che nessuno ha: <b>ogni allievo ha la sua pagina</b> col video della figura di ieri, dice <b>«Non ci sono»</b> prima della lezione, e tu sai alle 20:25 <b>quanti cavalieri mancano</b> stasera. La direzione vede tutta la scuola; <b>ogni insegnante</b> ha la sua agenda.</p>
+      <div class="azioni">
+        <a class="btn" href="https://app.askylostudio.it/demo/ballo/">▶ Guarda il gestionale demo</a>
+        <a class="btn vuoto" href="https://app.askylostudio.it/demo/ballo/allievo">Apri la pagina di un allievo</a>
+      </div>
+      <div class="chips"><span class="chip">💃 Bilancia di coppia</span><span class="chip">🎬 Il video della figura</span><span class="chip">📶 Funziona senza rete</span><span class="chip">🌍 10 lingue</span><span class="chip">🇪🇺 Dati in Europa</span></div>
+      <p class="piccola">La scuola della demo, «Accademia Clave», e le sue persone sono inventate.</p>
+    </div>
+    <div class="telefono" aria-label="La pagina di un allievo sul telefono">
+      <div class="schermo clave">
+        <div class="vista on">
+          <div class="t"><b>Accademia Clave</b><span>martedì 20 ottobre</span></div>
+          <div><h4>Ciao Giulia</h4><div class="sott">Cuba 2 · giovedì con Marta e Ivo</div></div>
+          <div class="box chiara"><span class="ok">La prossima lezione</span><span class="quando">Giovedì 22 ottobre, 20:30</span><span style="font-size:11.5px;opacity:.75">Salsa cubana · Cuba 2 · Sala 1</span><div class="duo"><span class="on">Ci sono</span><span>Non ci sono</span></div></div>
+          <div class="box"><h5>La figura di giovedì 15</h5><div class="video"><b>Vacílala con vuelta<small>Marta e Ivo · 0:41</small></b><span class="p"></span></div></div>
+          <div class="box"><h5>Il tuo repertorio</h5><div class="barra"><i></i></div><div class="sott">3 di 10 figure di Cuba 2 · 23 in tutto</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="regola">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">La regola che decide tutto</p>
+      <h2>L'allievo entra in sala. In trenta secondi sai se ha pagato, se il certificato è in regola e con chi ballerà stasera.</h2>
+      <p class="lead">Askylo Studio tiene l'archivio sul telefono e sul computer della scuola: le schermate non aspettano la rete, e se la rete del seminterrato non c'è, si lavora lo stesso. Le presenze si segnano in sala, con un tocco.</p>
+    </div>
+    <div class="numeri sv">
+      <div><b data-conta="30">0<small>″</small></b><span>dalla porta della sala alla scheda: quota, certificato, ruolo, presenze</span></div>
+      <div><b data-conta="0">0</b><span>video della figura persi in mezzo ai messaggi del gruppo WhatsApp</span></div>
+      <div><b data-conta="10">0</b><span>lingue, per la scuola e per la pagina dell'allievo, che parla quella del suo telefono</span></div>
+      <div><b data-conta="36">0</b><span>mesi di storia nella demo: entrate, uscite, passaggi di livello, quote</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="allievo">
+  <div class="pagina" data-passi>
+    <div class="sv">
+      <p class="occhiello">1 · La pagina dell'allievo</p>
+      <h2>Ogni allievo ha la sua pagina. E la apre per ripassare.</h2>
+      <p class="lead">Un link personale su WhatsApp: niente app, niente password. Dentro c'è il suo percorso: la figura di ogni lezione in video, il repertorio, il livello, le serate. Prima della lezione dice se c'è; dopo, com'è andata. Tu lo leggi nell'agenda, e chi insegna sistema le coppie in tempo.</p>
+    </div>
+    <div class="vetrina">
+      <div class="passi">
+        <button type="button" class="passo" data-passo="video"><span class="n">1</span><span><b>Il video della figura</b><small>Ripresa a fine lezione, finisce sulla pagina di chi c'era e di chi non c'era. Al posto del gruppo WhatsApp del corso.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="repertorio"><span class="n">2</span><span><b>Il repertorio</b><small>Le figure del suo livello, segnate man mano: fatte, di questa settimana, perse e da rivedere. Un tocco e riparte il video.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="nonci"><span class="n">3</span><span><b>«Non ci sono», e il recupero</b><small>Lo dice prima della lezione. Gli proponi la stessa lezione in un altro giorno dello stesso livello, e lui tiene il posto.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="percorso"><span class="n">4</span><span><b>Il percorso</b><small>Le lezioni fatte, le settimane di fila, i livelli da Cuba 0 a oggi. «Ti mancano 7 figure per Cuba 3.»</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="feedback"><span class="n">5</span><span><b>Com'era la lezione?</b><small>Troppo veloce, giusta, troppo lenta; la figura da rivedere. E un messaggio alla scuola, senza il suo nome.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="fuori"><span class="n">6</span><span><b>Serate, saggio e «In regola»</b><small>«Ci sono» alla serata di sabato, il conto alla rovescia del saggio, il certificato che scade, detto con garbo.</small></span><span class="barretta"><i></i></span></button>
+      </div>
+      <div class="appiccica">
+        <div class="telefono">
+          <div class="schermo clave">
+            <div class="vista" data-vista="video">
+              <div class="t"><b>Accademia Clave</b><span>venerdì 16 ottobre</span></div>
+              <div class="box"><h5>La figura di giovedì 15</h5><div class="video"><b>Vacílala con vuelta<small>Marta e Ivo · 0:41</small></b><span class="p"></span></div><p class="nota"><b>Giovedì non c'eri:</b> la figura nuova è tutta qui, ripresa a fine lezione.</p></div>
+              <div class="box"><h5>Le altre di questo mese</h5><div class="fig f"><span class="s">✓</span>Setenta y uno<small>0:33</small></div><div class="fig f"><span class="s">✓</span>Adiós con la hermana<small>0:47</small></div></div>
+            </div>
+            <div class="vista" data-vista="repertorio">
+              <div class="t"><b>Accademia Clave</b><span>Il tuo repertorio</span></div>
+              <div class="box"><div style="display:flex;justify-content:space-between;align-items:baseline"><h5>Il tuo repertorio</h5><span class="sott">3 di 10 · Cuba 2</span></div><div class="barra"><i></i></div><div class="sott">In tutto conosci <b style="color:#EEEBF4">23 figure</b>, da Cuba 0 a oggi.</div>
+                <div class="fig f"><span class="s">✓</span>Setenta y uno<small>Rivedi</small></div>
+                <div class="fig f"><span class="s">✓</span>Adiós con la hermana<small>Rivedi</small></div>
+                <div class="fig r"><span class="s">↺</span>Montaña<small>eri assente</small></div>
+                <div class="fig o"><span class="s">●</span>Vacílala con vuelta<small>questa settimana</small></div>
+                <div class="fig d"><span class="s"></span>Enchufla complicado<small>più avanti</small></div>
+                <div class="fig d"><span class="s"></span>Balsero<small>più avanti</small></div>
+              </div>
+            </div>
+            <div class="vista" data-vista="nonci">
+              <div class="t"><b>Accademia Clave</b><span>martedì 20 ottobre</span></div>
+              <div class="box chiara"><span class="ok">La prossima lezione</span><span class="quando">Giovedì 22 ottobre, 20:30</span><span style="font-size:11.5px;opacity:.75">Cuba 2 · Sala 1 · con Marta e Ivo</span><div class="duo"><span>Ci sono</span><span class="on">Non ci sono</span></div>
+                <div class="risp">Grazie: Marta e Ivo lo sanno già e sistemano le coppie.<br>Vuoi recuperare? <b>Martedì 20 ottobre, 21:30</b>, Cuba 2 con Sara e Teo.<br><i>Posto tenuto ✓</i></div></div>
+              <div class="box"><h5>Le lezioni dei prossimi giorni</h5><div class="fig"><span>lun 26 · 21:30</span><small>Bachata base · Ci sono</small></div></div>
+            </div>
+            <div class="vista" data-vista="percorso">
+              <div class="t"><b>Accademia Clave</b><span>Il percorso</span></div>
+              <div class="box"><h5>Il percorso</h5><div class="cifre3"><div><b>99</b><span>lezioni da nov 2023</span></div><div><b>5</b><span>settimane di fila</span></div><div><b>4</b><span>serate quest'anno</span></div></div>
+                <div class="gradini"><div class="f"><b>Cuba 0</b>set 2023</div><div class="f"><b>Cuba 1</b>set 2025</div><div class="o"><b>Cuba 2</b>set 2026</div><div class="p"><b>Cuba 3</b>il prossimo</div></div>
+                <div class="sott">Verso Cuba 3: ti mancano <b style="color:#EEEBF4">7 figure</b> di Cuba 2. Quando le hai tutte, Marta e Ivo ti propongono il passaggio.</div>
+                <div class="punti"><i></i><i></i><i class="g"></i><i></i><i></i><i></i><i></i><i class="a"></i><i></i><i></i><i></i><i></i></div></div>
+            </div>
+            <div class="vista" data-vista="feedback">
+              <div class="t"><b>Accademia Clave</b><span>dopo la lezione</span></div>
+              <div class="box"><h5>Com'era la lezione di giovedì 15?</h5><div class="seg"><span>Troppo lenta</span><span>Giusta</span><span class="on">Troppo veloce</span></div><div class="sott">Una figura che vorresti rivedere</div><div class="sel">Vacílala con vuelta ▾</div><p class="nota" style="color:#5BCB8A">Grazie, Marta e Ivo lo leggono prima della lezione.</p></div>
+              <div class="box"><span class="sott">Vuoi dire qualcosa alla scuola?</span><span class="link">Scrivi senza il tuo nome</span><div class="sel" style="min-height:48px;color:#A49EB3">Il giovedì in Sala 1 fa troppo caldo dopo le 21…</div></div>
+            </div>
+            <div class="vista" data-vista="fuori">
+              <div class="t"><b>Accademia Clave</b><span>Fuori dalla lezione</span></div>
+              <div class="box"><h5>Fuori dalla lezione</h5>
+                <div class="ev"><div class="d"><b>24</b><span>ott</span></div><div class="x"><strong>Serata cubana</strong>El Malecón, 22:00 · 32 ci sono</div><em class="on">Ci sono ✓</em></div>
+                <div class="ev"><div class="d"><b>31</b><span>ott</span></div><div class="x"><strong>Stage col maestro ospite</strong>5 posti</div><em>Prenota</em></div>
+                <div class="ev"><div class="d"><b>229</b><span>giorni</span></div><div class="x"><strong>Al saggio</strong>Domenica 6 giugno</div><span></span></div></div>
+              <div class="box"><h5>In regola</h5><div class="ok-r"><span>Quota di ottobre</span><span class="y">pagata</span></div><div class="ok-r"><span>Tessera federale</span><span class="y">fino al 31/08</span></div><div class="ok-r"><span>Certificato medico</span><span class="w">scade il 14/11</span></div><div class="sott">Portalo in segreteria prima del 14 novembre, così continui a ballare senza pensieri.</div></div>
+            </div>
+          </div>
+        </div>
+        <p class="nota" style="text-align:center">Tocca un passo: il telefono cambia schermata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="coppie">
+  <div class="pagina">
+    <div class="due-col">
+      <div class="sv">
+        <p class="occhiello">2 · La bilancia di coppia</p>
+        <h2>Sai prima della lezione se mancano cavalieri.</h2>
+        <p class="lead">Quattordici ragazze e nove cavalieri: cinque persone ballano a turno, si annoiano, e a gennaio non tornano. Ogni lezione in agenda porta la sua bilancia: quanti guidano, quanti seguono, e quanti ci saranno <b>stasera</b>, con i «Non ci sono» già tolti e i recuperi già aggiunti.</p>
+        <ul class="elenco-v">
+          <li><span><b>In rosso i corsi sbilanciati</b>, nella settimana e nell'elenco dei corsi.</span></li>
+          <li><span><b>Il ruolo sta sull'iscrizione</b>: chi guida e chi segue, corso per corso.</span></li>
+          <li><span><b>Un recupero sposta il conto</b>: chi tiene il posto martedì conta martedì.</span></li>
+        </ul>
+      </div>
+      <div class="riquadro sv">
+        <div class="settim">
+          <div class="corso rosso" style="--c:#E0482D"><b>Cuba 1</b><small>lun 20:30 · Sara e Teo · Sala 1</small><span class="bil off"><span>9/14</span><span class="tr"><i class="g" style="width:39%"></i><i class="s" style="width:61%"></i></span><span class="m">mancano 5</span></span></div>
+          <div class="corso" style="--c:#E0482D"><b>Cuba 2</b><small>gio 20:30 · Marta e Ivo · Sala 1</small><span class="bil"><span>9/12</span><span class="tr"><i class="g" style="width:43%"></i><i class="s" style="width:57%"></i></span></span><small>4 «Non ci sono» già arrivati</small></div>
+          <div class="corso" style="--c:#16917F"><b>Bachata interm.</b><small>mer 21:30 · Irene e Bruno · Sala 2</small><span class="bil"><span>9/9</span><span class="tr"><i class="g" style="width:50%"></i><i class="s" style="width:50%"></i></span></span></div>
+        </div>
+        <div class="avviso r">Cuba 1, lunedì: mancano 5 che guidano. Si può chiedere a chi guida in Cuba 2 di martedì, stesso livello più uno.</div>
+        <div class="avviso v">Giulia ha detto «Non ci sono» per giovedì e recupera martedì: la bilancia di martedì sale di una.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="insegnanti">
+  <div class="pagina">
+    <div class="due-col">
+      <div class="rete-box sv" id="rete">
+        <svg viewBox="0 0 520 420" role="img" aria-label="La rete degli insegnanti"></svg>
+        <span class="aiuto" id="rete_aiuto">Passa sopra un insegnante</span>
+      </div>
+      <div class="sv">
+        <p class="occhiello">3 · La direzione e gli insegnanti</p>
+        <h2>Una master per chi dirige. Un'agenda per ogni insegnante.</h2>
+        <p class="lead">Chi dirige apre la scuola e vede <b>la rete degli insegnanti</b>: le coppie che insegnano insieme, chi può sostituire chi, i corsi di ognuno, chi è in sala adesso. Un tocco e si apre l'agenda di quell'insegnante.</p>
+        <ul class="elenco-v">
+          <li><span><b>L'agenda master</b> ha le lezioni di tutti, anche quando si accavallano: le segna in arancione, non le vieta. Si trascinano, con «Annulla».</span></li>
+          <li><span><b>Teo manca giovedì?</b> «Al posto di Teo» propone chi è libero a quell'ora, prima chi lo sostituisce di solito.</span></li>
+          <li><span><b>Ogni insegnante vede solo il suo</b>: le sue lezioni, i suoi allievi, le presenze da segnare, i «Non ci sono». Le lezioni le sposta la direzione.</span></li>
+          <li><span><b>Il compenso del mese</b> di ognuno, dalle ore fatte.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="chiedi">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">4 · Chiedi all'agenda</p>
+      <h2>Una casella sola. Chiedi chi, quanti, quanto rende.</h2>
+      <p class="lead">Le domande che una scuola si fa davvero, con le tue parole. Un modello le traduce in una ricerca, che l'app esegue sulla sua copia: il modello non vede mai una riga dell'archivio. Prova: tocca una domanda o scrivine una.</p>
+    </div>
+    <div class="chiedi sv" data-chiedi>
+      <form><input type="text" placeholder="Chiedi all'agenda… «Chi non viene da tre settimane?»" aria-label="La tua domanda"><button class="btn" type="submit">Chiedi</button></form>
+      <div class="domande"></div>
+      <div class="risposta" aria-live="polite"></div>
+      <template data-r="Chi non viene da tre settimane?" data-parole="settimane viene sparit assent smesso">
+        <p>Dieci allievi, nessuno ha detto nulla:</p>
+        <ul><li>Daniela B. · Lady style, lunedì</li><li>Daniele C. · Cuba 1, lunedì</li><li>Elisa T. · Afterwork, martedì</li><li>Omar V. · Cuba 0, mercoledì</li><li>Bianca F. · Reggaeton, mercoledì</li><li>Stefano O. · Timba, giovedì</li><li>Francesca S. · Fusion base, venerdì</li><li>e altri tre</li></ul>
+      </template>
+      <template data-r="In quali corsi mancano cavalieri?" data-parole="cavalier guid mancan sbilanc coppie">
+        <p>Corsi con più persone che seguono che persone che guidano:</p>
+        <div class="barre"><div><span>Cuba 0 · mer</span><span class="t"><i data-w="100%"></i></span><b>−5</b></div><div><span>Cuba 1 · lun</span><span class="t"><i data-w="100%"></i></span><b>−5</b></div><div><span>Fusion base · ven</span><span class="t"><i data-w="100%"></i></span><b>−5</b></div><div><span>Afterwork · mar</span><span class="t"><i data-w="60%"></i></span><b>−3</b></div><div><span>Cuba 2 · gio</span><span class="t"><i data-w="60%"></i></span><b>−3</b></div></div>
+      </template>
+      <template data-r="Quale coppia tiene di più i nuovi?" data-parole="coppia tiene tenuta restano nuovi">
+        <p>Fra i nuovi di settembre dell'anno scorso, quanti c'erano ancora a dicembre, per coppia del primo corso:</p>
+        <div class="barre"><div><span>Marta e Ivo</span><span class="t"><i data-w="75%"></i></span><b>75%</b></div><div><span>Sara e Teo</span><span class="t"><i data-w="69%"></i></span><b>69%</b></div><div><span>Irene e Bruno</span><span class="t"><i data-w="60%"></i></span><b>60%</b></div><div><span>Nadia e Paolo</span><span class="t"><i data-w="55%"></i></span><b>55%</b></div><div><span>Elisa e Dario</span><span class="t"><i data-w="40%"></i></span><b>40%</b></div></div>
+      </template>
+      <template data-r="Chi ha il certificato che scade entro novembre?" data-parole="certificat scad medic">
+        <p>Sei certificati scadono entro il 30 novembre:</p>
+        <ul><li>Bianca C. · 30/10</li><li>Bianca F. · 1/11</li><li>Cristina S. · 2/11</li><li>Giulia R. · 14/11</li><li>Edoardo B. · 21/11</li><li>Paolo M. · 28/11</li></ul>
+      </template>
+      <template data-r="Quanto rende la bachata fusion, tolti gli insegnanti?" data-parole="rende guadagn costa margin fusion bachata">
+        <p>Al mese, con gli iscritti di oggi:</p>
+        <ul><li>Fusion base: quote 1.140 €, insegnanti 241 € · restano <b>899 €</b></li><li>Fusion intermedio: quote 1.200 €, insegnanti 241 € · restano <b>959 €</b></li></ul>
+        <p class="tenue" style="margin-top:8px">Per Cubanía total, a El Malecón, si toglie anche l'affitto della sala.</p>
+      </template>
+      <template data-r="Quanti nuovi da settembre, e da dove?" data-parole="nuovi dove fonte arriva instagram">
+        <p>38 allievi nuovi da settembre, uno ha già smesso. Da dove arrivano:</p>
+        <div class="barre"><div><span>Instagram</span><span class="t"><i data-w="100%"></i></span><b>13</b></div><div><span>Open day</span><span class="t"><i data-w="69%"></i></span><b>9</b></div><div><span>Passaparola</span><span class="t"><i data-w="54%"></i></span><b>7</b></div><div><span>Google</span><span class="t"><i data-w="38%"></i></span><b>5</b></div><div><span>Volantino</span><span class="t"><i data-w="31%"></i></span><b>4</b></div></div>
+      </template>
+    </div>
+    <p class="nota">Risposte preparate su «Accademia Clave», la scuola inventata della demo. Nella demo le stesse domande rispondono sui suoi 36 mesi di dati.</p>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">Prima e dopo</p>
+      <h2>Il gruppo WhatsApp del corso, e il quaderno delle presenze.</h2>
+    </div>
+    <div class="prima-dopo sv">
+      <div class="prima"><h3>Prima</h3><ul><li>Il video della figura sta fra duecento messaggi, e chi non c'era non lo trova.</li><li>«Giovedì chi c'è?» lo scopri alle 20:30, contando in sala.</li><li>Le quote su un foglio Excel, i certificati scaduti scoperti all'ultimo.</li><li>Chi smette a gennaio te ne accorgi a febbraio.</li></ul></div>
+      <div class="dopo"><h3>Con Askylo Studio</h3><ul><li>Ogni figura sulla pagina di ogni allievo, nel suo repertorio, per sempre.</li><li>I «Non ci sono» arrivano prima, la bilancia di stasera è già fatta.</li><li>Quote, tessere e certificati sulla scheda, con l'avviso prima della scadenza.</li><li>«Chi non viene da tre settimane» ha un nome, prima che sparisca.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">E poi</p>
+      <h2>Tutto quello che serve, già fatto.</h2>
+    </div>
+    <div class="carte">
+      <div class="carta sv"><div class="ico">✅</div><h3>Le presenze in un tocco</h3><p>P, A, G per ogni allievo, dal telefono dell'insegnante in sala. Il registro del corso si riempie da solo.</p></div>
+      <div class="carta sv"><div class="ico">💶</div><h3>Quote, iscrizione e tessera</h3><p>Le quote del mese, chi deve pagare, l'iscrizione e la tessera federale di ogni anno. Lo storico di ogni allievo.</p></div>
+      <div class="carta sv"><div class="ico">🩺</div><h3>Certificati medici</h3><p>La scadenza sulla scheda e sulla pagina dell'allievo; l'elenco di chi scade nei prossimi trenta giorni.</p></div>
+      <div class="carta sv"><div class="ico">🎟️</div><h3>Prove e open day</h3><p>Le prove gratuite in agenda, chi è venuto e non si è iscritto, da richiamare.</p></div>
+      <div class="carta sv"><div class="ico">📊</div><h3>Quanto rende ogni corso</h3><p>Le quote degli iscritti, meno il compenso della coppia e l'affitto del locale. Corso per corso, al mese.</p></div>
+      <div class="carta sv"><div class="ico">🪩</div><h3>Serate, stage e saggio</h3><p>Gli eventi in agenda, i «Ci sono» dalla pagina degli allievi, i posti dello stage.</p></div>
+      <div class="carta sv"><div class="ico">📍</div><h3>Più sale, più sedi</h3><p>La sala grande, quella piccola, il locale latino in un altro comune: ogni lezione sa dove si fa.</p></div>
+      <div class="carta sv"><div class="ico">📈</div><h3>36 mesi di analisi</h3><p>Allievi attivi mese per mese, chi tiene i nuovi, incassi, provenienza, com'erano le lezioni. E l'export in Excel.</p></div>
+      <div class="carta sv"><div class="ico">📱</div><h3>PC, tablet e telefono</h3><p>La direzione sul computer o sul tablet, l'insegnante sul telefono, l'allievo sulla sua pagina. Anche senza rete.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">I dati</p>
+      <h2>Tanti allievi, tanti dati. Li trattiamo così.</h2>
+    </div>
+    <div class="tre">
+      <div class="carta sv"><h3>Restano tuoi</h3><p>Ogni domenica l'archivio intero arriva per email a chi dirige, in un file che si riapre ovunque. Te ne vai quando vuoi, con tutto.</p></div>
+      <div class="carta sv"><h3>Restano in Europa</h3><p>Database a Francoforte. Il gestionale non manda dati a nessun modello: chiede solo come cercare, e cerca da sé.</p></div>
+      <div class="carta sv"><h3>L'allievo vede solo il suo</h3><p>La pagina riceve i suoi corsi, le sue figure, la sua quota. Le note della scuola e i dati degli altri allievi non ci arrivano mai.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="proposta">
+  <div class="pagina sv">
+    <p class="occhiello">La proposta</p>
+    <h2>Cerchiamo le prime scuole che lo provano.</h2>
+    <p class="lead">Askylo Studio è già il gestionale di uno studio vero, ogni giorno. Adesso apre alle scuole di ballo e aerofitness, seguite a mano.</p>
+    <div class="tre">
+      <div><b>Prima</b><p>Importiamo allievi e corsi da Excel o dall'app che usi, impostiamo sale, livelli, coppie di insegnanti e quote.</p></div>
+      <div><b>Il primo mese</b><p>Mandi il link della pagina agli allievi di un corso e guardiamo insieme cosa aprono: il video, il repertorio, i «Non ci sono».</p></div>
+      <div><b>Dopo</b><p>Accendi quello che ti serve: le agende degli insegnanti, i pagamenti, i certificati. Il resto resta spento.</p></div>
+    </div>
+    <div class="azioni">
+      <a class="btn" href="https://app.askylostudio.it/?mestiere=ballo">Comincia gratis</a>
+      <a class="btn vuoto" href="https://app.askylostudio.it/demo/ballo/">Guarda il gestionale demo</a>
+      <a class="btn vuoto" href="https://askylostudio.it/#mestieri">Gli altri mestieri</a>
+    </div>
+  </div>
+</section>
+
+<footer class="piede">
+  <div class="pagina">Askylo Studio · <a href="https://askylostudio.it/">askylostudio.it</a> · la scuola della demo, «Accademia Clave», le persone e i numeri sono inventati · le funzioni descritte sono quelle del gestionale e della demo a ottobre 2026; alcune si accendono scuola per scuola.</div>
+</footer>
+
+<script src="../mestieri/mestiere.js"></script>
+<script>
+  /* La rete degli insegnanti, in piccolo: col mouse si accende passando sopra; col dito il primo
+     tocco seleziona e il secondo porta alla demo (come nel gestionale). */
+  (function () {
+    var box = document.getElementById('rete'), svg = box.querySelector('svg'), aiuto = document.getElementById('rete_aiuto');
+    var INS = [['marta', 'MV', 'Marta', '#FF5C7E'], ['ivo', 'IB', 'Ivo', '#FF8A5C'], ['sara', 'SD', 'Sara', '#F0AE45'], ['teo', 'TM', 'Teo', '#C9D84A'], ['irene', 'IP', 'Irene', '#2DB39E'], ['bruno', 'BS', 'Bruno', '#5B86E8'], ['nadia', 'NR', 'Nadia', '#9B74E6'], ['paolo', 'PT', 'Paolo', '#E07BD6'], ['elisa', 'EF', 'Elisa', '#5BCB8A'], ['dario', 'DM', 'Dario', '#8FB3FF']];
+    var COPPIE = [['marta', 'ivo'], ['sara', 'teo'], ['irene', 'bruno'], ['nadia', 'paolo'], ['elisa', 'dario']];
+    var SOST = [['marta', 'sara'], ['ivo', 'teo'], ['ivo', 'dario'], ['teo', 'dario'], ['irene', 'nadia'], ['bruno', 'paolo'], ['elisa', 'nadia'], ['elisa', 'irene']];
+    var cx = 260, cy = 205, pos = {}, s = '';
+    INS.forEach(function (x, k) { var a = -Math.PI / 2 + (k + .5) * 2 * Math.PI / INS.length; pos[x[0]] = [cx + 190 * Math.cos(a), cy + 160 * Math.sin(a)]; });
+    INS.forEach(function (x) { var p = pos[x[0]]; s += '<line class="filo f-' + x[0] + '" x1="' + cx + '" y1="' + cy + '" x2="' + p[0] + '" y2="' + p[1] + '"/>'; });
+    COPPIE.forEach(function (c) { var a = pos[c[0]], b = pos[c[1]]; s += '<line class="filo coppia f-' + c[0] + ' f-' + c[1] + '" x1="' + a[0] + '" y1="' + a[1] + '" x2="' + b[0] + '" y2="' + b[1] + '"/>'; });
+    SOST.forEach(function (c) { var a = pos[c[0]], b = pos[c[1]], mx = (a[0] + b[0]) / 2 + (cx - (a[0] + b[0]) / 2) * .45, my = (a[1] + b[1]) / 2 + (cy - (a[1] + b[1]) / 2) * .45; s += '<path class="filo sost f-' + c[0] + ' f-' + c[1] + '" d="M' + a[0] + ',' + a[1] + ' Q' + mx + ',' + my + ' ' + b[0] + ',' + b[1] + '"/>'; });
+    s += '<g class="centro"><circle cx="' + cx + '" cy="' + cy + '" r="30"/><text x="' + cx + '" y="' + cy + '">Clave</text></g>';
+    INS.forEach(function (x) { var p = pos[x[0]], sotto = p[1] > cy; s += '<g class="nodo" data-i="' + x[0] + '"><circle cx="' + p[0] + '" cy="' + p[1] + '" r="22" stroke="' + x[3] + '"/><text x="' + p[0] + '" y="' + p[1] + '">' + x[1] + '</text><text class="nm" x="' + p[0] + '" y="' + (p[1] + (sotto ? 36 : -34)) + '">' + x[2] + '</text></g>'; });
+    svg.innerHTML = s;
+    function legati(a, b) { return a === b || COPPIE.concat(SOST).some(function (c) { return (c[0] === a && c[1] === b) || (c[1] === a && c[0] === b); }); }
+    function accendi(id) { svg.querySelectorAll('.filo').forEach(function (f) { f.classList.toggle('acceso', f.classList.contains('f-' + id)); }); svg.querySelectorAll('.nodo').forEach(function (n) { n.classList.toggle('spento', !legati(id, n.getAttribute('data-i'))); }); }
+    function spegni() { scelto = null; svg.querySelectorAll('.filo').forEach(function (f) { f.classList.remove('acceso'); }); svg.querySelectorAll('.nodo').forEach(function (n) { n.classList.remove('spento'); }); }
+    var scelto = null, strumento = 'mouse';
+    if (window.matchMedia && matchMedia('(hover: none)').matches) aiuto.textContent = 'Tocca un insegnante: coppia e sostituzioni';
+    svg.addEventListener('pointerdown', function (e) { strumento = e.pointerType || 'mouse'; });
+    svg.addEventListener('click', function (e) { if (!e.target.closest('.nodo')) spegni(); });
+    svg.querySelectorAll('.nodo').forEach(function (n) {
+      var id = n.getAttribute('data-i');
+      n.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') accendi(id); });
+      n.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !scelto) spegni(); });
+      n.addEventListener('click', function () {
+        if (strumento === 'mouse' || scelto === id) { location.href = 'https://app.askylostudio.it/demo/ballo/#/i/' + id; return; }
+        scelto = id; accendi(id); aiuto.textContent = 'Tocca di nuovo ' + n.querySelector('.nm').textContent + ': si apre la sua agenda nella demo';
+      });
+    });
+  })();
+</script>
+</body>
+</html>
