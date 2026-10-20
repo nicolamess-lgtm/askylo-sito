@@ -103,6 +103,13 @@ section { padding: 88px 0; border-top: 1px solid var(--line); }
 .telefono .schermo { position: relative; height: 100%; border-radius: 36px; overflow: hidden; font-size: 13px; line-height: 1.4; }
 .telefono .vista { position: absolute; inset: 0; padding: 52px 16px 16px; overflow: hidden; opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s ease; display: flex; flex-direction: column; gap: 10px; }
 .telefono .vista.on { opacity: 1; transform: none; }
+[data-passi] .telefono .vista { padding-bottom: 34px; }
+/* la barra che avanza fino alla schermata seguente, dentro lo schermo (mestiere.js) */
+.telefono .avanza { position: absolute; left: 18px; right: 18px; bottom: 14px; z-index: 4; display: flex; align-items: center; gap: 8px; font: 600 10.5px/1 var(--sans, 'DM Sans', sans-serif); color: rgba(127,127,127,.95); pointer-events: none; }
+.telefono .avanza .barra { flex: 1; height: 4px; border-radius: 4px; background: rgba(127,127,127,.28); overflow: hidden; }
+.telefono .avanza .barra i { display: block; height: 100%; width: 0; background: var(--giallo); border-radius: 4px; }
+.telefono .avanza.gira .barra i { animation: avanza 7s linear forwards; }
+.telefono .avanza.fermo .barra i { width: 100%; }
 .hero .telefono { transform: rotate(2deg); }
 @media (max-width: 900px) { .hero .telefono { transform: none; } }
 
