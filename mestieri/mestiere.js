@@ -86,3 +86,13 @@
     if (risposte[0]) mostra(risposte[0]);
   });
 })();
+
+/* I link tracciati: con un link personale (?per=<codice>, dalla Modalità Dio di Askylo Studio, §68
+   del suo AGENTS.md) la pagina carica per.js, che conta l'apertura, il tempo, fin dove si legge e cosa
+   si tocca. Senza ?per= non carica nulla. Niente cookie, niente indirizzo IP. */
+(function () {
+  if (!/[?&]per=/.test(location.search)) return;
+  var s = document.createElement('script');
+  s.src = 'https://app.askylostudio.it/per.js'; s.async = true;
+  document.head.appendChild(s);
+})();
