@@ -121,8 +121,10 @@ section { padding: 88px 0; border-top: 1px solid var(--line); }
 .vetrina { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start; margin-top: 34px; }
 .vetrina.rovescia { grid-template-columns: 340px 1fr; }
 .vetrina.rovescia .passi { order: 2; }
-@media (max-width: 900px) { .vetrina, .vetrina.rovescia { grid-template-columns: 1fr; gap: 24px; } .vetrina .passi, .vetrina.rovescia .passi { order: 2; } .vetrina .appiccica { position: static; order: 1; } }
+/* il telefono accanto ai passi resta in vista mentre si scorre, ma solo dove sta di fianco: sotto i 900 px
+   sta sopra i passi e scorre con la pagina, altrimenti li copre (scritto prima della media query, che deve vincere) */
 .vetrina .appiccica { position: sticky; top: 90px; }
+@media (max-width: 900px) { .vetrina, .vetrina.rovescia { grid-template-columns: 1fr; gap: 24px; } .vetrina .passi, .vetrina.rovescia .passi { order: 2; } .vetrina .appiccica { position: static; order: 1; } }
 .passi { display: grid; gap: 10px; }
 .passo { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; text-align: left; padding: 16px 18px; border-radius: var(--r2); border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; cursor: pointer; transition: border-color .2s, box-shadow .2s, transform .2s; }
 .passo:hover { transform: translateY(-1px); border-color: var(--line-forte); }
