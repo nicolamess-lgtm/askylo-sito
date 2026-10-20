@@ -52,6 +52,11 @@ un altro sito (`X-Frame-Options`), quindi i telefoni sono disegnati e i
 pulsanti aprono le demo vere. Le pagine sono in italiano; numeri e persone
 sono quelli inventati delle demo.
 
+**Chi cambia `mestiere.css` o `mestiere.js` cambia anche la data in `?v=` dei
+loro collegamenti nelle due pagine.** GitHub Pages fa tenere i file ai browser
+per dieci minuti: senza la data nuova un telefono può mostrare la pagina nuova
+con lo stile vecchio.
+
 ## Giorno e notte
 
 Il pulsante con sole e luna funziona come sulle altre pagine Askylo: la scelta

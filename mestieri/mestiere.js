@@ -37,12 +37,21 @@
   [].slice.call(document.querySelectorAll('[data-passi]')).forEach(function (blocco) {
     var passi = [].slice.call(blocco.querySelectorAll('[data-passo]')), viste = [].slice.call(blocco.querySelectorAll('[data-vista]'));
     var k = 0, timer = null, toccato = false, visibile = false;
+    /* in fondo allo schermo del telefono disegnato, la barra gialla che avanza fino alla schermata
+       seguente e «2 / 6»: sul cellulare i passi stanno sotto, e senza si vedrebbero solo schermate che cambiano */
+    var schermo = blocco.querySelector('.telefono .schermo'), avanza = null;
+    if (schermo) {
+      avanza = document.createElement('div'); avanza.className = 'avanza'; avanza.setAttribute('aria-hidden', 'true');
+      avanza.innerHTML = '<span class="barra"><i></i></span><span class="quale"></span>';
+      schermo.appendChild(avanza);
+    }
     function vai(n) {
       k = (n + passi.length) % passi.length;
       passi.forEach(function (p, i) { p.classList.toggle('on', i === k); p.classList.remove('gira'); p.setAttribute('aria-pressed', i === k); });
       var id = passi[k].getAttribute('data-passo');
       viste.forEach(function (v) { v.classList.toggle('on', v.getAttribute('data-vista') === id); });
-      if (!toccato && !ridotto && visibile) { void passi[k].offsetWidth; passi[k].classList.add('gira'); }
+      if (avanza) { avanza.classList.remove('gira'); avanza.classList.toggle('fermo', toccato || ridotto); avanza.querySelector('.quale').textContent = (k + 1) + ' / ' + passi.length; }
+      if (!toccato && !ridotto && visibile) { void passi[k].offsetWidth; passi[k].classList.add('gira'); if (avanza) avanza.classList.add('gira'); }
     }
     function giro() { clearInterval(timer); if (toccato || ridotto) return; timer = setInterval(function () { if (visibile) vai(k + 1); }, 7000); }
     passi.forEach(function (p, i) { p.addEventListener('click', function () {
