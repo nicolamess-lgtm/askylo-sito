@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Askylo Studio per le gelaterie</title>
+<meta name="description" content="La tessera senza nome sul telefono del cliente, dieci timbri e il cono gratis; il feedback gusto per gusto, i gusti finiti, le torte, venti modi di far tornare i clienti. Il gestionale delle gelaterie, accanto alla cassa.">
+<meta name="theme-color" content="#0E1016">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23FFC61A'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='700' text-anchor='middle' fill='%2312141C'%3Ea%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<script>
+  (function () { var h = document.documentElement, p = null; h.className = 'js'; try { p = localStorage.getItem('asky-theme'); } catch (e) {} if (p === 'light' || p === 'dark') h.setAttribute('data-tema', p); })();
+</script>
+<link rel="stylesheet" href="../mestieri/mestiere.css">
+<style>
+  /* Dentro i telefoni la pagina del cliente della gelateria com'è nella demo: Asky «Carta». */
+  .carta-g { background: #FAF7F0; color: #1A2233; font-family: var(--sans); }
+  .carta-g .t { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #6B7280; }
+  .carta-g .t b { color: #1A2233; font: 600 13px/1 var(--serif); }
+  .carta-g .box { background: #fff; border: 1px solid #E7E1D2; border-radius: 16px; padding: 12px; display: grid; gap: 8px; box-shadow: 0 1px 2px rgba(26,34,51,.05), 0 8px 20px -10px rgba(26,34,51,.14); }
+  .carta-g .box h5 { margin: 0; font: 600 15px/1.15 var(--serif); }
+  .carta-g .sott { color: #6B7280; font-size: 11.5px; }
+  .carta-g .tessera { background: #1A2233; color: #F3EFE6; border-radius: 18px; padding: 14px; display: grid; gap: 10px; justify-items: center; text-align: center; }
+  .carta-g .tessera .qr { width: 132px; height: 132px; background: #fff; border-radius: 12px; padding: 8px; }
+  .carta-g .tessera .qr svg { width: 100%; height: 100%; display: block; }
+  .carta-g .tessera small { color: #9AA0B4; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  .carta-g .tessera b { font: 600 17px/1.15 var(--serif); }
+  .carta-g .tessera b span { color: #FFC61A; }
+  .carta-g .timbri { display: flex; gap: 5px; justify-content: center; }
+  .carta-g .timbri i { width: 16px; height: 16px; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.3); }
+  .carta-g .timbri i.p { background: #FFC61A; border: 0; box-shadow: 0 0 10px -2px rgba(255,198,26,.8); }
+  .carta-g .gusti { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+  .carta-g .gusti span { aspect-ratio: 1; border-radius: 9px; display: grid; place-items: end center; font-size: 8.5px; font-weight: 600; padding-bottom: 3px; color: #1A2233; border: 2px solid transparent; }
+  .carta-g .gusti span.on { border-color: #1A2233; }
+  .carta-g .stelle { color: #F2B705; font-size: 18px; letter-spacing: 2px; }
+  .carta-g .chip-g { display: inline-flex; gap: 5px; align-items: center; font-size: 11px; font-weight: 600; padding: 5px 8px; border-radius: 999px; background: #F1ECDF; }
+  .carta-g .chip-g.on { background: #1A2233; color: #FAF7F0; }
+  .carta-g .chip-g.ar { background: #FFEDD5; color: #C2410C; }
+  .carta-g .riga { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 4px 0; border-top: 1px solid #F1ECDF; }
+  .carta-g .riga:first-of-type { border-top: 0; }
+  .carta-g .riga b { font: 600 13px var(--serif); }
+  .carta-g .campo { border: 1px solid #E7E1D2; border-radius: 9px; padding: 7px 9px; font-size: 11.5px; display: flex; justify-content: space-between; }
+  .carta-g .pieno { background: #1A2233; color: #FAF7F0; border-radius: 11px; padding: 9px; text-align: center; font-weight: 600; font-size: 12.5px; }
+  .carta-g .ev { background: #FFF3C4; border-radius: 12px; padding: 10px; font-size: 12px; }
+  .carta-g .grazie { color: #2F7A4C; font-weight: 600; font-size: 11.5px; }
+
+  /* il banco, sul tablet */
+  .tablet { background: #08090D; border-radius: 28px; padding: 12px; box-shadow: 0 40px 80px -30px rgba(0,0,0,.6), 0 0 0 1.5px rgba(255,255,255,.12) inset; }
+  .tablet .scr { background: #12141C; color: #F3EFE6; border-radius: 18px; padding: 18px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .tablet .scr { grid-template-columns: 1fr; } }
+  .tablet .lato-t { background: #1B1E2A; border-radius: 16px; padding: 16px; text-align: center; display: grid; gap: 8px; justify-items: center; }
+  .tablet .lato-t small { color: #9AA0B4; font-size: 12px; }
+  .tablet .lato-t .num { font: 600 24px/1 var(--serif); }
+  .tablet .lato-t .gr { font: 600 64px/1 var(--serif); letter-spacing: -.03em; }
+  .tablet .lato-t .gr small { font-size: 14px; font-family: var(--sans); }
+  .tablet .punti { display: flex; gap: 6px; }
+  .tablet .punti i { width: 16px; height: 16px; border-radius: 50%; border: 1.5px dashed rgba(255,255,255,.25); }
+  .tablet .punti i.p { background: #FFC61A; border: 0; }
+  .tablet .piu { width: 100%; background: #FFC61A; color: #12141C; font: 700 22px/1 var(--sans); padding: 18px; border-radius: 16px; border: 0; cursor: pointer; transition: transform .1s, background .2s; }
+  .tablet .piu:active { transform: translateY(1px); }
+  .tablet .piu.fatto { background: #5FB783; color: #fff; }
+  .tablet .gratis { font-size: 12.5px; color: #9AA0B4; min-height: 18px; }
+  .tablet .coda { display: flex; gap: 8px; align-items: center; font-size: 12.5px; background: #1B1E2A; border-radius: 12px; padding: 9px 12px; color: #9AA0B4; }
+  .tablet .coda i { width: 9px; height: 9px; border-radius: 50%; background: #FDBA74; box-shadow: 0 0 0 4px rgba(249,115,22,.16); }
+  .tablet .oggi { display: grid; gap: 8px; align-content: start; }
+  .tablet .cif { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tablet .cif div { background: #242838; border-radius: 12px; padding: 10px; text-align: center; }
+  .tablet .cif b { display: block; font: 600 24px/1 var(--serif); }
+  .tablet .cif span { font-size: 11px; color: #9AA0B4; }
+  .tablet .fin { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tablet .fin span { background: rgba(249,115,22,.16); color: #FDBA74; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; }
+  .tablet .ore { display: flex; align-items: flex-end; gap: 4px; height: 70px; background: #1B1E2A; border-radius: 12px; padding: 10px; }
+  .tablet .ore i { flex: 1; background: #FFC61A; border-radius: 3px 3px 1px 1px; opacity: .85; }
+  .tablet .ore i.m { background: transparent; border: 1px dashed rgba(255,255,255,.3); border-bottom: 0; opacity: 1; }
+
+  /* le venti tecniche di fidelizzazione */
+  .famiglie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 30px; }
+  @media (max-width: 900px) { .famiglie { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .famiglie { grid-template-columns: 1fr; } }
+  .famiglia { background: var(--card); border: 1px solid var(--line); border-radius: var(--r2); padding: 18px; }
+  .famiglia h3 { font-size: 18px; margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+  .famiglia .tec { display: flex; flex-wrap: wrap; gap: 6px; }
+  .famiglia .tec button { font: 500 13.5px/1.2 var(--sans); padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+  .famiglia .tec button.on { background: var(--giallo); border-color: var(--giallo); color: var(--giallo-ink); font-weight: 600; }
+  .spiega { margin-top: 18px; display: grid; grid-template-columns: 1fr 260px; gap: 20px; align-items: center; }
+  @media (max-width: 700px) { .spiega { grid-template-columns: 1fr; } }
+  .spiega h3 { font-size: 22px; margin-bottom: 8px; }
+  .spiega .conto { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--accento-soft); color: var(--ink); font-size: 15px; }
+  .spiega .vede { background: #FAF7F0; color: #1A2233; border-radius: 18px; padding: 14px; border: 1px solid #E7E1D2; font-size: 13px; }
+  .spiega .vede small { display: block; color: #6B7280; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .spiega .vede b { font: 600 16px/1.2 var(--serif); display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="pagina">
+    <a class="marchio" href="https://askylostudio.it/"><span class="q">a</span><b>Askylo <i>Studio</i></b></a>
+    <nav class="nav">
+      <a href="#tessera">La tessera</a>
+      <a href="#banco">Il banco</a>
+      <a href="#tornare">Far tornare</a>
+      <a href="#chiedi">Chiedi</a>
+      <a class="sempre" href="https://app.askylostudio.it/demo/gelateria/">Guarda la demo</a>
+    </nav>
+    <button class="tema" type="button" data-tema-btn aria-label="Giorno o notte">☀</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="pagina">
+    <div>
+      <p class="occhiello">Per gelaterie</p>
+      <h1>Il cono gratis lo danno tutti. <span class="giallo">Tu sai quale gusto è piaciuto.</span></h1>
+      <p class="lead">Una tessera sul telefono del cliente, <b>senza nome e senza app</b>: un QR, dieci timbri, il cono gratis. E dentro quello che nessuna carta fedeltà ti ha mai detto: <b>il voto a ogni gusto</b>, quale era <b>finito alle sei</b>, chi non passa da un mese, a che ora arriva la coda. Accanto alla cassa, non al suo posto.</p>
+      <div class="azioni">
+        <a class="btn" href="https://app.askylostudio.it/demo/gelateria/">▶ Guarda il gestionale demo</a>
+        <a class="btn vuoto" href="https://app.askylostudio.it/demo/gelateria/cliente">Apri la tessera di un cliente</a>
+      </div>
+      <div class="chips"><span class="chip">🍦 Timbri al banco in 3 secondi</span><span class="chip">⭐ Feedback gusto per gusto</span><span class="chip">📶 Funziona senza rete</span><span class="chip">🌍 Anche per i turisti</span><span class="chip">🇪🇺 Dati in Europa</span></div>
+      <p class="piccola">La gelateria della demo, «Gelateria Aurora», i gusti e i clienti sono inventati.</p>
+    </div>
+    <div class="telefono" aria-label="La tessera del cliente sul telefono">
+      <div class="schermo carta-g">
+        <div class="vista on">
+          <div class="t"><b>🍦 Gelateria Aurora</b><span>☾ · IT</span></div>
+          <div class="tessera"><small>La tua tessera</small><div class="qr" data-qr></div><b>7 coni su 10<br><span>il prossimo gratis fra 3</span></b><div class="timbri"><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i></i><i></i><i></i></div><small>Tessera 4821</small></div>
+          <div class="box"><h5>Com'era oggi?</h5><div class="sott">Pistacchio e fior di latte, alle 17:40</div><div class="stelle">★★★★☆</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="regola">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">La regola che decide tutto</p>
+      <h2>Al banco c'è la coda. Tre secondi: inquadra, +1, fatto.</h2>
+      <p class="lead">Il cliente mostra il QR della sua pagina, il tablet lo legge, un tocco dà il timbro. Al decimo, piccolo, «è un cono gratis». Niente nome, niente numero di telefono, niente registrazione. E se la rete cade nel pomeriggio di agosto, i timbri aspettano in coda e partono da soli.</p>
+    </div>
+    <div class="numeri sv">
+      <div><b data-conta="3">0<small>″</small></b><span>dal QR al timbro, con la coda davanti al banco</span></div>
+      <div><b data-conta="0">0</b><span>nomi chiesti al cliente: la tessera è un codice, il resto lo aggiunge lui se vuole</span></div>
+      <div><b data-conta="10">0</b><span>timbri, e il cono è gratis: qualunque cosa abbia preso, senza contare euro</span></div>
+      <div><b data-conta="20">0</b><span>modi di far tornare i clienti, da accendere uno per uno</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="tessera">
+  <div class="pagina" data-passi>
+    <div class="sv">
+      <p class="occhiello">1 · La pagina del cliente</p>
+      <h2>Una tessera che il cliente apre più del menù.</h2>
+      <p class="lead">Un link o un QR sul bancone, e la tessera è sul suo telefono: niente app da scaricare. Dentro ci sono i timbri, i suoi gusti, le torte da ordinare. Dopo il gelato, un tocco per dire com'era. Tu lo leggi la sera stessa, gusto per gusto.</p>
+    </div>
+    <div class="vetrina rovescia">
+      <div class="passi">
+        <button type="button" class="passo" data-passo="tessera"><span class="n">1</span><span><b>La tessera, senza nome</b><small>Un QR e dieci timbri. Un soprannome e il compleanno, solo se li vuole dare lui.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="oggi"><span class="n">2</span><span><b>Com'era oggi?</b><small>I gusti presi da una griglia con le foto, un voto, e «era finito un gusto che volevi?». Si cambia per 48 ore.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="gusti"><span class="n">3</span><span><b>I suoi gusti</b><small>Quelli che ha votato meglio, e un gusto nuovo da provare proposto da te.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="torta"><span class="n">4</span><span><b>Ordina una torta</b><small>Fino a tre gusti, le persone, il giorno del ritiro. Nome e telefono si chiedono solo qui, perché servono.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="pref"><span class="n">5</span><span><b>Senza lattosio, vegano</b><small>Le sue preferenze filtrano i gusti sul suo telefono. Tu non le vedi e non le conservi.</small></span><span class="barretta"><i></i></span></button>
+        <button type="button" class="passo" data-passo="msg"><span class="n">6</span><span><b>Dillo senza il tuo nome</b><small>Una casella sola, per quello che non direbbe al banco: la coda del sabato, il cucchiaino che manca.</small></span><span class="barretta"><i></i></span></button>
+      </div>
+      <div class="appiccica">
+        <div class="telefono">
+          <div class="schermo carta-g">
+            <div class="vista" data-vista="tessera">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>☾ · IT</span></div>
+              <div class="tessera"><small>La tua tessera</small><div class="qr" data-qr></div><b>7 coni su 10<br><span>gratis fra 3</span></b><div class="timbri"><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i></i><i></i><i></i></div></div>
+              <div class="box"><h5>Come ti chiamiamo?</h5><div class="campo"><span>Soprannome</span><b>Fra</b></div><div class="campo"><span>Compleanno</span><b>12 maggio</b></div><div class="sott">Facoltativi. La gelateria non sa chi sei.</div></div>
+            </div>
+            <div class="vista" data-vista="oggi">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>oggi, 17:40</span></div>
+              <div class="box"><h5>Com'era oggi?</h5><div class="sott">Tocca i gusti che hai preso</div>
+                <div class="gusti"><span class="on" style="background:#B9D27A">Pistacchio</span><span class="on" style="background:#FFF8E7">Fior di latte</span><span style="background:#6B4226;color:#fff">Cioccolato</span><span style="background:#F6E7B4">Crema</span><span style="background:#F7B7C3">Fragola</span><span style="background:#FFE27A">Limone</span><span style="background:#C9A27A">Nocciola</span><span style="background:#EDE6F7">Stracciat.</span></div>
+                <div class="stelle">★★★★☆</div>
+                <div class="sott">Era finito un gusto che volevi?</div><div><span class="chip-g ar">Stracciatella</span></div>
+                <div class="grazie">Grazie! Si cambia fino a giovedì.</div></div>
+            </div>
+            <div class="vista" data-vista="gusti">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>I tuoi gusti</span></div>
+              <div class="box"><h5>I tuoi gusti</h5><div class="riga"><span>Pistacchio</span><b>★ 4,8</b></div><div class="riga"><span>Nocciola</span><b>★ 4,6</b></div><div class="riga"><span>Fior di latte</span><b>★ 4,3</b></div><div class="riga"><span>Limone</span><b>★ 4,1</b></div></div>
+              <div class="box"><h5>Da provare</h5><div class="ev"><b>Fico e noci</b> · nuovo questa settimana. Chi ama il pistacchio gli ha dato 4,7.</div></div>
+            </div>
+            <div class="vista" data-vista="torta">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>Torte gelato</span></div>
+              <div class="box"><h5>Ordina una torta gelato</h5><div class="sott">Fino a tre gusti</div><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="chip-g on">Nocciola</span><span class="chip-g on">Fragola</span><span class="chip-g on">Crema</span></div><div class="campo"><span>Persone</span><b>8</b></div><div class="campo"><span>Ritiro</span><b>sabato, 17:00</b></div><div class="campo"><span>Nome e telefono</span><b>solo per il ritiro</b></div><div class="pieno">Ordina la torta</div></div>
+            </div>
+            <div class="vista" data-vista="pref">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>Le tue preferenze</span></div>
+              <div class="box"><h5>Le tue preferenze</h5><div style="display:flex;gap:5px;flex-wrap:wrap"><span class="chip-g on">Senza lattosio</span><span class="chip-g">Vegano</span><span class="chip-g">Senza glutine</span></div><div class="sott">Restano su questo telefono. La gelateria non le vede.</div></div>
+              <div class="box"><h5>I gusti per te, oggi</h5><div class="gusti"><span style="background:#FFE27A">Limone</span><span style="background:#F7B7C3">Fragola</span><span style="background:#6B4226;color:#fff">Fondente</span><span style="background:#F9C46B">Mango</span></div></div>
+            </div>
+            <div class="vista" data-vista="msg">
+              <div class="t"><b>🍦 Gelateria Aurora</b><span>senza nome</span></div>
+              <div class="box"><h5>Dillo alla gelateria, senza il tuo nome</h5><div class="campo" style="min-height:70px;align-items:flex-start;color:#6B7280">Il sabato sera la coda arriva fino alla farmacia: un secondo banco per i coni?</div><div class="pieno">Invia</div><div class="grazie">Inviato. La gelateria lo legge senza sapere chi sei.</div></div>
+            </div>
+          </div>
+        </div>
+        <p class="nota" style="text-align:center">Tocca un passo: il telefono cambia schermata.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="banco">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">2 · Il banco</p>
+      <h2>Un tablet sul bancone. Un pulsante grande.</h2>
+      <p class="lead">«Inquadra la tessera» apre la fotocamera e legge il QR. Compaiono il numero e i timbri, e un solo pulsante: <b>+1 timbro</b>. Dopo cinque secondi il banco torna ad aspettare il prossimo. Accanto, la giornata: timbri, coni gratis, feedback, torte da preparare e i gusti segnalati come finiti.</p>
+    </div>
+    <div class="tablet sv" style="margin-top:30px">
+      <div class="scr">
+        <div class="lato-t">
+          <small>Tessera letta</small><span class="num">Cliente 4821</span>
+          <span class="gr" id="timbri_n">7<small> su 10</small></span>
+          <div class="punti" id="timbri_p"><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i class="p"></i><i></i><i></i><i></i></div>
+          <button class="piu" type="button" id="piu">+1 timbro</button>
+          <div class="gratis" id="gratis">Provalo: tocca «+1 timbro».</div>
+          <div class="coda"><i></i><span><b style="color:#FDBA74">3 timbri in coda</b>, senza rete: partono da soli</span></div>
+        </div>
+        <div class="oggi">
+          <div class="cif"><div><b>142</b><span>timbri oggi</span></div><div><b>4</b><span>coni gratis</span></div><div><b>9</b><span>feedback</span></div><div><b>2</b><span>torte da fare</span></div></div>
+          <small style="color:#9AA0B4">Finiti oggi</small>
+          <div class="fin"><span><b>Pistacchio</b> 17:40</span><span><b>Stracciatella</b> 19:10</span></div>
+          <small style="color:#9AA0B4">Oggi, ora per ora · il tratteggio è la media dei quattro sabati prima</small>
+          <div class="ore"><i style="height:12%"></i><i style="height:20%"></i><i style="height:28%"></i><i style="height:45%"></i><i style="height:52%"></i><i style="height:70%"></i><i style="height:92%"></i><i style="height:100%"></i><i class="m" style="height:60%"></i><i class="m" style="height:40%"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tornare">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">3 · Far tornare i clienti</p>
+      <h2>Venti modi di far tornare chi passa. Li accendi tu.</h2>
+      <p class="lead">La carta a timbri è la prima. Poi i timbri doppi nei giorni lenti, l'ora vuota del pomeriggio, la giornata di pioggia, il compleanno, «ci manchi» a chi non passa da un po', il gelato pass d'estate. Ognuna ha le sue regole, ti fa vedere <b>cosa vede il cliente</b> e fa i conti sui tuoi dati: quali sono i giorni vuoti, l'ora tranquilla, i compleanni del mese.</p>
+    </div>
+    <div class="famiglie" id="famiglie">
+      <div class="famiglia sv"><h3>🎟️ Timbri e punti</h3><div class="tec"><button data-t="timbri">Carta a timbri</button><button data-t="doppi">Timbri doppi nei giorni lenti</button><button data-t="ora">L'ora vuota</button><button data-t="pioggia">Giornata di pioggia</button></div></div>
+      <div class="famiglia sv"><h3>💌 Far tornare</h3><div class="tec"><button data-t="benvenuto">Benvenuto</button><button data-t="compleanno">Compleanno</button><button data-t="amico">Porta un amico</button><button data-t="parere">Grazie del parere</button><button data-t="manchi">Ci manchi</button><button data-t="riapre">Si riapre</button></div></div>
+      <div class="famiglia sv"><h3>🍨 Relazione</h3><div class="tec"><button data-t="nuovo">Assaggia il nuovo</button><button data-t="sospeso">Cono sospeso</button></div></div>
+      <div class="famiglia sv"><h3>🏅 Livelli</h3><div class="tec"><button data-t="livelli">Livelli</button><button data-t="club">Club dei fedelissimi</button></div></div>
+      <div class="famiglia sv"><h3>💳 Prepagati</h3><div class="tec"><button data-t="carnet">Carnet</button><button data-t="pass">Gelato pass d'estate</button><button data-t="ricarica">Ricarica con bonus</button></div></div>
+      <div class="famiglia sv"><h3>🎯 Sfide e collezioni</h3><div class="tec"><button data-t="sfida">Sfida d'estate</button><button data-t="collezione">Collezione dei gusti</button><button data-t="famiglia">Torte di famiglia</button></div></div>
+    </div>
+    <div class="riquadro sv" style="margin-top:18px">
+      <div class="spiega">
+        <div><h3 id="sp_t"></h3><p class="tenue" id="sp_d" style="margin:0"></p><div class="conto" id="sp_c"></div></div>
+        <div class="vede"><small>Cosa vede il cliente</small><b id="sp_vt"></b><span id="sp_vd"></span></div>
+      </div>
+    </div>
+    <p class="nota">Di partenza sono accese la carta a timbri e il compleanno. Niente premi a sorte né oggetti in regalo: sono concorsi a premio (DPR 430/2001). Per carnet, pass e ricarica conviene sentire il commercialista. Le regole cambiano la scheda; al banco il timbro resta quello di sempre.</p>
+  </div>
+</section>
+
+<section id="chiedi">
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">4 · Chiedi alla tua gelateria</p>
+      <h2>Quale gusto finisce più spesso? Chiedilo così.</h2>
+      <p class="lead">Una casella sola, con le tue parole. Le risposte arrivano dai tuoi timbri e dai feedback, sul tuo dispositivo: il modello non vede mai una riga dell'archivio. Prova: tocca una domanda o scrivine una.</p>
+    </div>
+    <div class="chiedi sv" data-chiedi>
+      <form><input type="text" placeholder="Chiedi… «Quale gusto finisce più spesso?»" aria-label="La tua domanda"><button class="btn" type="submit">Chiedi</button></form>
+      <div class="domande"></div>
+      <div class="risposta" aria-live="polite"></div>
+      <template data-r="Quale gusto finisce più spesso?" data-parole="finisce finito finiti manca esaurit">
+        <p>Segnalati come finiti dai clienti, negli ultimi 30 giorni:</p>
+        <div class="barre"><div><span>Pistacchio</span><span class="t"><i data-w="100%"></i></span><b>23</b></div><div><span>Stracciatella</span><span class="t"><i data-w="61%"></i></span><b>14</b></div><div><span>Nocciola</span><span class="t"><i data-w="43%"></i></span><b>10</b></div><div><span>Fico e noci</span><span class="t"><i data-w="30%"></i></span><b>7</b></div></div>
+        <p class="tenue" style="margin-top:8px">Il pistacchio finisce di solito fra le 17:30 e le 18:30 del sabato.</p>
+      </template>
+      <template data-r="Quali gusti piacciono di più?" data-parole="piacciono votati voto migliori stelle">
+        <p>Voto medio delle visite in cui sono stati presi, ultimi 90 giorni:</p>
+        <div class="barre"><div><span>Pistacchio</span><span class="t"><i data-w="96%"></i></span><b>4,8</b></div><div><span>Fico e noci</span><span class="t"><i data-w="94%"></i></span><b>4,7</b></div><div><span>Nocciola</span><span class="t"><i data-w="92%"></i></span><b>4,6</b></div><div><span>Mango</span><span class="t"><i data-w="84%"></i></span><b>4,2</b></div><div><span>Puffo</span><span class="t"><i data-w="64%"></i></span><b>3,2</b></div></div>
+      </template>
+      <template data-r="A che ora c'è più gente il sabato?" data-parole="ora orari gente coda sabato punta">
+        <p>Timbri del sabato, ora per ora, media delle ultime otto settimane:</p>
+        <div class="barre"><div><span>15–16</span><span class="t"><i data-w="22%"></i></span><b>9</b></div><div><span>16–17</span><span class="t"><i data-w="45%"></i></span><b>19</b></div><div><span>17–18</span><span class="t"><i data-w="80%"></i></span><b>34</b></div><div><span>21–22</span><span class="t"><i data-w="100%"></i></span><b>42</b></div><div><span>22–23</span><span class="t"><i data-w="71%"></i></span><b>30</b></div></div>
+      </template>
+      <template data-r="Quanti tornano dopo la prima volta?" data-parole="tornano ritorno prima volta nuove tessere fedeli">
+        <p>Delle tessere nuove di giugno, quante sono tornate almeno una volta entro 30 giorni:</p>
+        <div class="barre"><div><span>Tornate</span><span class="t"><i data-w="58%"></i></span><b>58%</b></div><div><span>3 volte o più</span><span class="t"><i data-w="27%"></i></span><b>27%</b></div></div>
+        <p class="tenue" style="margin-top:8px">Con «Benvenuto» acceso (il secondo timbro doppio), le tessere di luglio sono tornate di più.</p>
+      </template>
+      <template data-r="Chi non passa da un mese?" data-parole="passa manchi mese spariti persi">
+        <p>312 tessere con almeno cinque timbri non passano da più di 30 giorni. Le più fedeli:</p>
+        <ul><li>Tessera 4821 «Fra» · 46 timbri</li><li>Tessera 1207 · 38 timbri</li><li>Tessera 3390 «Ale» · 35 timbri</li><li>Tessera 0815 · 33 timbri</li></ul>
+        <p class="tenue" style="margin-top:8px">«Ci manchi» manda a ognuna, sulla sua pagina, un timbro in regalo.</p>
+      </template>
+      <template data-r="Quante torte a settembre?" data-parole="torte torta ordini">
+        <p>17 torte gelato a settembre, 4 in più dell'anno scorso. Il gusto più chiesto nelle torte: nocciola.</p>
+      </template>
+    </div>
+    <p class="nota">Risposte preparate su «Gelateria Aurora», la gelateria inventata della demo, con numeri inventati.</p>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">Prima e dopo</p>
+      <h2>Il cartoncino coi buchi, e il pistacchio finito che nessuno ti dice.</h2>
+    </div>
+    <div class="prima-dopo sv">
+      <div class="prima"><h3>Prima</h3><ul><li>Il cartoncino si perde nella borsa, e i timbri con lui.</li><li>Il pistacchio finito alle sei lo scopri dalle facce, non dai numeri.</li><li>Del cliente sai che «prende sempre il limone», e basta.</li><li>Il martedì è vuoto, ma non sai quanto, né a che ora.</li></ul></div>
+      <div class="dopo"><h3>Con Askylo Studio</h3><ul><li>La tessera sta sul telefono: non si perde, e non chiede il nome.</li><li>«Era finito» arriva dal cliente, con l'ora: domani ne fai di più.</li><li>I voti gusto per gusto, i gusti preferiti di ogni tessera.</li><li>I giorni e le ore vuote misurati, e i timbri doppi proprio lì.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">E poi</p>
+      <h2>Tutto quello che serve, già fatto.</h2>
+    </div>
+    <div class="carte">
+      <div class="carta sv"><div class="ico">🎂</div><h3>Torte gelato</h3><p>Ordinate dal telefono del cliente, con gusti, persone e ora del ritiro. Da fare, pronta, ritirata. L'unico posto con nome e telefono.</p></div>
+      <div class="carta sv"><div class="ico">🍨</div><h3>La vetrina dei gusti</h3><p>Ogni gusto con la sua miniatura, il voto medio, quante volte è stato preso e finito. Si accende e si spegne con la stagione.</p></div>
+      <div class="carta sv"><div class="ico">🎈</div><h3>I compleanni</h3><p>Chi ha lasciato il compleanno lo trova sulla sua pagina con un cono in regalo; tu li vedi in «Oggi».</p></div>
+      <div class="carta sv"><div class="ico">🌍</div><h3>Per i turisti</h3><p>La pagina parla la lingua del telefono del cliente, nomi dei gusti compresi. Dieci lingue.</p></div>
+      <div class="carta sv"><div class="ico">📶</div><h3>Senza rete</h3><p>Il banco lavora anche quando la rete cade: i timbri aspettano in coda e partono da soli quando torna.</p></div>
+      <div class="carta sv"><div class="ico">🧾</div><h3>Accanto alla cassa</h3><p>Niente importi, niente scontrini: la cassa fiscale resta la tua. Askylo Studio conta le visite, non gli euro.</p></div>
+      <div class="carta sv"><div class="ico">📈</div><h3>36 mesi di analisi</h3><p>Timbri per mese, ore di punta, gusti più presi, meglio votati e più spesso finiti, tessere nuove, chi torna. Ogni grafico ha i suoi numeri.</p></div>
+      <div class="carta sv"><div class="ico">✉️</div><h3>Messaggi senza nome</h3><p>Quello che il cliente non direbbe al banco, letto con calma. Lo stesso codice è la stessa persona, ma tu non sai chi è.</p></div>
+      <div class="carta sv"><div class="ico">☀️</div><h3>Stagione e ferie</h3><p>Aprile-settembre a pieno, le ferie d'inverno, il lunedì chiuso: i conti tengono conto dei tuoi orari.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pagina">
+    <div class="sv">
+      <p class="occhiello">I dati</p>
+      <h2>Il cliente non ti dà il nome. E va bene così.</h2>
+    </div>
+    <div class="tre">
+      <div class="carta sv"><h3>Una tessera, non una persona</h3><p>La tessera è un codice. Soprannome e compleanno li aggiunge il cliente, se vuole; nome e telefono solo per ritirare una torta.</p></div>
+      <div class="carta sv"><h3>Le preferenze restano sul suo telefono</h3><p>Senza lattosio, vegano, senza glutine filtrano i gusti sul suo telefono: non sono dati che raccogli.</p></div>
+      <div class="carta sv"><h3>Restano in Europa, e restano tuoi</h3><p>Database a Francoforte. Ogni domenica l'archivio intero arriva per email: te ne vai quando vuoi, con tutto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="proposta">
+  <div class="pagina sv">
+    <p class="occhiello">La proposta</p>
+    <h2>Cerchiamo le prime gelaterie che lo provano.</h2>
+    <p class="lead">Askylo Studio è già il gestionale di uno studio vero, ogni giorno. Adesso apre alle gelaterie, seguite a mano, a partire dalla prossima primavera.</p>
+    <div class="tre">
+      <div><b>Prima</b><p>Carichiamo i tuoi gusti con le loro foto, scegliamo insieme la regola dei timbri e le prime tecniche da accendere.</p></div>
+      <div><b>Il primo mese</b><p>Il QR sul bancone, il tablet al banco, e guardiamo insieme cosa scrivono i clienti: i voti, i gusti finiti, i messaggi.</p></div>
+      <div><b>Dopo</b><p>Accendi quello che ti serve: torte, compleanni, timbri doppi nei giorni lenti, il pass d'estate. Il resto resta spento.</p></div>
+    </div>
+    <div class="azioni">
+      <a class="btn" href="https://app.askylostudio.it/?mestiere=gelateria">Comincia gratis</a>
+      <a class="btn vuoto" href="https://app.askylostudio.it/demo/gelateria/">Guarda il gestionale demo</a>
+      <a class="btn vuoto" href="https://askylostudio.it/#mestieri">Gli altri mestieri</a>
+    </div>
+  </div>
+</section>
+
+<footer class="piede">
+  <div class="pagina">Askylo Studio · <a href="https://askylostudio.it/">askylostudio.it</a> · la gelateria della demo, «Gelateria Aurora», i gusti, i clienti e i numeri sono inventati · le funzioni descritte sono quelle della demo a ottobre 2026; alcune si accendono gelateria per gelateria.</div>
+</footer>
+
+<script src="../mestieri/mestiere.js"></script>
+<script>
+  (function () {
+    /* un QR disegnato (finto, solo per la grafica: non porta da nessuna parte) */
+    function qr() {
+      var n = 25, s = '<svg viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges"><rect width="' + n + '" height="' + n + '" fill="#fff"/>', x = 7;
+      function occhio(a, b) { s += '<rect x="' + a + '" y="' + b + '" width="7" height="7" fill="#1A2233"/><rect x="' + (a + 1) + '" y="' + (b + 1) + '" width="5" height="5" fill="#fff"/><rect x="' + (a + 2) + '" y="' + (b + 2) + '" width="3" height="3" fill="#1A2233"/>'; }
+      for (var i = 0; i < n; i++) for (var j = 0; j < n; j++) {
+        if ((i < 8 && j < 8) || (i < 8 && j > n - 9) || (i > n - 9 && j < 8)) continue;
+        x = (x * 1103515245 + 12345) & 0x7fffffff; if (x % 100 < 47) s += '<rect x="' + j + '" y="' + i + '" width="1" height="1" fill="#1A2233"/>';
+      }
+      occhio(0, 0); occhio(n - 7, 0); occhio(0, n - 7);
+      return s + '</svg>';
+    }
+    [].slice.call(document.querySelectorAll('[data-qr]')).forEach(function (e) { e.innerHTML = qr(); });
+
+    /* il banco: +1 timbro, al decimo il cono gratis */
+    var n = 7, piu = document.getElementById('piu'), gratis = document.getElementById('gratis');
+    function disegna() {
+      document.getElementById('timbri_n').firstChild.nodeValue = n;
+      [].slice.call(document.querySelectorAll('#timbri_p i')).forEach(function (i, k) { i.className = k < n ? 'p' : ''; });
+    }
+    piu.addEventListener('click', function () {
+      if (n >= 10) { n = 0; disegna(); piu.textContent = '+1 timbro'; piu.classList.remove('fatto'); gratis.textContent = 'Tessera nuova: si riparte da zero.'; return; }
+      n++; disegna(); piu.classList.add('fatto'); piu.textContent = '✓ Timbro dato';
+      gratis.innerHTML = n === 10 ? '<b style="color:#FFC61A">È un cono gratis!</b> Tocca ancora per ricominciare.' : 'Ancora ' + (10 - n) + ' e il cono è gratis.';
+      setTimeout(function () { if (n < 10) { piu.classList.remove('fatto'); piu.textContent = '+1 timbro'; } else { piu.textContent = 'Ricomincia'; } }, 1200);
+    });
+
+    /* le tecniche di fidelizzazione: un tocco mostra regole, conto e cosa vede il cliente */
+    var T = {
+      timbri: ['Carta a timbri', 'Dieci timbri, il decimo cono è gratis, qualunque cosa abbia preso. La regola che conoscono tutti, senza cartoncino.', 'Accesa di partenza: è quella del banco.', '7 su 10', 'Il prossimo cono è gratis fra 3.'],
+      doppi: ['Timbri doppi nei giorni lenti', 'Nei giorni che i tuoi dati dicono più vuoti, ogni visita vale due timbri.', 'La demo trova il martedì e il mercoledì: un terzo dei timbri del sabato.', 'Oggi timbro doppio', 'Passa oggi: ogni gelato vale due timbri.'],
+      ora: ['L’ora vuota', 'Un timbro in più nell’ora più tranquilla del pomeriggio, quella in cui il banco aspetta.', 'Dai 36 mesi della demo: fra le 15 e le 16 dei giorni feriali.', 'Fra le 15 e le 16', 'Un timbro in più, solo in quest’ora.'],
+      pioggia: ['Giornata di pioggia', 'Quando piove, il gelato si vende meno: un timbro in più a chi passa lo stesso.', 'Si accende a mano, il giorno stesso.', 'Piove? Timbro doppio', 'Chi passa oggi prende un timbro in più.'],
+      benvenuto: ['Benvenuto', 'Alla seconda visita, il timbro vale doppio: la prima volta è curiosità, la seconda è un’abitudine.', 'La demo conta quante tessere nuove tornano entro 30 giorni.', 'Bentornato!', 'La seconda visita vale due timbri.'],
+      compleanno: ['Compleanno', 'Chi ha lasciato il compleanno lo trova sulla pagina con un cono in regalo, valido una settimana.', 'Accesa di partenza. La demo mostra i compleanni dei prossimi 30 giorni.', 'Buon compleanno, Fra!', 'Un cono in regalo, fino a domenica.'],
+      amico: ['Porta un amico', 'Il cliente ha un link suo: quando un amico apre la tessera da lì e passa al banco, un timbro a tutti e due.', 'Si conta dalle tessere nuove arrivate da un link.', 'Porta un amico', 'Un timbro a te e uno a lui, alla sua prima visita.'],
+      parere: ['Grazie del parere', 'Chi lascia «Com’era oggi?» prende mezzo timbro: i feedback salgono, e i voti ai gusti diventano affidabili.', 'Nella demo: 9.500 feedback in tre anni.', 'Grazie del parere', 'Mezzo timbro per ogni «Com’era oggi?».'],
+      manchi: ['Ci manchi', 'A chi aveva almeno cinque timbri e non passa da un mese, un timbro in regalo sulla sua pagina.', 'La demo trova le tessere fedeli che non passano da più di 30 giorni.', 'Ci manchi!', 'Un timbro in regalo ti aspetta al banco.'],
+      riapre: ['Si riapre', 'Dopo le ferie d’inverno, la prima settimana un timbro doppio a chi torna.', 'Si accende da solo alla riapertura.', 'Siamo tornati!', 'Questa settimana timbro doppio.'],
+      nuovo: ['Assaggia il nuovo', 'Un gusto nuovo in vetrina: chi lo prova e lo vota prende un timbro in più.', 'Si legge nei voti del gusto nuovo, in Analisi.', 'Da provare: Fico e noci', 'Votalo e prendi un timbro in più.'],
+      sospeso: ['Cono sospeso', 'Chi vuole lascia un cono pagato per chi non può: sulla pagina si vede quanti ce ne sono.', 'Si contano al banco, senza nomi.', '4 coni sospesi', 'Chi ne ha bisogno lo chiede al banco.'],
+      livelli: ['Livelli', 'Dopo 30 e 60 timbri si sale di livello: un gusto in più nella coppetta, un timbro in più al mese.', 'La demo dice quante tessere sono a ogni livello.', 'Livello Pistacchio', 'Ti mancano 6 timbri al livello dopo.'],
+      club: ['Club dei fedelissimi', 'Le tessere con più visite nell’ultimo anno vedono in anteprima i gusti nuovi.', 'Si sceglie la soglia: le prime 50, o chi supera 40 timbri.', 'Club dei fedelissimi', 'Il gusto nuovo, una settimana prima degli altri.'],
+      carnet: ['Carnet', 'Dieci coni pagati prima, a un prezzo migliore: la tessera li scala uno per uno.', 'Prepagato: senti il commercialista.', 'Carnet: 6 coni', 'Ne restano 6 sulla tua tessera.'],
+      pass: ['Gelato pass d’estate', 'Un cono al giorno da giugno ad agosto, pagato una volta.', 'Prepagato: senti il commercialista.', 'Gelato pass', 'Il cono di oggi è già tuo.'],
+      ricarica: ['Ricarica con bonus', 'Ricarichi 50 e ne spendi 55: il credito sta sulla tessera.', 'Prepagato: senti il commercialista.', 'Credito 55 €', 'Si scala al banco, come un timbro.'],
+      sfida: ['Sfida d’estate', 'Cinque gusti diversi in luglio: al quinto, un timbro in più.', 'La demo conta quanti clienti provano gusti nuovi.', 'Sfida d’estate: 3 di 5', 'Ti mancano due gusti nuovi.'],
+      collezione: ['Collezione dei gusti', 'Ogni gusto preso si colora sulla pagina: l’album dei gusti, a chi piace finirlo.', 'Si costruisce dai feedback.', 'La tua collezione: 18 gusti', 'Mancano Puffo e Liquirizia.'],
+      famiglia: ['Torte di famiglia', 'Alla terza torta ordinata, la quarta ha un gusto in più.', 'Si conta dagli ordini delle torte.', 'Torte: 2 su 3', 'Alla prossima, un gusto in più.']
+    };
+    var box = document.getElementById('famiglie');
+    function mostra(k) {
+      var t = T[k]; document.getElementById('sp_t').textContent = t[0]; document.getElementById('sp_d').textContent = t[1]; document.getElementById('sp_c').textContent = t[2]; document.getElementById('sp_vt').textContent = t[3]; document.getElementById('sp_vd').textContent = t[4];
+      [].slice.call(box.querySelectorAll('button')).forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-t') === k); });
+    }
+    [].slice.call(box.querySelectorAll('button')).forEach(function (b) { b.type = 'button'; b.addEventListener('click', function () { mostra(b.getAttribute('data-t')); }); });
+    mostra('doppi');
+  })();
+</script>
+</body>
+</html>
