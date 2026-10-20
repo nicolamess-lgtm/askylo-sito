@@ -184,14 +184,15 @@ section { padding: 88px 0; border-top: 1px solid var(--line); }
 .prima-dopo h3 { font-size: 18px; margin-bottom: 12px; }
 .prima-dopo ul { margin: 0; padding-left: 18px; color: var(--text2); display: grid; gap: 8px; font-size: 15.5px; }
 
-/* ---------- i dati e la proposta ---------- */
+/* ---------- i dati ---------- */
 .tre { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
 @media (max-width: 800px) { .tre { grid-template-columns: 1fr; } }
-.proposta { background: var(--hero); color: #FAF7F0; border: 0; }
-.proposta .lead { color: #C9CFDA; }
-.proposta .tre > div { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r2); padding: 22px; }
-.proposta .tre b { font-family: var(--serif); font-size: 20px; display: block; margin-bottom: 8px; }
-.proposta .tre p { color: #C9CFDA; margin: 0; font-size: 15.5px; }
-.proposta .azioni { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+/* la chiusa: provalo, con la demo e il tuo studio da cominciare */
+.provalo { background: var(--hero); color: #FAF7F0; border: 0; padding: 96px 0 104px; }
+.provalo .occhiello { color: #FFC61A; }
+.provalo .occhiello::before { display: none; }
+.provalo h2 { font-size: clamp(32px, 5vw, 54px); font-weight: 700; }
+.provalo .lead { color: #C9CFDA; }
+.provalo .azioni { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .piede { padding: 28px 0 40px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
 .piede a { color: var(--accento); }
