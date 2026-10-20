@@ -549,7 +549,7 @@
 </main>
 
 <!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade
-     (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/):
+     (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/, benessere/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
      Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria e demo/ballo per gli altri. -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
@@ -580,8 +580,8 @@
     <a class="ms-strada scopri" id="ms_scopri" href="#" hidden>
       <span class="ms-s-ico" aria-hidden="true">✨</span>
       <span class="ms-s-testo">
-        <b><span data-per="ballo" data-t="ms.scopri.ballo">Scopri cosa cambia nella tua scuola</span><span data-per="gelateria" data-t="ms.scopri.gelateria">Scopri cosa cambia nella tua gelateria</span></b>
-        <small><span data-per="ballo" data-t="ms.scopri.ballo.d">Il video della figura sulla pagina di ogni allievo, la bilancia di coppia, un'agenda per ogni insegnante.</span><span data-per="gelateria" data-t="ms.scopri.gelateria.d">La tessera senza nome sul telefono, il voto a ogni gusto, venti modi di far tornare i clienti.</span></small>
+        <b><span data-per="ballo" data-t="ms.scopri.ballo">Scopri cosa cambia nella tua scuola</span><span data-per="gelateria" data-t="ms.scopri.gelateria">Scopri cosa cambia nella tua gelateria</span><span data-per="olistico estetista massofisio" data-t="ms.scopri.studio">Scopri cosa cambia nel tuo studio</span></b>
+        <small><span data-per="ballo" data-t="ms.scopri.ballo.d">Il video della figura sulla pagina di ogni allievo, la bilancia di coppia, un'agenda per ogni insegnante.</span><span data-per="gelateria" data-t="ms.scopri.gelateria.d">La tessera senza nome sul telefono, il voto a ogni gusto, venti modi di far tornare i clienti.</span><span data-per="olistico estetista massofisio" data-t="ms.scopri.studio.d">La pagina che ogni cliente apre, com'è andata dopo ogni seduta, l'agenda a cui fare domande.</span></small>
       </span>
       <span class="freccia" aria-hidden="true">→</span>
     </a>
@@ -723,8 +723,8 @@
     var APP = 'https://app.askylostudio.it/';
     var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
                  gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/' };
-    // le pagine che raccontano un mestiere, qui sul sito: per ora le scuole di ballo e le gelaterie
-    var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/' };
+    // le pagine che raccontano un mestiere, qui sul sito: scuole di ballo, gelaterie, e una sola per gli studi di massaggi, estetica e benessere
+    var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/', olistico: 'benessere/', estetista: 'benessere/', massofisio: 'benessere/' };
     var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');
     var indietro = document.getElementById('ms_indietro');
     var scelto = '';
@@ -743,7 +743,7 @@
       document.getElementById('ms_demo').href = DEMO[k];
       var scopri = document.getElementById('ms_scopri');
       scopri.hidden = !PAGINE[k];
-      if (PAGINE[k]) { scopri.href = PAGINE[k]; Array.prototype.slice.call(scopri.querySelectorAll('[data-per]')).forEach(function (e) { e.hidden = e.getAttribute('data-per') !== k; }); }
+      if (PAGINE[k]) { scopri.href = PAGINE[k]; Array.prototype.slice.call(scopri.querySelectorAll('[data-per]')).forEach(function (e) { e.hidden = (' ' + e.getAttribute('data-per') + ' ').indexOf(' ' + k + ' ') < 0; }); }
       document.getElementById('ms_comincia').focus();
     }
     function apri(k) {

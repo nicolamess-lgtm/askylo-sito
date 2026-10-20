@@ -41,7 +41,14 @@ sono gestionali a parte. Un link diretto: `#mestieri/gelateria`.
 
 Le scuole di ballo e le gelaterie hanno anche una pagina che racconta cosa
 cambia per loro: `scuole-di-ballo/` e `gelaterie/` (sul modello della pagina
-riservata di Askylo Studio per gli studi di massaggi, su askylo.com). Nella
+riservata di Askylo Studio per gli studi di massaggi, su askylo.com). Quella
+pagina sta anche qui, in `benessere/`, per operatori olistici, estetiste e
+massofisioterapisti: è la copia di askylo.com/studio-40db3686 con i filmati,
+senza le scritte da pagina riservata, senza le funzioni che Askylo Studio non
+porta (Shelly, richieste di informazioni) e con «in arrivo» su quelle che non
+ci sono ancora (connettore per Claude, PayPal, tessera sanitaria, promemoria
+WhatsApp, porta un amico). Ha il suo stile e il suo script dentro la pagina.
+Chi la cambia su askylo.com la cambia anche qui. Nella
 finestra dei mestieri c'è «Scopri cosa cambia» solo per i mestieri in
 `PAGINE` dello script. Stile e script in comune stanno in `mestieri/`
 (`mestiere.css`, `mestiere.js`): stessi token della landing, giorno e notte
