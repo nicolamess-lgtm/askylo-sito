@@ -551,7 +551,8 @@
 <!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade
      (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/, benessere/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
-     Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria e demo/ballo per gli altri. -->
+     Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria, demo/ballo e demo/personal-trainer per gli altri.
+     I mestieri in IN_ARRIVO (personal trainer) hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo». -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
   <div class="ms-testa">
     <button type="button" class="ms-btn" id="ms_indietro" hidden><span class="freccia">←</span> <span data-t="ms.indietro">Tutti i mestieri</span></button>
@@ -568,6 +569,7 @@
       <div class="ms-mestiere spento" aria-disabled="true"><span class="ms-ico" aria-hidden="true">🦴</span><span class="ms-nome" data-t="ms.fisio">Fisioterapisti e osteopati</span><span class="ms-presto" data-t="ms.presto">A breve</span></div>
       <button type="button" class="ms-mestiere" data-mestiere="gelateria"><span class="ms-ico" aria-hidden="true">🍦</span><span class="ms-nome" data-t="ms.gelaterie">Gelaterie</span></button>
       <button type="button" class="ms-mestiere" data-mestiere="ballo"><span class="ms-ico" aria-hidden="true">💃</span><span class="ms-nome" data-t="ms.ballo">Scuole e insegnanti di ballo &amp; aerofitness</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="personal"><span class="ms-ico" aria-hidden="true">🏋️</span><span class="ms-nome" data-t="ms.personal">Personal trainer</span></button>
     </div>
   </div>
   <div class="ms-passo" id="ms_strade" hidden>
@@ -577,6 +579,10 @@
       <span class="ms-s-testo"><b data-t="ms.comincia">Comincia gratis con il tuo gestionale avanzato</b><small data-t="ms.comincia.d">Ti registri in un minuto. Lo studio nuovo parte vuoto: i dati sono solo tuoi.</small></span>
       <span class="freccia" aria-hidden="true">→</span>
     </a>
+    <div class="ms-strada prima spenta" id="ms_arrivo" aria-disabled="true" hidden>
+      <span class="ms-s-ico" aria-hidden="true">🏗️</span>
+      <span class="ms-s-testo"><b data-t="ms.arrivo">Il gestionale per il tuo mestiere è in arrivo</b><small data-t="ms.arrivo.d">Per ora c'è la demo: provala e dicci cosa ti manca.</small></span>
+    </div>
     <a class="ms-strada scopri" id="ms_scopri" href="#" hidden>
       <span class="ms-s-ico" aria-hidden="true">✨</span>
       <span class="ms-s-testo">
@@ -722,7 +728,10 @@
        la aprono da un link. */
     var APP = 'https://app.askylostudio.it/';
     var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
-                 gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/' };
+                 gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/',
+                 personal: APP + 'demo/personal-trainer/' };
+    // i mestieri che hanno la demo ma non ancora un gestionale vero: niente «Comincia gratis»
+    var IN_ARRIVO = { personal: true };
     // le pagine che raccontano un mestiere, qui sul sito: scuole di ballo, gelaterie, e una sola per gli studi di massaggi, estetica e benessere
     var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/', olistico: 'benessere/', estetista: 'benessere/', massofisio: 'benessere/' };
     var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');
@@ -740,11 +749,13 @@
       if (!b) { scelto = ''; return; }
       scelto = k; nomeMestiere();
       document.getElementById('ms_comincia').href = APP + '?mestiere=' + k;
+      document.getElementById('ms_comincia').hidden = !!IN_ARRIVO[k];
+      document.getElementById('ms_arrivo').hidden = !IN_ARRIVO[k];
       document.getElementById('ms_demo').href = DEMO[k];
       var scopri = document.getElementById('ms_scopri');
       scopri.hidden = !PAGINE[k];
       if (PAGINE[k]) { scopri.href = PAGINE[k]; Array.prototype.slice.call(scopri.querySelectorAll('[data-per]')).forEach(function (e) { e.hidden = (' ' + e.getAttribute('data-per') + ' ').indexOf(' ' + k + ' ') < 0; }); }
-      document.getElementById('ms_comincia').focus();
+      (IN_ARRIVO[k] ? document.getElementById('ms_demo') : document.getElementById('ms_comincia')).focus();
     }
     function apri(k) {
       passo(k || '');

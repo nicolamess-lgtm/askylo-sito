@@ -30,7 +30,9 @@ movimento.
 La carta di Askylo Studio (il pulsante «Scegli il tuo mestiere», o un clic sulla
 carta) apre la finestra dei mestieri (`#mestieri`): operatori olistici,
 estetiste, massofisioterapisti, gelaterie, scuole e insegnanti di ballo &
-aerofitness; fisioterapisti e osteopati sono «A breve». Ogni mestiere ha tre
+aerofitness, personal trainer; fisioterapisti e osteopati sono «A breve». I
+personal trainer hanno solo la demo (`demo/personal-trainer/`, un prototipo):
+sono in `IN_ARRIVO`, e al posto di «Comincia gratis» vedono «in arrivo». Ogni mestiere ha tre
 strade: **comincia gratis** (l'app, con `?mestiere=<chiave>`), **tutorial**
 (spento finché non ci sono) e **guarda un gestionale demo**. Le demo stanno
 sull'app (`DEMO` nello script): `?demo=olistico|estetista|massofisio` è il
