@@ -118,6 +118,8 @@ window.LINGUE_SITO.zh = {
   "ms.gelaterie": "冰淇淋店",
   "ms.ballo": "舞蹈与有氧健身学校及教师",
   "ms.personal": "私人教练",
+  "ms.nutrizionisti": "营养师",
+  "ms.ptnutri": "私人教练和营养师",
   "ms.arrivo": "适合你职业的管理软件即将推出",
   "ms.arrivo.d": "目前可以先试用演示版，告诉我们还缺什么。",
   "ms.indietro": "所有行业",

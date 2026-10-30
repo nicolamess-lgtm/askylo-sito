@@ -118,6 +118,8 @@ window.LINGUE_SITO.sq = {
   "ms.gelaterie": "Akullore",
   "ms.ballo": "Shkolla dhe mësues vallëzimi e aerofitnesi",
   "ms.personal": "Trajnerë personalë",
+  "ms.nutrizionisti": "Nutricionistë",
+  "ms.ptnutri": "Trajnerë personalë dhe nutricionistë",
   "ms.arrivo": "Programi për profesionin tënd vjen së shpejti",
   "ms.arrivo.d": "Për tani ka demon: provoje dhe na thuaj çfarë të mungon.",
   "ms.indietro": "Të gjitha profesionet",

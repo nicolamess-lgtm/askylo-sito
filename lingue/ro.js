@@ -118,6 +118,8 @@ window.LINGUE_SITO.ro = {
   "ms.gelaterie": "Gelaterii",
   "ms.ballo": "Școli și profesori de dans și aerofitness",
   "ms.personal": "Antrenori personali",
+  "ms.nutrizionisti": "Nutriționiști",
+  "ms.ptnutri": "Antrenori personali și nutriționiști",
   "ms.arrivo": "Programul pentru meseria ta vine în curând",
   "ms.arrivo.d": "Deocamdată există demo-ul: încearcă-l și spune-ne ce lipsește.",
   "ms.indietro": "Toate meseriile",
