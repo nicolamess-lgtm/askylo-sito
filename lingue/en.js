@@ -118,6 +118,8 @@ window.LINGUE_SITO.en = {
   "ms.gelaterie": "Ice-cream shops",
   "ms.ballo": "Dance and aero fitness schools and teachers",
   "ms.personal": "Personal trainers",
+  "ms.nutrizionisti": "Nutritionists",
+  "ms.ptnutri": "Personal trainers and nutritionists",
   "ms.arrivo": "The app for your profession is coming soon",
   "ms.arrivo.d": "For now there's the demo: try it and tell us what's missing.",
   "ms.indietro": "All trades",

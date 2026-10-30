@@ -118,6 +118,8 @@ window.LINGUE_SITO.da = {
   "ms.gelaterie": "Isbutikker",
   "ms.ballo": "Danse- og aerofitness-skoler og -lærere",
   "ms.personal": "Personlige trænere",
+  "ms.nutrizionisti": "Ernæringseksperter",
+  "ms.ptnutri": "Personlige trænere og ernæringseksperter",
   "ms.arrivo": "Programmet til dit fag kommer snart",
   "ms.arrivo.d": "Indtil videre er der demoen: prøv den, og fortæl os, hvad du mangler.",
   "ms.indietro": "Alle fag",

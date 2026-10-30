@@ -552,7 +552,7 @@
      (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/, benessere/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
      Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria, demo/ballo e demo/personal-trainer per gli altri.
-     I mestieri in IN_ARRIVO (personal trainer) hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo». -->
+     I mestieri in IN_ARRIVO (personal trainer, nutrizionisti, i due insieme) hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo». -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
   <div class="ms-testa">
     <button type="button" class="ms-btn" id="ms_indietro" hidden><span class="freccia">←</span> <span data-t="ms.indietro">Tutti i mestieri</span></button>
@@ -570,6 +570,8 @@
       <button type="button" class="ms-mestiere" data-mestiere="gelateria"><span class="ms-ico" aria-hidden="true">🍦</span><span class="ms-nome" data-t="ms.gelaterie">Gelaterie</span></button>
       <button type="button" class="ms-mestiere" data-mestiere="ballo"><span class="ms-ico" aria-hidden="true">💃</span><span class="ms-nome" data-t="ms.ballo">Scuole e insegnanti di ballo &amp; aerofitness</span></button>
       <button type="button" class="ms-mestiere" data-mestiere="personal"><span class="ms-ico" aria-hidden="true">🏋️</span><span class="ms-nome" data-t="ms.personal">Personal trainer</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="nutrizionista"><span class="ms-ico" aria-hidden="true">🥗</span><span class="ms-nome" data-t="ms.nutrizionisti">Nutrizionisti</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="ptnutri"><span class="ms-ico" aria-hidden="true">🏋️</span><span class="ms-nome" data-t="ms.ptnutri">Personal trainer e nutrizionisti</span></button>
     </div>
   </div>
   <div class="ms-passo" id="ms_strade" hidden>
@@ -729,9 +731,10 @@
     var APP = 'https://app.askylostudio.it/';
     var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
                  gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/',
-                 personal: APP + 'demo/personal-trainer/' };
+                 personal: APP + 'demo/personal-trainer/', nutrizionista: APP + 'demo/personal-trainer/?con=nutrizionista',
+                 ptnutri: APP + 'demo/personal-trainer/?con=nutrizione' };
     // i mestieri che hanno la demo ma non ancora un gestionale vero: niente «Comincia gratis»
-    var IN_ARRIVO = { personal: true };
+    var IN_ARRIVO = { personal: true, nutrizionista: true, ptnutri: true };
     // le pagine che raccontano un mestiere, qui sul sito: scuole di ballo, gelaterie, e una sola per gli studi di massaggi, estetica e benessere
     var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/', olistico: 'benessere/', estetista: 'benessere/', massofisio: 'benessere/' };
     var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');

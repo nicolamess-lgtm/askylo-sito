@@ -118,6 +118,8 @@ window.LINGUE_SITO.fr = {
   "ms.gelaterie": "Glaciers",
   "ms.ballo": "Écoles et professeurs de danse et d'aéro fitness",
   "ms.personal": "Coachs sportifs",
+  "ms.nutrizionisti": "Nutritionnistes",
+  "ms.ptnutri": "Coachs sportifs et nutritionnistes",
   "ms.arrivo": "Le logiciel pour votre métier arrive bientôt",
   "ms.arrivo.d": "Pour l'instant, il y a la démo : essayez-la et dites-nous ce qui manque.",
   "ms.indietro": "Tous les métiers",

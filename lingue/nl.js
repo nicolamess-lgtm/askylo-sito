@@ -118,6 +118,8 @@ window.LINGUE_SITO.nl = {
   "ms.gelaterie": "IJssalons",
   "ms.ballo": "Dans- en aerofitnessscholen en -docenten",
   "ms.personal": "Personal trainers",
+  "ms.nutrizionisti": "Voedingsdeskundigen",
+  "ms.ptnutri": "Personal trainers en voedingsdeskundigen",
   "ms.arrivo": "De software voor jouw vak komt eraan",
   "ms.arrivo.d": "Voor nu is er de demo: probeer hem en vertel ons wat je mist.",
   "ms.indietro": "Alle beroepen",

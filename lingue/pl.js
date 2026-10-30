@@ -118,6 +118,8 @@ window.LINGUE_SITO.pl = {
   "ms.gelaterie": "Lodziarnie",
   "ms.ballo": "Szkoły i nauczyciele tańca oraz aerofitness",
   "ms.personal": "Trenerzy personalni",
+  "ms.nutrizionisti": "Dietetycy",
+  "ms.ptnutri": "Trenerzy personalni i dietetycy",
   "ms.arrivo": "Program dla Twojego zawodu już wkrótce",
   "ms.arrivo.d": "Na razie jest wersja demo: wypróbuj ją i napisz, czego brakuje.",
   "ms.indietro": "Wszystkie zawody",
