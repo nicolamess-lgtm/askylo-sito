@@ -118,6 +118,8 @@ window.LINGUE_SITO.ja = {
   "ms.gelaterie": "ジェラート店",
   "ms.ballo": "ダンス・エアロフィットネスの教室と講師",
   "ms.personal": "パーソナルトレーナー",
+  "ms.nutrizionisti": "栄養士",
+  "ms.ptnutri": "パーソナルトレーナー・栄養士",
   "ms.arrivo": "あなたの職業向けの管理アプリは近日公開",
   "ms.arrivo.d": "今はデモをお試しいただけます。足りない機能を教えてください。",
   "ms.indietro": "すべての職業",

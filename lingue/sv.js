@@ -118,6 +118,8 @@ window.LINGUE_SITO.sv = {
   "ms.gelaterie": "Glassbarer",
   "ms.ballo": "Dans- och aerofitnesskolor och lärare",
   "ms.personal": "Personliga tränare",
+  "ms.nutrizionisti": "Nutritionister",
+  "ms.ptnutri": "Personliga tränare och nutritionister",
   "ms.arrivo": "Programmet för ditt yrke kommer snart",
   "ms.arrivo.d": "Just nu finns demon: prova den och berätta vad du saknar.",
   "ms.indietro": "Alla yrken",

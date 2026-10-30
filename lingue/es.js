@@ -118,6 +118,8 @@ window.LINGUE_SITO.es = {
   "ms.gelaterie": "Heladerías",
   "ms.ballo": "Escuelas y profesores de baile y aero fitness",
   "ms.personal": "Entrenadores personales",
+  "ms.nutrizionisti": "Nutricionistas",
+  "ms.ptnutri": "Entrenadores personales y nutricionistas",
   "ms.arrivo": "El programa para tu profesión llegará pronto",
   "ms.arrivo.d": "Por ahora está la demo: pruébala y dinos qué te falta.",
   "ms.indietro": "Todos los oficios",
