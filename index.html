@@ -552,7 +552,7 @@
      (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/, benessere/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
      Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria, demo/ballo e demo/personal-trainer per gli altri.
-     I mestieri in IN_ARRIVO (personal trainer, nutrizionisti, i due insieme) hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo». -->
+     I mestieri in IN_ARRIVO hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo» (oggi nessuno). -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
   <div class="ms-testa">
     <button type="button" class="ms-btn" id="ms_indietro" hidden><span class="freccia">←</span> <span data-t="ms.indietro">Tutti i mestieri</span></button>
@@ -733,8 +733,10 @@
                  gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/',
                  personal: APP + 'demo/personal-trainer/', nutrizionista: APP + 'demo/personal-trainer/?con=nutrizionista',
                  ptnutri: APP + 'demo/personal-trainer/?con=nutrizione' };
-    // i mestieri che hanno la demo ma non ancora un gestionale vero: niente «Comincia gratis»
-    var IN_ARRIVO = { personal: true, nutrizionista: true, ptnutri: true };
+    // i mestieri che hanno la demo ma non ancora un gestionale vero: niente «Comincia gratis» (dal 1/11/2026 non ce ne sono: il personal trainer ha il suo)
+    var IN_ARRIVO = {};
+    // il gestionale dei personal trainer ha tre forme: la scelta passa all'app nell'indirizzo (?con=)
+    var COMINCIA = { nutrizionista: APP + '?mestiere=personal&con=nutrizionista', ptnutri: APP + '?mestiere=personal&con=nutrizione', personal: APP + '?mestiere=personal' };
     // le pagine che raccontano un mestiere, qui sul sito: scuole di ballo, gelaterie, e una sola per gli studi di massaggi, estetica e benessere
     var PAGINE = { ballo: 'scuole-di-ballo/', gelateria: 'gelaterie/', olistico: 'benessere/', estetista: 'benessere/', massofisio: 'benessere/' };
     var fin = document.getElementById('mestieri'), elenco = document.getElementById('ms_elenco'), strade = document.getElementById('ms_strade');
@@ -751,7 +753,7 @@
       elenco.hidden = !!b; strade.hidden = !b; indietro.hidden = !b;
       if (!b) { scelto = ''; return; }
       scelto = k; nomeMestiere();
-      document.getElementById('ms_comincia').href = APP + '?mestiere=' + k;
+      document.getElementById('ms_comincia').href = COMINCIA[k] || APP + '?mestiere=' + k;
       document.getElementById('ms_comincia').hidden = !!IN_ARRIVO[k];
       document.getElementById('ms_arrivo').hidden = !IN_ARRIVO[k];
       document.getElementById('ms_demo').href = DEMO[k];
