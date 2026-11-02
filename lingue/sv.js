@@ -120,6 +120,7 @@ window.LINGUE_SITO.sv = {
   "ms.personal": "Personliga tränare",
   "ms.nutrizionisti": "Nutritionister",
   "ms.ptnutri": "Personliga tränare och nutritionister",
+  "ms.ospitalita": "Campingplatser, gårdsboenden och B&B (beta)",
   "ms.arrivo": "Programmet för ditt yrke kommer snart",
   "ms.arrivo.d": "Just nu finns demon: prova den och berätta vad du saknar.",
   "ms.indietro": "Alla yrken",

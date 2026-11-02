@@ -120,6 +120,7 @@ window.LINGUE_SITO.sq = {
   "ms.personal": "Trajnerë personalë",
   "ms.nutrizionisti": "Nutricionistë",
   "ms.ptnutri": "Trajnerë personalë dhe nutricionistë",
+  "ms.ospitalita": "Kampingje, agroturizëm dhe B&B (beta)",
   "ms.arrivo": "Programi për profesionin tënd vjen së shpejti",
   "ms.arrivo.d": "Për tani ka demon: provoje dhe na thuaj çfarë të mungon.",
   "ms.indietro": "Të gjitha profesionet",

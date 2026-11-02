@@ -120,6 +120,7 @@ window.LINGUE_SITO.pl = {
   "ms.personal": "Trenerzy personalni",
   "ms.nutrizionisti": "Dietetycy",
   "ms.ptnutri": "Trenerzy personalni i dietetycy",
+  "ms.ospitalita": "Kempingi, agroturystyka i B&B (beta)",
   "ms.arrivo": "Program dla Twojego zawodu już wkrótce",
   "ms.arrivo.d": "Na razie jest wersja demo: wypróbuj ją i napisz, czego brakuje.",
   "ms.indietro": "Wszystkie zawody",

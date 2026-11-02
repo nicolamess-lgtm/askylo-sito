@@ -120,6 +120,7 @@ window.LINGUE_SITO.fr = {
   "ms.personal": "Coachs sportifs",
   "ms.nutrizionisti": "Nutritionnistes",
   "ms.ptnutri": "Coachs sportifs et nutritionnistes",
+  "ms.ospitalita": "Campings, gîtes et chambres d'hôtes (bêta)",
   "ms.arrivo": "Le logiciel pour votre métier arrive bientôt",
   "ms.arrivo.d": "Pour l'instant, il y a la démo : essayez-la et dites-nous ce qui manque.",
   "ms.indietro": "Tous les métiers",

@@ -120,6 +120,7 @@ window.LINGUE_SITO.de = {
   "ms.personal": "Personal Trainer",
   "ms.nutrizionisti": "Ernährungsberater",
   "ms.ptnutri": "Personal Trainer und Ernährungsberater",
+  "ms.ospitalita": "Campingplätze, Ferienhöfe und B&Bs (Beta)",
   "ms.arrivo": "Die Software für deinen Beruf kommt bald",
   "ms.arrivo.d": "Bis dahin gibt es die Demo: probier sie aus und sag uns, was fehlt.",
   "ms.indietro": "Alle Berufe",
