@@ -120,6 +120,7 @@ window.LINGUE_SITO.ja = {
   "ms.personal": "パーソナルトレーナー",
   "ms.nutrizionisti": "栄養士",
   "ms.ptnutri": "パーソナルトレーナー・栄養士",
+  "ms.ospitalita": "キャンプ場・農家民宿・B&B（ベータ版）",
   "ms.arrivo": "あなたの職業向けの管理アプリは近日公開",
   "ms.arrivo.d": "今はデモをお試しいただけます。足りない機能を教えてください。",
   "ms.indietro": "すべての職業",

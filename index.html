@@ -551,7 +551,7 @@
 <!-- I mestieri: si apre dalla carta di Askylo Studio. Prima si sceglie il mestiere, poi tre strade
      (più «Scopri cosa cambia», per i mestieri che hanno una pagina sul sito: scuole-di-ballo/, gelaterie/, benessere/):
      cominciare gratis, il tutorial (in preparazione, spento) e il gestionale demo con dati inventati.
-     Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria, demo/ballo e demo/personal-trainer per gli altri.
+     Le demo stanno sull'app: ?demo=<mestiere> per il gestionale, demo/gelateria, demo/ballo, demo/personal-trainer e demo/ospitalita (in beta, dal 2/11/2026) per gli altri.
      I mestieri in IN_ARRIVO hanno solo la demo: al posto di «Comincia gratis» c'è «in arrivo» (oggi nessuno). -->
 <dialog class="mestieri" id="mestieri" aria-labelledby="ms_titolo">
   <div class="ms-testa">
@@ -572,6 +572,7 @@
       <button type="button" class="ms-mestiere" data-mestiere="personal"><span class="ms-ico" aria-hidden="true">🏋️</span><span class="ms-nome" data-t="ms.personal">Personal trainer</span></button>
       <button type="button" class="ms-mestiere" data-mestiere="nutrizionista"><span class="ms-ico" aria-hidden="true">🥗</span><span class="ms-nome" data-t="ms.nutrizionisti">Nutrizionisti</span></button>
       <button type="button" class="ms-mestiere" data-mestiere="ptnutri"><span class="ms-ico" aria-hidden="true">🏋️</span><span class="ms-nome" data-t="ms.ptnutri">Personal trainer e nutrizionisti</span></button>
+      <button type="button" class="ms-mestiere" data-mestiere="ospitalita"><span class="ms-ico" aria-hidden="true">⛺</span><span class="ms-nome" data-t="ms.ospitalita">Campeggi, agriturismi e B&amp;B (beta)</span></button>
     </div>
   </div>
   <div class="ms-passo" id="ms_strade" hidden>
@@ -732,7 +733,7 @@
     var DEMO = { olistico: APP + '?demo=olistico', estetista: APP + '?demo=estetista', massofisio: APP + '?demo=massofisio',
                  gelateria: APP + 'demo/gelateria/', ballo: APP + 'demo/ballo/',
                  personal: APP + 'demo/personal-trainer/', nutrizionista: APP + 'demo/personal-trainer/?con=nutrizionista',
-                 ptnutri: APP + 'demo/personal-trainer/?con=nutrizione' };
+                 ptnutri: APP + 'demo/personal-trainer/?con=nutrizione', ospitalita: APP + 'demo/ospitalita/' };
     // i mestieri che hanno la demo ma non ancora un gestionale vero: niente «Comincia gratis» (dal 1/11/2026 non ce ne sono: il personal trainer ha il suo)
     var IN_ARRIVO = {};
     // il gestionale dei personal trainer ha tre forme: la scelta passa all'app nell'indirizzo (?con=)

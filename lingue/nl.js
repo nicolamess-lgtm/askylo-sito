@@ -120,6 +120,7 @@ window.LINGUE_SITO.nl = {
   "ms.personal": "Personal trainers",
   "ms.nutrizionisti": "Voedingsdeskundigen",
   "ms.ptnutri": "Personal trainers en voedingsdeskundigen",
+  "ms.ospitalita": "Campings, agriturismo's en B&B's (bèta)",
   "ms.arrivo": "De software voor jouw vak komt eraan",
   "ms.arrivo.d": "Voor nu is er de demo: probeer hem en vertel ons wat je mist.",
   "ms.indietro": "Alle beroepen",

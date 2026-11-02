@@ -120,6 +120,7 @@ window.LINGUE_SITO.es = {
   "ms.personal": "Entrenadores personales",
   "ms.nutrizionisti": "Nutricionistas",
   "ms.ptnutri": "Entrenadores personales y nutricionistas",
+  "ms.ospitalita": "Campings, casas rurales y B&B (beta)",
   "ms.arrivo": "El programa para tu profesión llegará pronto",
   "ms.arrivo.d": "Por ahora está la demo: pruébala y dinos qué te falta.",
   "ms.indietro": "Todos los oficios",

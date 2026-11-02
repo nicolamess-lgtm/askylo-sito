@@ -120,6 +120,7 @@ window.LINGUE_SITO.ro = {
   "ms.personal": "Antrenori personali",
   "ms.nutrizionisti": "Nutriționiști",
   "ms.ptnutri": "Antrenori personali și nutriționiști",
+  "ms.ospitalita": "Campinguri, agroturisme și B&B-uri (beta)",
   "ms.arrivo": "Programul pentru meseria ta vine în curând",
   "ms.arrivo.d": "Deocamdată există demo-ul: încearcă-l și spune-ne ce lipsește.",
   "ms.indietro": "Toate meseriile",

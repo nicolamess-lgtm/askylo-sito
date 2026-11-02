@@ -120,6 +120,7 @@ window.LINGUE_SITO.en = {
   "ms.personal": "Personal trainers",
   "ms.nutrizionisti": "Nutritionists",
   "ms.ptnutri": "Personal trainers and nutritionists",
+  "ms.ospitalita": "Campsites, farm stays and B&Bs (beta)",
   "ms.arrivo": "The app for your profession is coming soon",
   "ms.arrivo.d": "For now there's the demo: try it and tell us what's missing.",
   "ms.indietro": "All trades",
