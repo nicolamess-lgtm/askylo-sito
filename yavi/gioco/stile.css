@@ -1,0 +1,339 @@
+/* Yavier Game — stile. Token Asky uguali a web/app.css e web/tastiera/stile.css (tenerli allineati),
+   più quelli del Game (tasti, corsie). Caratteri da /web/ (licenza SIL OFL). Scuro predefinito, chiaro
+   con data-tema="light" o con il sistema in chiaro. Funziona da 320 px in su, in verticale e in orizzontale. */
+@font-face { font-family: "Fraunces"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("/yavi/web/fraunces.woff2") format("woff2"); }
+@font-face { font-family: "Fraunces"; font-style: italic; font-weight: 400 800; font-display: swap; src: url("/yavi/web/fraunces-corsivo.woff2") format("woff2"); }
+@font-face { font-family: "DM Sans"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("/yavi/web/dm-sans.woff2") format("woff2"); }
+
+:root {
+  --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
+  --ink: #F3EFE6; --muted: #A3A9BC;
+  --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+  --petrolio: #4FB3A8; --petrolio-soft: rgba(79,179,168,.16);
+  --rosso: #D32F2F; --rosso-testo: #FF8A80; --rosso-soft: rgba(211,47,47,.18);
+  --ombra: 0 1px 2px rgba(0,0,0,.25), 0 18px 44px -18px rgba(0,0,0,.6);
+  --testata: rgba(18,20,28,.86);
+  --rullo-fondo: #151824;
+  --serif: Fraunces, Georgia, "Times New Roman", serif;
+  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --r1: 14px; --r2: 18px; --r3: 22px;
+  /* Game */
+  --tasto-bianco: #F3EFE6; --tasto-bianco-ink: #1A2233; --tasto-bordo: rgba(0,0,0,.45); --tasto-ombra: rgba(26,34,51,.22); --tasto-giu: #E2DBCB;
+  --tasto-nero: #0A0C12; --tasto-nero-ink: #F3EFE6; --tasto-nero-giu: #222634;
+  --corsia: rgba(255,255,255,.028); --corsia-nera: rgba(0,0,0,.28);
+  --luce: rgba(255,255,255,.42);
+  --tasto-aiuto: #FFE08A;
+  color-scheme: dark;
+}
+:root[data-tema="light"] {
+  --bg: #FAF7F0; --card: #fff; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
+  --ink: #1A2233; --muted: #5F6675;
+  --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+  --petrolio: #2C7A72; --petrolio-soft: #E1F0EE;
+  --rosso: #C62828; --rosso-testo: #A31F1F; --rosso-soft: #FBE3E1;
+  --ombra: 0 1px 2px rgba(26,34,51,.05), 0 10px 28px -10px rgba(26,34,51,.14);
+  --testata: rgba(250,247,240,.88);
+  --rullo-fondo: #FCFAF5;
+  --tasto-bianco: #fff; --tasto-bianco-ink: #1A2233; --tasto-bordo: #D9D1BC; --tasto-ombra: rgba(26,34,51,.10); --tasto-giu: #F1ECDF;
+  --tasto-nero: #1A2233; --tasto-nero-ink: #FAF7F0; --tasto-nero-giu: #343D52;
+  --corsia: rgba(26,34,51,.022); --corsia-nera: rgba(26,34,51,.07);
+  --luce: rgba(255,255,255,.55);
+  --tasto-aiuto: #FFEDB0;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema]) {
+    --bg: #FAF7F0; --card: #fff; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
+    --ink: #1A2233; --muted: #5F6675;
+    --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+    --petrolio: #2C7A72; --petrolio-soft: #E1F0EE;
+    --rosso: #C62828; --rosso-testo: #A31F1F; --rosso-soft: #FBE3E1;
+    --ombra: 0 1px 2px rgba(26,34,51,.05), 0 10px 28px -10px rgba(26,34,51,.14);
+    --testata: rgba(250,247,240,.88);
+    --rullo-fondo: #FCFAF5;
+    --tasto-bianco: #fff; --tasto-bianco-ink: #1A2233; --tasto-bordo: #D9D1BC; --tasto-ombra: rgba(26,34,51,.10); --tasto-giu: #F1ECDF;
+    --tasto-nero: #1A2233; --tasto-nero-ink: #FAF7F0; --tasto-nero-giu: #343D52;
+    --corsia: rgba(26,34,51,.022); --corsia-nera: rgba(26,34,51,.07);
+    --luce: rgba(255,255,255,.55);
+    --tasto-aiuto: #FFEDB0;
+    color-scheme: light;
+  }
+}
+
+/* ---------- base ---------- */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5; font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden; min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+}
+h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; margin: 0; }
+p { margin: 0 0 10px; }
+a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--line-forte); }
+a:hover { text-decoration-color: var(--giallo); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--giallo); outline-offset: 3px; border-radius: 10px; }
+[tabindex="-1"]:focus { outline: none; }
+.tenue { color: var(--muted); }
+.piccolo { font-size: .88rem; }
+.nascosto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.salta { position: absolute; left: -999px; top: 8px; z-index: 50; background: var(--giallo); color: var(--giallo-ink); padding: 10px 16px; border-radius: 999px; font-weight: 700; }
+.salta:focus { left: 16px; }
+[hidden] { display: none !important; }
+
+.pulsante {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 20px; border-radius: 999px; font-weight: 600; font-size: 15px;
+  border: 1px solid transparent; background: var(--card); cursor: pointer; text-decoration: none; color: var(--ink);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s, border-color .15s;
+}
+.pulsante:active { transform: translateY(1px); }
+.pulsante.primo { background: var(--giallo); color: var(--giallo-ink); box-shadow: 0 10px 26px -12px rgba(242,183,5,.7); }
+.pulsante.primo:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -12px rgba(242,183,5,.85); }
+.pulsante.secondo { border-color: var(--line-forte); background: transparent; }
+.pulsante.secondo:hover { border-color: var(--giallo); }
+.pulsante.piccolo { padding: 0 16px; font-size: 14px; }
+.pulsante.grande { min-height: 54px; padding: 0 30px; font-size: 17px; }
+.pulsante svg { width: 18px; height: 18px; flex: none; }
+.tondo {
+  width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; padding: 0;
+  border-radius: 999px; border: 1px solid var(--line-forte); background: var(--card); color: var(--accento); cursor: pointer;
+}
+.tondo:hover { border-color: var(--giallo); }
+.tondo svg { width: 20px; height: 20px; }
+.tondo .luna { display: none; }
+:root[data-tema="light"] .tondo .sole { display: none; }
+:root[data-tema="light"] .tondo .luna { display: block; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-tema]) .tondo .sole { display: none; }
+  :root:not([data-tema]) .tondo .luna { display: block; }
+}
+
+/* ---------- testata ---------- */
+.testata {
+  position: sticky; top: 0; z-index: 10; background: var(--testata);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line);
+}
+.testata-riga { display: flex; align-items: center; gap: 10px; max-width: 1100px; margin: 0 auto; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top)); }
+.marchio { display: flex; align-items: center; gap: 10px; white-space: nowrap; text-decoration: none; color: var(--ink); min-height: 44px; border-radius: 12px; }
+.marchio .segno {
+  width: 36px; height: 36px; border-radius: 10px; background: var(--giallo); color: var(--giallo-ink);
+  display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-weight: 800; font-size: 22px; line-height: 1;
+  box-shadow: 0 6px 18px -6px rgba(242,183,5,.6);
+}
+.marchio-nome { font-family: var(--serif); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; }
+.pillola-game {
+  font-weight: 700; font-size: .8rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 999px; background: var(--accento-soft); color: var(--accento);
+}
+.spazio { flex: 1; }
+/* telefoni stretti: il marchio «Askylo Yavi» un po' più piccolo, come in web/app.css */
+@media (max-width: 380px) {
+  .marchio-nome { font-size: 20px; }
+  .marchio .segno { width: 32px; height: 32px; }
+}
+
+/* ---------- contenuto ---------- */
+main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 22px 16px 24px; }
+
+/* 1. Scegli */
+.scegli-testa { margin-bottom: 18px; }
+.scegli-testa h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.15; margin-bottom: 6px; }
+.scegli-testa p { max-width: 560px; }
+.schede { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 14px; }
+@media (min-width: 720px) { .schede { grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 18px; } }
+.scheda {
+  display: flex; flex-direction: column; align-items: stretch; text-align: left; gap: 2px;
+  padding: 10px 10px 12px; border-radius: var(--r3); border: 1px solid var(--line); background: var(--card);
+  box-shadow: var(--ombra); cursor: pointer; min-width: 0; color: var(--ink);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.scheda:hover { transform: translateY(-3px); border-color: var(--giallo); }
+.scheda:active { transform: translateY(0) scale(.985); }
+.scheda-figura {
+  display: grid; place-items: center; aspect-ratio: 6 / 5; border-radius: var(--r2); background: var(--tinta, var(--secondary));
+  margin-bottom: 10px; overflow: hidden;
+}
+.figura { width: 80%; height: auto; display: block; transition: transform .25s ease; }
+.scheda:hover .figura { transform: rotate(-3deg) scale(1.04); }
+.scheda-titolo { font-family: var(--serif); font-weight: 600; font-size: 1.1rem; line-height: 1.2; padding: 0 4px; overflow-wrap: anywhere; }
+.scheda-sotto { color: var(--muted); font-size: .84rem; padding: 0 4px; }
+.scheda-piede { margin-top: auto; padding: 8px 4px 0; display: flex; align-items: center; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+.scheda-stelle { display: inline-flex; gap: 2px; }
+.scheda-tasti { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+.tinta-giallo { --tinta: var(--accento-soft); }
+.tinta-petrolio { --tinta: var(--petrolio-soft); }
+.tinta-corallo { --tinta: var(--rosso-soft); }
+.tinta-inchiostro { --tinta: var(--secondary); }
+.manca { margin-top: 16px; padding: 14px 16px; border-radius: var(--r2); background: var(--accento-soft); }
+
+/* le figure (classi dentro gli SVG) */
+.f-g { fill: var(--giallo); } .f-p { fill: var(--petrolio); } .f-c { fill: var(--rosso-testo); } .f-i { fill: var(--ink); }
+.f-tinta { fill: var(--card); } .f-luce { fill: var(--luce); }
+.t-g { stroke: var(--giallo); } .t-p { stroke: var(--petrolio); } .t-c { stroke: var(--rosso-testo); } .t-i { stroke: var(--ink); } .t-luce { stroke: var(--luce); }
+
+/* le stelline */
+.stellina { width: 20px; height: 20px; display: block; }
+.stellina path { stroke-width: 1.6; }
+.stellina.piena path { fill: var(--giallo); stroke: var(--giallo); }
+.stellina.vuota path { fill: none; stroke: var(--line-forte); }
+
+/* strumenti: tastiera MIDI, pianoforte collegato */
+.strumenti { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 18px; }
+.strumenti:empty { display: none; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 14px; border-radius: 999px;
+  border: 1px solid var(--line-forte); font-size: .86rem; max-width: 100%;
+}
+.spia { width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: var(--line-forte); display: inline-block; }
+.spia.accesa { background: var(--petrolio); box-shadow: 0 0 0 4px var(--petrolio-soft); }
+.interruttore { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: .9rem; cursor: pointer; }
+.interruttore input { accent-color: var(--giallo); width: 20px; height: 20px; }
+
+/* 2. Suona: tutta l'altezza dello schermo, senza testata né piede */
+body.in-suona .testata, body.in-suona .piede { display: none; }
+body.in-suona main { max-width: none; padding: 0; display: flex; }
+#s-suona {
+  flex: 1; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 1100px; margin: 0 auto;
+  height: 100vh; height: 100dvh;
+  padding: max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+.suona-alto { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px 12px; }
+.suona-titolo { font-size: clamp(1.05rem, 3.4vw, 1.4rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.avanzamento { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: var(--secondary); overflow: hidden; }
+.avanzamento span { display: block; height: 100%; width: var(--av, 0%); background: var(--petrolio); border-radius: 999px; transition: width .25s ease; }
+
+.palco { --gap: 6px; --bordo: 8px; --sotto: 22px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.corsie {
+  position: relative; flex: 1; min-height: 120px; display: grid; grid-template-columns: repeat(var(--n, 7), minmax(0, 1fr));
+  column-gap: var(--gap); padding: 0 var(--bordo); overflow: hidden;
+  border: 1px solid var(--line); border-bottom: 0; border-radius: var(--r3) var(--r3) 0 0;
+  background: radial-gradient(120% 60% at 50% 100%, var(--accento-soft), transparent 70%), var(--rullo-fondo);
+}
+.corsia { position: relative; background: var(--corsia); border-radius: 12px 12px 0 0; transition: background .2s; }
+.corsia.nera { background: var(--corsia-nera); }
+.corsia.attiva { background: linear-gradient(to top, var(--accento-soft), transparent 75%), var(--corsia); }
+.linea {
+  position: absolute; left: var(--bordo); right: var(--bordo); bottom: var(--sotto); height: 3px; border-radius: 3px;
+  background: var(--giallo); opacity: .75; pointer-events: none; box-shadow: 0 0 14px rgba(255,198,26,.35);
+}
+.suggerimento {
+  position: absolute; left: 50%; top: 12px; transform: translateX(-50%); width: max-content; max-width: calc(100% - 24px); margin: 0;
+  padding: 8px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--testata);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  text-align: center; font-family: var(--serif); font-style: italic; font-size: clamp(.95rem, 3vw, 1.2rem); color: var(--ink);
+  pointer-events: none; z-index: 3;
+}
+
+/* le note che scendono: tonde (teste di nota), mai mattoncini */
+.nota {
+  position: absolute; top: 0; left: 0; right: 0; margin: 0 auto; z-index: 1;
+  width: min(92%, calc(var(--hn, 40px) * 1.4)); height: var(--hn, 40px); border-radius: 999px;
+  display: grid; place-items: center; pointer-events: none; will-change: transform;
+  font-weight: 700; font-size: clamp(11px, 2.4vw, 17px); line-height: 1; white-space: nowrap;
+  background: var(--accento-soft); color: var(--ink); border: 2px solid var(--giallo); opacity: .8;
+}
+.nota.prossima { background: var(--giallo); color: var(--giallo-ink); opacity: 1; z-index: 2; box-shadow: 0 8px 20px -8px rgba(242,183,5,.8); }
+.nota.aspetta { animation: respiro 1.6s ease-in-out infinite; }
+.nota.aiuto::after { content: attr(data-lettera); position: absolute; top: -1.35em; font-size: 12px; color: var(--accento); display: none; }
+@media (any-pointer: fine) { .nota.aiuto::after { display: block; } }
+body.con-tastiera .nota.aiuto::after { display: block; }
+.nota.via { animation: via .4s ease-out forwards; background: var(--petrolio); border-color: var(--petrolio); color: #fff; }
+@keyframes respiro { 50% { box-shadow: 0 0 0 7px var(--accento-soft), 0 8px 20px -8px rgba(242,183,5,.8); } }
+@keyframes via { to { scale: 1.7; opacity: 0; } }
+
+/* i tasti: <button> veri, grandi */
+.tasti {
+  display: grid; grid-template-columns: repeat(var(--n, 7), minmax(0, 1fr)); column-gap: var(--gap);
+  height: clamp(118px, 27vh, 240px); padding: 0 var(--bordo) 10px; align-items: stretch;
+  border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--r3) var(--r3); background: var(--secondary);
+}
+.tasto {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px;
+  min-width: 0; padding: 6px 2px 14px; margin: 0; cursor: pointer; overflow: hidden;
+  border: 1px solid var(--tasto-bordo); border-top: 0; border-radius: 0 0 14px 14px;
+  background: var(--tasto-bianco); color: var(--tasto-bianco-ink); box-shadow: inset 0 -7px 0 var(--tasto-ombra);
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+  transition: transform .06s ease, box-shadow .06s ease, background .12s;
+}
+.tasto.nero { background: var(--tasto-nero); color: var(--tasto-nero-ink); border-color: var(--tasto-nero); align-self: start; height: 80%; box-shadow: inset 0 -6px 0 rgba(255,255,255,.08); }
+.tasto.giu { transform: translateY(3px); box-shadow: inset 0 -2px 0 var(--tasto-ombra); background: var(--tasto-giu); }
+.tasto.nero.giu { background: var(--tasto-nero-giu); }
+.tasto-nome { font-weight: 700; font-size: clamp(14px, 3.8vw, 24px); line-height: 1.1; white-space: nowrap; }
+.tasto-segno { font-size: 10.5px; font-weight: 600; opacity: .7; line-height: 1; }
+.tasto-lettera {
+  display: none; font: 600 12px/1 var(--sans); padding: 3px 6px; min-width: 22px; text-align: center;
+  border: 1px solid currentColor; border-radius: 6px; opacity: .75;   /* .6 dava un contrasto sotto 4,5:1 */
+}
+@media (any-pointer: fine) { .tasto-lettera { display: inline-block; } }
+body.con-tastiera .tasto-lettera { display: inline-block; }
+.tasto:focus-visible { outline-offset: -4px; }
+.tasto.bene { animation: bene .4s ease-out; }
+.tasto.storto { animation: storto .3s ease-in-out; }
+.tasto.aiuto { animation: pulsa 1.1s ease-in-out infinite; }
+.tasto.aiuto:not(.nero) { background: linear-gradient(to top, var(--tasto-aiuto), var(--tasto-bianco) 75%); }
+.tasto.nero.aiuto { background: linear-gradient(to top, #6B5410, var(--tasto-nero) 75%); }
+@keyframes bene { 0% { box-shadow: inset 0 -7px 0 var(--petrolio), 0 0 0 0 var(--petrolio); } 100% { box-shadow: inset 0 -7px 0 var(--tasto-ombra), 0 0 0 10px transparent; } }
+@keyframes storto { 0%, 100% { translate: 0 0; } 25% { translate: -4px 0; outline: 2px solid var(--rosso-testo); } 50% { translate: 3px 0; outline: 2px solid var(--rosso-testo); } 75% { translate: -2px 0; } }
+@keyframes pulsa { 0%, 100% { box-shadow: inset 0 -7px 0 var(--giallo), 0 0 0 0 rgba(255,198,26,.55); } 50% { box-shadow: inset 0 -7px 0 var(--giallo), 0 0 0 9px rgba(255,198,26,0); } }
+.palco.scossa .corsie { animation: scossa .24s ease-in-out; }
+@keyframes scossa { 25% { translate: -3px 0; } 50% { translate: 3px 0; } 75% { translate: -1px 0; } }
+
+.suona-basso { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; min-height: 0; }
+.suona-basso .strumenti { margin-top: 0; gap: 6px 8px; }
+.suona-basso .chip, .suona-basso .pulsante, .suona-basso .interruttore { min-height: 34px; font-size: .8rem; }
+.suona-basso .pulsante { padding: 0 12px; }
+.gira { display: none; margin: 0; font-size: .84rem; color: var(--muted); }
+@media (orientation: portrait) and (max-width: 520px) { body.molti-tasti .gira { display: block; } }
+/* telefono stretto (320–360 px) con 8 o 9 tasti: «Sol♯» e «basso» devono stare nel tasto */
+@media (orientation: portrait) and (max-width: 360px) {
+  body.molti-tasti .palco { --gap: 3px; }
+  body.molti-tasti .tasto-nome { font-size: 12px; }
+  body.molti-tasti .tasto-segno { font-size: 9px; }
+}
+
+/* telefono in orizzontale: poca altezza, si stringe tutto */
+@media (orientation: landscape) and (max-height: 520px) {
+  #s-suona { gap: 6px; padding-top: max(6px, env(safe-area-inset-top)); }
+  .suona-alto { grid-template-columns: auto 1fr minmax(80px, 28%); }
+  .avanzamento { grid-column: auto; }
+  .tasti { height: 40vh; padding-bottom: 6px; }
+  .palco { --sotto: 16px; }
+  .suona-basso { display: none; }   /* la tastiera MIDI si attiva da «Scegli» */
+  .pulsante.indietro { min-height: 40px; }
+}
+
+/* 3. Fine */
+#s-fine { display: grid; place-items: center; min-height: 60vh; }
+.fine-carta {
+  width: 100%; max-width: 540px; text-align: center; padding: 30px 20px 26px; border-radius: var(--r3);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--ombra);
+}
+.fine-stelle { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.stellina.grande { width: clamp(56px, 16vw, 76px); height: clamp(56px, 16vw, 76px); }
+.stellina.grande.piena { animation: arriva .5s cubic-bezier(.3,1.6,.5,1) both; filter: drop-shadow(0 6px 14px rgba(242,183,5,.45)); }
+.stellina.grande:nth-child(2) { animation-delay: .18s; margin-top: -12px; }
+.stellina.grande:nth-child(3) { animation-delay: .36s; }
+@keyframes arriva { from { scale: .2; opacity: 0; rotate: -30deg; } to { scale: 1; opacity: 1; rotate: 0deg; } }
+#t-fine { font-size: clamp(1.8rem, 6vw, 2.4rem); margin-bottom: 6px; }
+.fine-frase { font-family: var(--serif); font-style: italic; font-size: 1.15rem; }
+.fine-dettaglio { font-size: .92rem; }
+.fine-record { display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--petrolio-soft); color: var(--petrolio); font-weight: 600; font-size: .9rem; }
+.fine-azioni { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+
+/* piede */
+.piede {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 10px; text-align: center;
+  font-size: .8rem; color: var(--muted); padding: 14px 16px; padding-bottom: max(14px, env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .tasto.aiuto { box-shadow: inset 0 -7px 0 var(--giallo), 0 0 0 3px var(--giallo); }
+  .tasto.bene { box-shadow: inset 0 -7px 0 var(--petrolio); }
+  .tasto.storto { outline: 2px solid var(--rosso-testo); outline-offset: -2px; }
+  .nota.aspetta { box-shadow: 0 0 0 4px var(--accento-soft); }
+}

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Il tuo account — Askylo Yavi</title>
+<meta name="description" content="I tuoi prodotti Askylo Yavi, i Mac collegati e gli acquisti.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#12141C">
+<link rel="icon" href="/yavi/favicon.svg" type="image/svg+xml">
+<script src="/yavi/tema.js"></script>
+<link rel="stylesheet" href="/yavi/sito.css">
+<script src="/yavi/sito.js" defer></script>
+<script src="/yavi/config.js" defer></script>
+<script src="/yavi/supabase.js" defer></script>
+<script src="/yavi/prodotti.js" defer></script>
+<script src="/yavi/account/account.js" defer></script>
+</head>
+<body>
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-riga">
+    <a class="marchio" href="/yavi/" aria-label="Askylo Yavi, pagina iniziale"><span class="segno" aria-hidden="true">Y</span><span class="marchio-nome"><span class="marchio-famiglia">Askylo</span> Yavi</span></a>
+    <nav class="nav-alta" aria-label="Principale">
+      <a class="voce" href="/#modi">Modalità</a>
+      <a class="voce" href="/#come">Come funziona</a>
+      <a class="voce" href="/#prezzi">Prezzi</a>
+    </nav>
+    <div class="comandi-alti">
+      <a class="pulsante piccolo primo" href="/yavi/gioco/">Gioca</a>
+      <a class="pulsante piccolo secondo" href="/yavi/accedi/" data-account>Accedi</a>
+      <button class="tondo" id="btnTema" type="button" aria-label="Cambia tema: Carta o Sala" title="Tema">
+        <svg class="sole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenuto" class="pagina">
+  <h1>Il tuo account</h1>
+  <p class="sotto">I tuoi prodotti, i Mac collegati e quello che puoi aggiungere.</p>
+  <div id="messaggio" class="messaggio" role="status" aria-live="polite" hidden></div>
+
+  <section id="nonAttivo" class="carta calmo" hidden aria-labelledby="titoloNonAttivo">
+    <span class="modo-icona" aria-hidden="true">🌱</span>
+    <h2 id="titoloNonAttivo">L'account non è ancora attivo</h2>
+    <p>Stiamo preparando gli account e gli acquisti. Intanto il Game è aperto a tutti, gratis e senza account.</p>
+    <div class="inviti">
+      <a class="pulsante primo" href="/yavi/gioco/">Gioca subito</a>
+      <a class="pulsante secondo" href="/yavi/">Torna alla pagina iniziale</a>
+    </div>
+  </section>
+
+  <div id="tutto" hidden>
+    <section class="carta chi" aria-label="Il tuo accesso">
+      <p class="tenue">Sei dentro come <span class="rompi" id="email"></span></p>
+      <button class="pulsante secondo piccolo" type="button" id="btnEsci">Esci</button>
+    </section>
+
+    <div id="avvisoCompra" class="messaggio" role="status" aria-live="polite" hidden></div>
+
+    <section class="carta" aria-labelledby="titoloProdotti">
+      <h2 id="titoloProdotti">I tuoi prodotti</h2>
+      <p class="tenue">Si aprono su tutti i Mac collegati a questo account.</p>
+      <ul class="elenco" id="elencoProdotti"><li class="vuoto">Un attimo, li leggo…</li></ul>
+    </section>
+
+    <section class="carta" aria-labelledby="titoloMac">
+      <h2 id="titoloMac">I tuoi Mac <span class="pill" id="contaMac"></span></h2>
+      <p class="tenue">Puoi collegare fino a 3 Mac. Per collegarne uno apri Askylo Yavi sul Mac e scegli di collegarlo all'account: si apre una pagina di questo sito con un codice da approvare.</p>
+      <div id="esitoMac" class="messaggio vicino" role="status" aria-live="polite" hidden></div>
+      <ul class="elenco" id="elencoMac"><li class="vuoto">Un attimo, li leggo…</li></ul>
+      <details class="dettagli-scollegati" id="scollegati" hidden>
+        <summary>Mac scollegati</summary>
+        <ul class="elenco" id="elencoScollegati"></ul>
+      </details>
+    </section>
+
+    <section class="carta" aria-labelledby="titoloCatalogo">
+      <h2 id="titoloCatalogo">Aggiungi un prodotto</h2>
+      <p class="tenue">Paghi con carta su una pagina sicura di Stripe. Poi il prodotto compare qui e si apre sui tuoi Mac.</p>
+      <div id="esitoCatalogo" class="messaggio vicino" role="status" aria-live="polite" hidden></div>
+      <ul class="elenco" id="elencoCatalogo"><li class="vuoto">Un attimo, lo leggo…</li></ul>
+    </section>
+  </div>
+
+  <dialog class="finestra" id="finestraScollega" aria-labelledby="titoloScollega">
+    <h2 id="titoloScollega">Scollegare questo Mac?</h2>
+    <p id="testoScollega"></p>
+    <div class="azioni">
+      <button class="pulsante secondo" type="button" id="btnAnnullaScollega">Annulla</button>
+      <button class="pulsante pericolo-pieno" type="button" id="btnConfermaScollega">Scollega</button>
+    </div>
+  </dialog>
+</main>
+
+<footer class="piede-sito">
+  <div class="contenitore">
+    <div class="piede-riga">
+      <span class="marchio-nome">Askylo Yavi</span>
+      <nav aria-label="Informazioni">
+        <a href="/yavi/gioco/">Game</a>
+        <a href="/yavi/account/">Il tuo account</a>
+        <a href="/yavi/crediti/">Crediti e licenze</a>
+        <a href="/yavi/privacy/">Privacy (bozza)</a>
+        <a href="/yavi/termini/">Termini (bozza)</a>
+      </nav>
+    </div>
+    <p class="marchi">Yamaha, Disklavier ed ENSPIRE sono marchi di Yamaha Corporation. Askylo Yavi è un prodotto indipendente, non affiliato né approvato da Yamaha.</p>
+  </div>
+</footer>
+</body>
+</html>

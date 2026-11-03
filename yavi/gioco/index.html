@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="it" data-virtuale="solo-suono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Game · Askylo Yavi</title>
+<meta name="description" content="Askylo Yavi Game: scegli una canzone, le note scendono e ti aspettano. Gratis, nel browser, anche su telefono e tablet.">
+<meta name="theme-color" content="#12141C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312141C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='700' text-anchor='middle' fill='%23FFC61A'%3EY%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="/yavi/web/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/yavi/web/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/yavi/gioco/js/tema.js"></script>
+<link rel="stylesheet" href="/yavi/gioco/stile.css">
+</head>
+<body class="gioco">
+<a class="salta" href="#contenuto">Vai al contenuto</a>
+
+<header class="testata" id="testata">
+  <div class="testata-riga">
+    <a class="marchio" href="/yavi/home/" aria-label="Askylo Yavi, pagina principale">
+      <span class="segno" aria-hidden="true">Y</span><span class="marchio-nome">Askylo Yavi</span>
+    </a>
+    <span class="pillola-game">Game</span>
+    <span class="spazio"></span>
+    <button class="tondo" id="btn-tema" type="button" aria-label="Cambia tema: chiaro o scuro" title="Tema">
+      <svg class="sole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+      <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="contenuto">
+  <!-- 1. Scegli -->
+  <section id="s-scegli" class="schermata" aria-labelledby="t-scegli">
+    <div class="scegli-testa">
+      <h1 id="t-scegli" tabindex="-1">Che cosa suoniamo?</h1>
+      <p class="tenue">Le note scendono e ti aspettano sulla linea: premi il tasto giusto, con calma.</p>
+    </div>
+    <div class="schede" id="schede"></div>
+    <p class="manca" id="manca" role="status" hidden></p>
+    <div class="strumenti" id="strumenti-scegli"></div>
+  </section>
+
+  <!-- 2. Suona -->
+  <section id="s-suona" class="schermata" aria-labelledby="t-suona" hidden>
+    <div class="suona-alto">
+      <button class="pulsante secondo piccolo indietro" id="btn-indietro" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <span>Canzoni</span>
+      </button>
+      <h1 id="t-suona" class="suona-titolo" tabindex="-1"></h1>
+      <div class="avanzamento" id="avanzamento" role="progressbar" aria-label="Note suonate" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    </div>
+    <div class="palco" id="palco">
+      <div class="corsie" id="corsie"></div>
+      <div class="tasti" id="tasti" role="group" aria-label="Tasti del pianoforte"></div>
+    </div>
+    <div class="suona-basso">
+      <p class="gira" id="gira">Gira il telefono: i tasti diventano più grandi.</p>
+      <div class="strumenti" id="strumenti-suona"></div>
+    </div>
+    <p class="nascosto" id="annuncio" aria-live="polite"></p>
+  </section>
+
+  <!-- 3. Fine -->
+  <section id="s-fine" class="schermata" aria-labelledby="t-fine" hidden>
+    <div class="fine-carta">
+      <div class="fine-stelle" id="fine-stelle" role="img"></div>
+      <h1 id="t-fine" tabindex="-1"></h1>
+      <p class="fine-frase" id="fine-frase"></p>
+      <p class="tenue fine-dettaglio" id="fine-dettaglio"></p>
+      <p class="fine-record" id="fine-record" hidden>La tua migliore, finora.</p>
+      <div class="fine-azioni">
+        <button class="pulsante primo grande" id="btn-ancora" type="button">Ancora</button>
+        <button class="pulsante secondo grande" id="btn-altro" type="button">Un altro</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="piede" id="piede">
+  <a href="/yavi/crediti/">Pianoforte: FluidR3_GM (CC BY 3.0)</a>
+  <span aria-hidden="true">·</span>
+  <span>Gratis, senza account. Le stelle restano solo su questo dispositivo.</span>
+</footer>
+
+<script defer src="/yavi/tastiera/js/base.js"></script>
+<script defer src="/yavi/tastiera/js/brani.js"></script>
+<script defer src="/yavi/tastiera/brani/inclusi.js"></script>
+<!-- pianoforte-virtuale.js qui serve solo per i campioni: data-virtuale="solo-suono" sul tag html
+     gli dice di non seguire i brani di Yavier e di non parlare con le altre schede -->
+<script defer src="/yavi/web/pianoforte-virtuale.js"></script>
+<script defer src="/yavi/gioco/js/logica.js"></script>
+<script defer src="/yavi/gioco/js/figure.js"></script>
+<script defer src="/yavi/gioco/js/suono.js"></script>
+<script defer src="/yavi/gioco/js/ingressi.js"></script>
+<script defer src="/yavi/gioco/js/gioco.js"></script>
+</body>
+</html>

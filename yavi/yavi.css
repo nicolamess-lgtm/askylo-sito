@@ -1,0 +1,198 @@
+/* Yavier — sito: le pagine nuove (landing, home con You play / Yavi plays, Yavi plays nel browser).
+   Usa i token e i pezzi di sito.css (design system Asky: Sala di notte, Carta di giorno). */
+
+/* ---------- la lingua, in alto ---------- */
+.sel-lingua {
+  font: inherit; font-size: .9rem; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line-forte); border-radius: 999px; padding: 8px 12px; min-height: 40px; cursor: pointer;
+  max-width: 140px;
+}
+.sel-lingua:hover { border-color: var(--giallo); }
+@media (max-width: 720px) {
+  .sel-lingua { max-width: 96px; padding: 6px 8px; font-size: .85rem; }
+}
+
+/* ---------- il pianoforte che suona (apertura della landing) ---------- */
+.palco-demo {
+  margin: 0; border-radius: var(--r3); border: 1px solid var(--line); background: var(--card);
+  box-shadow: var(--ombra); overflow: hidden; display: flex; flex-direction: column;
+}
+.palco-testa { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.palco-pallini { display: inline-flex; gap: 6px; }
+.palco-pallini i { width: 10px; height: 10px; border-radius: 50%; background: var(--line-forte); }
+.palco-pallini i:first-child { background: var(--giallo); }
+.palco-titolo { flex: 1; font-weight: 600; font-size: .95rem; }
+.palco-badge {
+  font-size: .78rem; padding: 3px 10px; border-radius: 999px; background: var(--secondary); color: var(--muted);
+  letter-spacing: .02em;
+}
+.palco-badge.acceso { background: var(--accento-soft); color: var(--accento); }
+.rullo-tela { display: block; width: 100%; height: 300px; background: var(--rullo-fondo); }
+.rullo-tela.basso { height: 220px; border-radius: var(--r1); border: 1px solid var(--line); }
+.palco-piede { display: flex; flex-direction: column; gap: 8px; padding: 12px 16px 14px; }
+.palco-barra { display: block; height: 4px; border-radius: 4px; background: var(--secondary); overflow: hidden; }
+.palco-barra i { display: block; height: 100%; width: 0; background: var(--giallo); transition: width .2s linear; }
+
+/* ---------- le due porte (landing e home) ---------- */
+.porta { position: relative; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.porta-nome { font-family: var(--serif); font-size: clamp(1.7rem, 3.4vw, 2.3rem); letter-spacing: -0.02em; margin: 0; }
+.porta-chi { margin: 0; font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; color: var(--accento); font-weight: 700; }
+.porta p { margin: 0; }
+.porta .vai { margin-top: auto; padding-top: 6px; font-weight: 700; color: var(--accento); text-decoration: none; }
+.porta .vai:hover { color: var(--ink); }
+.porta-disegno {
+  position: relative; height: 140px; border-radius: var(--r1); background: var(--rullo-fondo);
+  border: 1px solid var(--line); overflow: hidden; margin-bottom: 6px;
+}
+.porta-disegno .tastini { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 34px; display: flex; gap: 2px; padding: 0 2px; }
+.porta-disegno .tastini i { flex: 1; background: var(--tasto-bianco); border-radius: 0 0 4px 4px; }
+.porta-disegno .cade, .porta-disegno .sale {
+  position: absolute; width: 11%; border-radius: 6px; height: 34px; opacity: .95;
+}
+.porta-disegno .cade { background: var(--giallo); top: -40px; animation: cadi 2.6s linear infinite; }
+.porta-disegno .sale { background: var(--petrolio); top: -40px; animation: cadi 3.2s linear infinite; }
+.porta-disegno .c1, .porta-disegno .s1 { left: 6%; }
+.porta-disegno .c2, .porta-disegno .s2 { left: 34%; animation-delay: -.7s; height: 22px; }
+.porta-disegno .c3, .porta-disegno .s3 { left: 58%; animation-delay: -1.4s; height: 46px; }
+.porta-disegno .c4, .porta-disegno .s4 { left: 82%; animation-delay: -2s; }
+@keyframes cadi { from { transform: translateY(0); } to { transform: translateY(150px); } }
+@media (prefers-reduced-motion: reduce) {
+  .porta-disegno .cade, .porta-disegno .sale { animation: none; top: 30px; }
+}
+
+/* ---------- piatto contro umano ---------- */
+.confronto { display: flex; flex-direction: column; gap: 16px; padding: 24px; }
+.sel-brano {
+  font: inherit; color: var(--ink); background: var(--secondary); border: 1px solid var(--line-forte);
+  border-radius: 999px; padding: 10px 16px; min-height: 44px; max-width: 100%;
+}
+.confronto-pulsanti { display: flex; flex-wrap: wrap; gap: 10px; }
+.confronto-pulsanti .pulsante.in-corso { box-shadow: var(--anello); }
+.confronto-cosa { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 20px; }
+.confronto-cosa li { position: relative; padding-left: 24px; color: var(--muted); }
+.confronto-cosa li::before { content: "✓"; position: absolute; left: 0; color: var(--accento); font-weight: 700; }
+@media (max-width: 720px) {
+  .confronto { padding: 18px; }
+  .confronto-cosa { grid-template-columns: 1fr; }
+  .confronto-pulsanti .pulsante { width: 100%; }
+}
+
+/* ---------- per chi, fine ---------- */
+.chi h3 { margin-top: 12px; }
+.chi p { margin: 6px 0 0; color: var(--muted); }
+.fascia-fine {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  padding: 32px; background: var(--alone), var(--card);
+}
+.fascia-fine h2 { margin: 0 0 6px; font-size: clamp(1.5rem, 3vw, 2rem); }
+.fascia-fine p { margin: 0; }
+
+/* =====================================================================
+   HOME: solo You play e Yavi plays
+   ===================================================================== */
+.home-yavi { min-height: calc(100vh - 140px); display: flex; align-items: center; background: var(--alone); }
+.home-yavi .contenitore { width: 100%; padding-top: 40px; padding-bottom: 48px; }
+.home-saluto { text-align: center; margin: 0 auto 34px; max-width: 640px; }
+.home-saluto h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; line-height: 1.08; margin: 0 0 10px; }
+.home-saluto p { margin: 0; color: var(--muted); font-size: 1.08rem; }
+
+.porte { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 1040px; margin: 0 auto; }
+.porta-grande {
+  position: relative; display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 26px;
+  border-radius: 28px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  text-decoration: none; box-shadow: var(--ombra); overflow: hidden; isolation: isolate;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.porta-grande::after {           /* l'alone colorato che si accende al passaggio */
+  content: ""; position: absolute; inset: auto -30% -60% -30%; height: 80%; z-index: -1; opacity: .5;
+  background: radial-gradient(50% 60% at 50% 50%, var(--accento-soft), transparent 70%); transition: opacity .2s;
+}
+.porta-grande.yavi::after { background: radial-gradient(50% 60% at 50% 50%, var(--petrolio-soft), transparent 70%); }
+.porta-grande:hover { transform: translateY(-4px); border-color: var(--giallo); box-shadow: var(--anello), var(--ombra); }
+.porta-grande.yavi:hover { border-color: var(--petrolio); box-shadow: 0 0 0 1.5px var(--petrolio), 0 0 36px -8px var(--petrolio), var(--ombra); }
+.porta-grande:hover::after { opacity: 1; }
+.porta-grande:active { transform: translateY(-1px); }
+.porta-grande:focus-visible { outline-offset: 5px; border-radius: 28px; }
+.porta-grande .porta-disegno { height: 210px; border-radius: 20px; margin: 0 0 6px; }
+.porta-grande .porta-disegno .tastini { height: 48px; }
+.porta-grande .cade, .porta-grande .sale { height: 44px; }
+.porta-grande .c2, .porta-grande .s2 { height: 28px; }
+.porta-grande .c3, .porta-grande .s3 { height: 60px; }
+@keyframes cadiAlta { from { transform: translateY(0); } to { transform: translateY(220px); } }
+.porta-grande .cade, .porta-grande .sale { animation-name: cadiAlta; }
+.porta-grande .porta-chi { color: var(--accento); }
+.porta-grande.yavi .porta-chi { color: var(--petrolio); }
+.porta-grande .porta-nome { font-size: clamp(2.1rem, 4.6vw, 3rem); }
+.porta-grande .porta-testo { margin: 0; color: var(--muted); font-size: 1.04rem; line-height: 1.5; }
+.porta-grande .porta-azione {
+  margin-top: 8px; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+  min-height: 52px; padding: 0 24px; border-radius: 999px; font-weight: 700; font-size: 1.05rem;
+  background: var(--giallo); color: var(--giallo-ink); box-shadow: 0 10px 26px -12px rgba(242,183,5,.7);
+}
+.porta-grande.yavi .porta-azione { background: var(--petrolio); color: #fff; box-shadow: 0 10px 26px -12px rgba(79,179,168,.7); }
+.porta-grande .porta-azione .freccia { transition: transform .2s; }
+.porta-grande:hover .porta-azione .freccia { transform: translateX(4px); }
+[dir="rtl"] .porta-grande .porta-azione .freccia { transform: scaleX(-1); }
+[dir="rtl"] .porta-grande:hover .porta-azione .freccia { transform: scaleX(-1) translateX(4px); }
+.home-nota { text-align: center; margin: 26px auto 0; color: var(--muted); font-size: .95rem; }
+.home-nota b { color: var(--ink); }
+
+@media (max-width: 760px) {
+  .porte { grid-template-columns: 1fr; gap: 16px; }
+  .porta-grande { padding: 16px 16px 20px; border-radius: 24px; }
+  .porta-grande .porta-disegno { height: 130px; }
+  .porta-grande .porta-disegno .tastini { height: 34px; }
+  .porta-grande .porta-azione { width: 100%; justify-content: center; }
+  .home-saluto { margin-bottom: 22px; }
+  .home-yavi .contenitore { padding-top: 24px; }
+}
+
+/* =====================================================================
+   YAVI PLAYS nel browser
+   ===================================================================== */
+.ascolta { padding: 28px 0 48px; }
+.ascolta-testa { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.ascolta-testa h1 { font-size: clamp(1.9rem, 4.4vw, 2.8rem); letter-spacing: -0.03em; margin: 0; }
+.ascolta-testa p { margin: 6px 0 0; color: var(--muted); }
+.ascolta-griglia { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr); gap: 20px; align-items: start; }
+.lettore { padding: 0; overflow: hidden; }
+.lettore .rullo-tela { height: min(52vh, 420px); }
+.lettore-comandi { display: flex; align-items: center; gap: 14px; padding: 14px 16px; flex-wrap: wrap; }
+.lettore-comandi .grande-tondo {
+  width: 60px; height: 60px; border-radius: 50%; border: 0; cursor: pointer; flex: 0 0 auto;
+  background: var(--petrolio); color: #fff; font-size: 1.4rem; display: grid; place-items: center;
+  box-shadow: 0 10px 26px -12px rgba(79,179,168,.8); transition: transform .15s;
+}
+.lettore-comandi .grande-tondo:hover { transform: scale(1.05); }
+.lettore-info { flex: 1; min-width: 160px; }
+.lettore-info b { display: block; font-family: var(--serif); font-size: 1.2rem; }
+.lettore-info span { color: var(--muted); font-size: .9rem; }
+.interruttore { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; }
+.interruttore input { width: 42px; height: 24px; accent-color: var(--petrolio); cursor: pointer; }
+.elenco-brani { list-style: none; margin: 0; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+.elenco-brani button {
+  width: 100%; display: flex; align-items: center; gap: 12px; text-align: start; padding: 12px 14px;
+  border-radius: var(--r1); border: 1px solid transparent; background: transparent; color: var(--ink); cursor: pointer; font: inherit;
+}
+.elenco-brani button:hover { background: var(--secondary); }
+.elenco-brani button[aria-current="true"] { background: var(--petrolio-soft); border-color: var(--petrolio); }
+.elenco-brani .num { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 50%; display: grid; place-items: center; background: var(--secondary); font-size: .85rem; color: var(--muted); }
+.elenco-brani button[aria-current="true"] .num { background: var(--petrolio); color: #fff; }
+.elenco-brani .tit { display: flex; flex-direction: column; min-width: 0; }
+.elenco-brani .tit b { font-weight: 600; }
+.elenco-brani .tit span { color: var(--muted); font-size: .85rem; }
+.disklavier-invito { margin-top: 20px; display: flex; gap: 16px; align-items: flex-start; padding: 20px; }
+.disklavier-invito h2 { font-size: 1.15rem; margin: 0 0 4px; }
+.disklavier-invito p { margin: 0; color: var(--muted); }
+@media (max-width: 860px) {
+  .ascolta-griglia { grid-template-columns: 1fr; }
+  .lettore .rullo-tela { height: 280px; }
+}
+
+/* ---------- da destra a sinistra (arabo) ---------- */
+/* «Vai al contenuto» sta fuori dallo schermo a sinistra: in RTL allargherebbe la pagina, quindi va a destra */
+[dir="rtl"] .salta { left: auto; right: -999px; }
+[dir="rtl"] .salta:focus { right: 16px; }
+html { overflow-x: clip; }
+[dir="rtl"] .confronto-cosa li { padding-left: 0; padding-right: 24px; }
+[dir="rtl"] .confronto-cosa li::before { left: auto; right: 0; }
