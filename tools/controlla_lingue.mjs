@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const radice = join(dirname(fileURLToPath(import.meta.url)), '..');
-const html = readFileSync(join(radice, 'index.html'), 'utf8');
+const html = readFileSync(join(radice, 'sito', 'index.html'), 'utf8');
 
 // id messi nell'HTML + id che usa lo script (titolo, descrizione, pulsanti)
 const idHtml = new Map();
