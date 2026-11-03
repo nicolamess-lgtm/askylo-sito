@@ -176,5 +176,10 @@ window.LINGUE_YAVI.sq = {
  "p.meta.titolo": "Askylo Yavi — planet",
  "p.meta.desc": "Planet e Askylo Yavi: Falas, Plus, Pro dhe Për jetë për themeluesit. Çmime nisjeje, pagesë me PayPal.",
  "p.allanno": "/ vit",
- "p.paga": "Paguaj me PayPal"
+ "p.paga": "Paguaj me PayPal",
+ "p.ypp.testo": "Luan vetëm ti? Pjesë të tuat pa kufi në You play, me përparimet dhe yjet e tua gjithmonë të ruajtura.",
+ "p.plus.5": "<b>Regjia</b>: pjesët e tua në radhë, të lidhura si do t’i lidhte një pianist, dhe «Më befaso»",
+ "p.pro.4": "<b>Skena</b>, <b>Partitura</b>, <b>Akordet dhe teksti</b> dhe <b>Regjistro</b>: për ata që luajnë e këndojnë seriozisht",
+ "p.conf.regia": "Regjia dhe Më befaso",
+ "p.conf.palco": "Skena, Partitura, Akordet dhe teksti, Regjistro"
 };

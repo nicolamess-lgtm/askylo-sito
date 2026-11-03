@@ -176,5 +176,10 @@ window.LINGUE_YAVI.ro = {
   "p.meta.titolo": "Askylo Yavi — planurile",
   "p.meta.desc": "Planurile Askylo Yavi: Gratuit, Plus, Pro și Pe viață pentru fondatori. Prețuri de lansare, plată cu PayPal.",
   "p.allanno": "/ an",
-  "p.paga": "Plătește cu PayPal"
+  "p.paga": "Plătește cu PayPal",
+ "p.ypp.testo": "Cânți doar tu? Piese ale tale, fără limite, în You play, cu progresele și stelele tale mereu salvate.",
+ "p.plus.5": "<b>Regia</b>: piesele tale la rând, legate între ele ca de un pianist, și «Surprinde-mă»",
+ "p.pro.4": "<b>Scena</b>, <b>Partitura</b>, <b>Acorduri și versuri</b> și <b>Înregistrează</b>: pentru cine cântă la pian și cu vocea pe bune",
+ "p.conf.regia": "Regia și Surprinde-mă",
+ "p.conf.palco": "Scena, Partitura, Acorduri și versuri, Înregistrează"
 };

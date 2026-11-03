@@ -176,5 +176,10 @@ window.LINGUE_YAVI.sv = {
  "p.meta.titolo": "Askylo Yavi — abonnemangen",
  "p.meta.desc": "Abonnemangen i Askylo Yavi: Gratis, Plus, Pro och För livet för grundarna. Lanseringspriser, betalning med PayPal.",
  "p.allanno": "/ år",
- "p.paga": "Betala med PayPal"
+ "p.paga": "Betala med PayPal",
+ "p.ypp.testo": "Spelar du själv? Egna låtar utan gräns i You play, med dina framsteg och stjärnor alltid sparade.",
+ "p.plus.5": "<b>Regi</b>: dina låtar på rad, sammanfogade som en pianist skulle göra, och «Överraska mig»",
+ "p.pro.4": "<b>Scen</b>, <b>Noter</b>, <b>Ackord och text</b> och <b>Spela in</b>: för dig som spelar och sjunger på allvar",
+ "p.conf.regia": "Regi och Överraska mig",
+ "p.conf.palco": "Scen, Noter, Ackord och text, Spela in"
 };

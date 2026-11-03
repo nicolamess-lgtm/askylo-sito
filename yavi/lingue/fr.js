@@ -176,5 +176,10 @@ window.LINGUE_YAVI.fr = {
  "p.meta.titolo": "Askylo Yavi — les formules",
  "p.meta.desc": "Les formules d'Askylo Yavi : Gratuit, Plus, Pro et À vie pour les fondateurs. Prix de lancement, paiement avec PayPal.",
  "p.allanno": "/ an",
- "p.paga": "Payer avec PayPal"
+ "p.paga": "Payer avec PayPal",
+ "p.ypp.testo": "Tu joues seul ? Des morceaux à toi, sans limite, dans You play, avec tes progrès et tes étoiles toujours sauvegardés.",
+ "p.plus.5": "<b>Régie</b> : tes morceaux à la suite, enchaînés comme le ferait un pianiste, et « Surprends-moi »",
+ "p.pro.4": "<b>Scène</b>, <b>Partition</b>, <b>Accords et paroles</b> et <b>Enregistrer</b> : pour ceux qui jouent et chantent pour de bon",
+ "p.conf.regia": "Régie et Surprends-moi",
+ "p.conf.palco": "Scène, Partition, Accords et paroles, Enregistrer"
 };
