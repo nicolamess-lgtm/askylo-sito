@@ -176,5 +176,10 @@ window.LINGUE_YAVI.nl = {
  "p.meta.titolo": "Askylo Yavi — de abonnementen",
  "p.meta.desc": "De abonnementen van Askylo Yavi: Gratis, Plus, Pro en Voor het leven voor de oprichters. Introductieprijzen, betalen met PayPal.",
  "p.allanno": "per jaar",
- "p.paga": "Betaal met PayPal"
+ "p.paga": "Betaal met PayPal",
+ "p.ypp.testo": "Speel je alleen? Eigen nummers zonder limiet in You play, met je voortgang en sterren altijd bewaard.",
+ "p.plus.5": "<b>Regie</b>: je nummers op een rij, aan elkaar geknoopt zoals een pianist dat zou doen, en «Verras me»",
+ "p.pro.4": "<b>Podium</b>, <b>Bladmuziek</b>, <b>Akkoorden en tekst</b> en <b>Opnemen</b>: voor wie serieus speelt en zingt",
+ "p.conf.regia": "Regie en Verras me",
+ "p.conf.palco": "Podium, Bladmuziek, Akkoorden en tekst, Opnemen"
 };

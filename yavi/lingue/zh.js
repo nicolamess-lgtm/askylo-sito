@@ -176,5 +176,10 @@ window.LINGUE_YAVI.zh = {
   "p.meta.titolo": "Askylo Yavi — 套餐",
   "p.meta.desc": "Askylo Yavi 的套餐：免费、Plus、Pro，以及送给创始会员的终身版。首发价格，通过 PayPal 付款。",
   "p.allanno": "/ 年",
-  "p.paga": "用 PayPal 付款"
+  "p.paga": "用 PayPal 付款",
+ "p.ypp.testo": "只有你自己弹吗？在 You play 里可以无限添加自己的曲目，你的进步和星星也会一直保存。",
+ "p.plus.5": "<b>编排</b>：把你的曲子排成一列，像钢琴家那样自然衔接，还有「给我惊喜」",
+ "p.pro.4": "<b>舞台</b>、<b>乐谱</b>、<b>和弦与歌词</b>和<b>录音</b>：为认真弹琴唱歌的你",
+ "p.conf.regia": "编排与给我惊喜",
+ "p.conf.palco": "舞台、乐谱、和弦与歌词、录音"
 };

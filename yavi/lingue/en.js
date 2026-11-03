@@ -176,5 +176,10 @@ window.LINGUE_YAVI.en = {
  "p.meta.titolo": "Askylo Yavi — the plans",
  "p.meta.desc": "The Askylo Yavi plans: Free, Plus, Pro and For life for the founders. Launch prices, payment with PayPal.",
  "p.allanno": "/ year",
- "p.paga": "Pay with PayPal"
+ "p.paga": "Pay with PayPal",
+ "p.ypp.testo": "Just you playing? Unlimited songs of your own in You play, with your progress and stars always saved.",
+ "p.plus.5": "<b>Director</b>: your songs in a queue, stitched together like a pianist would, and “Surprise me”",
+ "p.pro.4": "<b>Stage</b>, <b>Sheet music</b>, <b>Chords and lyrics</b> and <b>Record</b>: for those who play and sing seriously",
+ "p.conf.regia": "Director and Surprise me",
+ "p.conf.palco": "Stage, Sheet music, Chords and lyrics, Record"
 };

@@ -271,3 +271,13 @@ html { overflow-x: clip; }
   .piani-interruttori .segmenti:not(.piccoli) .segmento { flex: 1; justify-content: center; padding: 8px 10px; flex-direction: column; gap: 2px; line-height: 1.2; }
   .regalo { font-size: .7rem; padding: 1px 6px; }
 }
+
+/* You play+: la riga piccola sotto la carta Gratis */
+.piano-extra { margin-top: auto; padding: 14px; border-radius: var(--r1); border: 1px dashed var(--line-forte); background: var(--secondary); display: flex; flex-direction: column; gap: 6px; }
+.piano .piano-cosa + .piano-extra { margin-top: 16px; }
+.piano-extra p { margin: 0; }
+.piano-extra-testa { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.piano-extra-testa > b { font-family: var(--serif); font-size: 1.1rem; }
+.piano-extra-prezzo b { font-family: var(--serif); font-size: 1.2rem; }
+.piano-extra-testo { color: var(--muted); font-size: .9rem; line-height: 1.4; }
+.piano-extra .pulsante { align-self: flex-start; text-decoration: none; }

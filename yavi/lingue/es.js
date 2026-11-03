@@ -176,5 +176,10 @@ window.LINGUE_YAVI.es = {
  "p.meta.titolo": "Askylo Yavi — los planes",
  "p.meta.desc": "Los planes de Askylo Yavi: Gratis, Plus, Pro y De por vida para los fundadores. Precios de lanzamiento, pago con PayPal.",
  "p.allanno": "/ año",
- "p.paga": "Paga con PayPal"
+ "p.paga": "Paga con PayPal",
+ "p.ypp.testo": "¿Tocas solo tú? Canciones tuyas sin límites en You play, con tus progresos y tus estrellas siempre guardados.",
+ "p.plus.5": "<b>Dirección</b>: tus canciones en fila, enlazadas como lo haría un pianista, y «Sorpréndeme»",
+ "p.pro.4": "<b>Escenario</b>, <b>Partitura</b>, <b>Acordes y letra</b> y <b>Grabar</b>: para quien toca y canta en serio",
+ "p.conf.regia": "Dirección y Sorpréndeme",
+ "p.conf.palco": "Escenario, Partitura, Acordes y letra, Grabar"
 };
