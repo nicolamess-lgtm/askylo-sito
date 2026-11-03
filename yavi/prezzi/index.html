@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askylo Yavi — i piani</title>
+<meta name="description" content="I piani di Askylo Yavi: Gratis, Plus, Pro e A vita per i fondatori. Prezzi di lancio, pagamento con PayPal.">
+<!-- prezzi di prova (3/11/2026): la pagina non va nei motori di ricerca finché Nicola non li decide -->
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#12141C">
+<link rel="icon" href="/yavi/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/yavi/web/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/yavi/web/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/yavi/tema.js"></script>
+<link rel="stylesheet" href="/yavi/sito.css">
+<link rel="stylesheet" href="/yavi/yavi.css">
+<script src="/yavi/lingue.js" defer></script>
+<script src="/yavi/sito.js" defer></script>
+<script src="/yavi/prezzi/prezzi.js" defer></script>
+</head>
+<body data-t-pagina="p">
+<a class="salta" href="#contenuto" data-t="c.salta">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-riga">
+    <a class="marchio" href="/yavi/" aria-label="Askylo Yavi, pagina iniziale"><span class="segno" aria-hidden="true">Y</span><span class="marchio-nome"><span class="marchio-famiglia">Askylo</span> Yavi</span></a>
+    <div class="comandi-alti">
+      <label class="nascosto" for="lingua" data-t="c.lingua">Lingua</label>
+      <select class="sel-lingua" id="lingua"></select>
+      <a class="pulsante piccolo primo" href="/yavi/home/" data-t="c.entra">Entra</a>
+      <button class="tondo" id="btnTema" type="button" aria-label="Cambia tema: Carta o Sala" title="Tema">
+        <svg class="sole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenuto" class="piani-pagina">
+  <div class="contenitore">
+    <div class="piani-testa">
+      <p class="occhiello" data-t="p.occhiello">I piani</p>
+      <h1 data-t="p.titolo">Comincia gratis. Cresci quando vuoi.</h1>
+      <p class="tenue" data-t="p.sotto">You play e Yavi plays restano gratis per sempre. I piani aprono tutto il resto di Yavi.</p>
+      <p class="piani-avviso" role="note"><span aria-hidden="true">🧪</span> <span data-t="p.avviso">Prezzi di lancio. Paghi con PayPal; il piano lo attiviamo noi a mano, entro 24 ore, scrivendoti all'email del pagamento.</span></p>
+      <p class="piani-grazie" id="grazie" role="status" hidden><span aria-hidden="true">🎉</span> <span data-t="p.grazie">Grazie! Il pagamento è arrivato a PayPal. Entro 24 ore ti scriviamo all'email di PayPal per attivare il tuo piano.</span></p>
+
+      <div class="piani-interruttori">
+        <div class="segmenti" role="group" aria-label="Come paghi" data-t-aria="p.come">
+          <button type="button" class="segmento" data-periodo="mese" aria-pressed="true" data-t="p.mese">Ogni mese</button>
+          <button type="button" class="segmento" data-periodo="anno" aria-pressed="false"><span data-t="p.anno">Ogni anno</span> <span class="regalo" data-t="p.regalo">2 mesi in regalo</span></button>
+        </div>
+        <div class="segmenti piccoli" role="group" aria-label="Valuta" data-t-aria="p.valuta">
+          <button type="button" class="segmento" data-valuta="eur" aria-pressed="true">€</button>
+          <button type="button" class="segmento" data-valuta="usd" aria-pressed="false">$</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="piani">
+      <!-- Gratis -->
+      <article class="carta piano">
+        <p class="piano-nome" data-t="p.free.nome">Gratis</p>
+        <p class="piano-prezzo"><b data-prezzo data-mese="0" data-anno="0">0 €</b></p>
+        <p class="piano-per" data-t="p.free.per">Per sempre, senza account</p>
+        <a class="pulsante secondo largo" href="/yavi/home/" data-t="p.free.vai">Comincia adesso</a>
+        <ul class="piano-cosa">
+          <li data-t="p.free.1"><b>You play</b>: suoni tu, con le note che scendono</li>
+          <li data-t="p.free.2"><b>Yavi plays</b>: Yavi suona per te come un pianista</li>
+          <li data-t="p.free.3">Tutti i brani inclusi, senza limiti</li>
+          <li data-t="p.free.4">Fino a <b>20</b> brani tuoi (file MIDI)</li>
+          <li data-t="p.free.5">Nel browser e nell'app per Mac, anche con il Disklavier</li>
+        </ul>
+      </article>
+
+      <!-- Plus -->
+      <article class="carta piano">
+        <p class="piano-nome">Plus</p>
+        <p class="piano-prezzo"><b data-prezzo data-mese="15" data-anno="150">15 €</b><span class="piano-unita" data-unita><span data-t="p.almese">/ mese</span></span></p>
+        <p class="piano-per" data-piano-per="plus"><span data-t="p.plus.per">Per chi vuole imparare e ordinare la sua musica</span></p>
+        <span class="pulsante secondo largo" aria-disabled="true" data-compra="plus" data-t="p.presto">Presto disponibile</span>
+        <ul class="piano-cosa">
+          <li data-t="p.plus.0">Tutto quello che c'è in Gratis</li>
+          <li data-t="p.plus.1"><b>Libreria</b>: preferiti, playlist e «Per te», fino a 200 brani tuoi</li>
+          <li data-t="p.plus.2"><b>Archivio</b>: la tua collezione di MIDI, fino a 5.000 file</li>
+          <li data-t="p.plus.3"><b>Tastiera</b>: impari un tratto alla volta, fino a 50 brani tuoi</li>
+          <li data-t="p.plus.4"><b>Canta</b>: il pianoforte ti accompagna, 10 canzoni al mese</li>
+        </ul>
+      </article>
+
+      <!-- Pro -->
+      <article class="carta piano consigliato">
+        <span class="piano-etichetta" data-t="p.pro.etichetta">Il più completo</span>
+        <p class="piano-nome">Pro</p>
+        <p class="piano-prezzo"><b data-prezzo data-mese="30" data-anno="300">30 €</b><span class="piano-unita" data-unita><span data-t="p.almese">/ mese</span></span></p>
+        <p class="piano-per"><span data-t="p.pro.per">Per chi suona, canta e ha un Disklavier</span></p>
+        <span class="pulsante primo largo" aria-disabled="true" data-compra="pro" data-t="p.presto">Presto disponibile</span>
+        <ul class="piano-cosa">
+          <li data-t="p.pro.0">Tutto quello che c'è in Plus, <b>senza limiti</b></li>
+          <li data-t="p.pro.1">Brani tuoi senza limiti, in Libreria, Archivio, Tastiera e Canta</li>
+          <li data-t="p.pro.2"><b>Sottofondo</b>: il pianoforte suona da solo per ore, a fasce orarie</li>
+          <li data-t="p.pro.3"><b>Askylo Scriptorium · Musica</b>: il quaderno del cantautore, sul tuo Mac</li>
+        </ul>
+      </article>
+    </div>
+
+    <!-- A vita, per i fondatori -->
+    <article class="carta piano-vita">
+      <div class="piano-vita-testo">
+        <p class="occhiello" data-t="p.vita.occhiello">Solo per i primi 60</p>
+        <h2 data-t="p.vita.titolo">Pro a vita, per i fondatori</h2>
+        <p class="tenue" data-t="p.vita.sotto">Paghi una volta sola e hai Pro per sempre, con tutti gli aggiornamenti di queste funzioni. Un modo per far crescere Askylo fin dall'inizio, insieme a noi.</p>
+        <ul class="piano-cosa due-colonne">
+          <li data-t="p.vita.1">Tutto Pro, per sempre</li>
+          <li data-t="p.vita.2">Un pagamento, niente rinnovi</li>
+          <li data-t="p.vita.3">Il tuo nome tra i fondatori, se vuoi</li>
+          <li data-t="p.vita.4">Posti limitati: 60 in tutto</li>
+        </ul>
+      </div>
+      <div class="piano-vita-prezzo">
+        <p class="piano-prezzo grande"><b data-prezzo data-mese="493" data-anno="493" data-fisso>493 €</b></p>
+        <p class="piano-per" data-t="p.vita.una">una volta sola</p>
+        <span class="pulsante primo largo" aria-disabled="true" data-compra="vita" data-t="p.presto">Presto disponibile</span>
+      </div>
+    </article>
+
+    <!-- confronto -->
+    <section class="piani-confronto" aria-labelledby="titoloConfronto">
+      <h2 id="titoloConfronto" data-t="p.conf.titolo">Cosa c'è in ogni piano</h2>
+      <div class="tabella-scorre">
+        <table class="tabella-piani">
+          <thead>
+            <tr><th scope="col"><span class="nascosto" data-t="p.conf.funzione">Funzione</span></th><th scope="col" data-t="p.free.nome">Gratis</th><th scope="col">Plus</th><th scope="col">Pro</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row" translate="no">You play</th><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><th scope="row" translate="no">Yavi plays</th><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><th scope="row" data-t="p.conf.inclusi">Brani inclusi</th><td data-t="p.conf.illimitati">illimitati</td><td data-t="p.conf.illimitati">illimitati</td><td data-t="p.conf.illimitati">illimitati</td></tr>
+            <tr><th scope="row" data-t="p.conf.tuoi">Brani tuoi</th><td>20</td><td>200</td><td data-t="p.conf.illimitati">illimitati</td></tr>
+            <tr><th scope="row" data-t="p.conf.libreria">Libreria e playlist</th><td>—</td><td>✓</td><td>✓</td></tr>
+            <tr><th scope="row" data-t="p.conf.archivio">Archivio MIDI</th><td>—</td><td data-t="p.conf.archivio.plus">5.000 file</td><td data-t="p.conf.illimitato">illimitato</td></tr>
+            <tr><th scope="row" data-t="p.conf.tastiera">Tastiera (impara)</th><td>—</td><td data-t="p.conf.tastiera.plus">50 brani tuoi</td><td data-t="p.conf.illimitata">illimitata</td></tr>
+            <tr><th scope="row" data-t="p.conf.canta">Canta</th><td>—</td><td data-t="p.conf.canta.plus">10 canzoni al mese</td><td data-t="p.conf.illimitato">illimitato</td></tr>
+            <tr><th scope="row" data-t="p.conf.sottofondo">Sottofondo</th><td>—</td><td>—</td><td>✓</td></tr>
+            <tr><th scope="row" translate="no">Askylo Scriptorium · Musica</th><td>—</td><td>—</td><td>✓</td></tr>
+            <tr><th scope="row" data-t="p.conf.disk">Yamaha Disklavier (app per Mac)</th><td>✓</td><td>✓</td><td>✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="domande piani-domande" aria-labelledby="titoloDomPiani">
+      <h2 id="titoloDomPiani" data-t="p.dom.titolo">Domande sui piani</h2>
+      <details>
+        <summary data-t="p.dom.1.q">Posso cambiare piano quando voglio?</summary>
+        <p data-t="p.dom.1.a">Sì: passi a un piano più grande subito, e a uno più piccolo alla fine del periodo che hai già pagato. Gratis resta sempre.</p>
+      </details>
+      <details>
+        <summary data-t="p.dom.2.q">Su quanti dispositivi lo uso?</summary>
+        <p data-t="p.dom.2.a">Con un account usi Yavi nel browser dove vuoi, e l'app su un massimo di 3 Mac.</p>
+      </details>
+      <details>
+        <summary data-t="p.dom.3.q">Cosa vuol dire «a vita»?</summary>
+        <p data-t="p.dom.3.a">Che hai Pro per tutta la vita di Askylo Yavi, senza pagare altro, con gli aggiornamenti delle funzioni di Pro. I posti sono 60: finiti quelli, l'offerta si chiude.</p>
+      </details>
+      <details>
+        <summary data-t="p.dom.4.q">Come pago, e come disdico?</summary>
+        <p data-t="p.dom.4.a">Con PayPal, anche con la carta. Mensile e annuale si rinnovano da soli finché non li disdici: lo fai quando vuoi dal tuo conto PayPal, in «Pagamenti automatici». «A vita» si paga una volta sola.</p>
+      </details>
+    </section>
+  </div>
+</main>
+
+<footer class="piede-sito">
+  <div class="contenitore">
+    <div class="piede-riga">
+      <span class="marchio-nome">Askylo Yavi</span>
+      <nav aria-label="Informazioni" data-t-aria="c.info">
+        <a href="/yavi/" data-t="c.scopri">Scopri Yavi</a>
+        <a href="/yavi/home/" data-t="c.home">Home</a>
+        <a href="/yavi/crediti/" data-t="c.crediti">Crediti e licenze</a>
+        <a href="/yavi/privacy/" data-t="c.privacy">Privacy (bozza)</a>
+        <a href="/yavi/termini/" data-t="c.termini">Termini (bozza)</a>
+      </nav>
+    </div>
+    <p class="marchi" data-t="c.marchi">Yamaha, Disklavier ed ENSPIRE sono marchi di Yamaha Corporation. Askylo Yavi è un prodotto indipendente, non affiliato né approvato da Yamaha.</p>
+  </div>
+</footer>
+</body>
+</html>
