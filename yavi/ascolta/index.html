@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="it" data-virtuale="solo-suono">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askylo Yavi — Yavi plays</title>
+<meta name="description" content="Yavi plays: scegli un brano e Askylo Yavi lo suona come un pianista, qui nel browser.">
+<meta name="theme-color" content="#12141C">
+<link rel="icon" href="/yavi/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/yavi/web/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/yavi/web/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<script src="/yavi/tema.js"></script>
+<link rel="stylesheet" href="/yavi/sito.css">
+<link rel="stylesheet" href="/yavi/yavi.css">
+<script src="/yavi/lingue.js" defer></script>
+<script src="/yavi/sito.js" defer></script>
+<script src="/yavi/tastiera/js/base.js" defer></script>
+<script src="/yavi/tastiera/js/brani.js" defer></script>
+<script src="/yavi/tastiera/brani/inclusi.js" defer></script>
+<script src="/yavi/web/pianoforte-virtuale.js" defer></script>
+<script src="/yavi/yavi-suona.js" defer></script>
+<script src="/yavi/ascolta/ascolta.js" defer></script>
+</head>
+<body data-t-pagina="a">
+<a class="salta" href="#contenuto" data-t="c.salta">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-riga">
+    <a class="marchio" href="/yavi/home/" aria-label="Askylo Yavi, home"><span class="segno" aria-hidden="true">Y</span><span class="marchio-nome"><span class="marchio-famiglia">Askylo</span> Yavi</span></a>
+    <div class="comandi-alti">
+      <a class="pulsante piccolo secondo" href="/yavi/gioco/" translate="no">You play</a>
+      <label class="nascosto" for="lingua" data-t="c.lingua">Lingua</label>
+      <select class="sel-lingua" id="lingua"></select>
+      <button class="tondo" id="btnTema" type="button" aria-label="Cambia tema: Carta o Sala" title="Tema">
+        <svg class="sole" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <svg class="luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenuto" class="ascolta">
+  <div class="contenitore">
+    <div class="ascolta-testa">
+      <div>
+        <h1 translate="no">Yavi plays</h1>
+        <p data-t="a.sotto">Scegli un brano: Yavi lo suona come un pianista, uno dopo l'altro.</p>
+      </div>
+      <label class="interruttore"><input type="checkbox" id="chkUmano" checked> <span data-t="a.umano">Tocco umano</span></label>
+    </div>
+
+    <div class="ascolta-griglia">
+      <section class="carta lettore" aria-label="Il pianoforte" data-t-aria="a.pianoforte">
+        <canvas class="rullo-tela" id="tela" aria-hidden="true"></canvas>
+        <div class="lettore-comandi">
+          <button class="grande-tondo" id="btnSuona" type="button" aria-label="Suona" data-t-aria="c.suona.az">▶</button>
+          <div class="lettore-info" aria-live="polite">
+            <b id="infoTitolo">—</b>
+            <span id="infoStato" data-t="a.scegli">Tocca ▶ o un brano dell'elenco</span>
+          </div>
+        </div>
+        <div class="palco-piede"><span class="palco-barra" aria-hidden="true"><i id="barra"></i></span></div>
+      </section>
+
+      <section class="carta" aria-labelledby="titoloElenco">
+        <h2 class="nascosto" id="titoloElenco" data-t="a.elenco">I brani</h2>
+        <ol class="elenco-brani" id="elenco"></ol>
+      </section>
+    </div>
+
+    <aside class="carta disklavier-invito">
+      <span class="modo-icona" aria-hidden="true">🎼</span>
+      <div>
+        <h2 data-t="a.disk.t">Hai un Yamaha Disklavier?</h2>
+        <p data-t="a.disk.d">Con l'app per Mac questi brani li suona il tuo pianoforte vero, con i tasti che si muovono da soli. E porti i tuoi file MIDI, in fila come da un pianista. L'app è quasi pronta.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="piede-sito">
+  <div class="contenitore">
+    <div class="piede-riga">
+      <span class="marchio-nome">Askylo Yavi</span>
+      <nav aria-label="Informazioni" data-t-aria="c.info">
+        <a href="/yavi/home/" data-t="c.home">Home</a>
+        <a href="/yavi/crediti/" data-t="c.crediti">Crediti e licenze</a>
+        <a href="/yavi/privacy/" data-t="c.privacy">Privacy (bozza)</a>
+        <a href="/yavi/termini/" data-t="c.termini">Termini (bozza)</a>
+      </nav>
+    </div>
+    <p class="marchi" data-t="c.marchi">Yamaha, Disklavier ed ENSPIRE sono marchi di Yamaha Corporation. Askylo Yavi è un prodotto indipendente, non affiliato né approvato da Yamaha.</p>
+  </div>
+</footer>
+</body>
+</html>
