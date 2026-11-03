@@ -122,7 +122,7 @@ a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-vis
   position: absolute; left: 0; top: 0; width: 264px; z-index: 2;
   background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--ombra);
   cursor: grab; touch-action: none; will-change: transform; overflow: hidden;
-  transition: box-shadow .2s;
+  transition: box-shadow .2s; display: flex; flex-direction: column;
 }
 .finestra.presa { cursor: grabbing; box-shadow: var(--ombra-su); z-index: 4; }
 .finestra:hover { box-shadow: var(--ombra-su); }
@@ -132,7 +132,7 @@ a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-vis
 .pallini i:first-child { background: var(--giallo); }
 .titolo b { font-family: var(--serif); font-weight: 600; font-size: 14.5px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .badge { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accento); background: var(--accento-soft); padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
-.corpo { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+.corpo { flex: 1; padding: 12px 14px 14px; display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 13px; }
 .per { font-size: 12px; color: var(--muted); }
 
 /* sala */
@@ -468,7 +468,10 @@ h1 em { font-style: italic; color: var(--accento); }
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     cuore.r = stretto ? 48 : 66;
-    finestre.forEach(function (f) { f.w = f.el.offsetWidth; f.h = f.el.offsetHeight; });
+    // tutte le finestre alte come la più alta
+    finestre.forEach(function (f) { f.el.style.height = ''; });
+    var alta = Math.max.apply(null, finestre.map(function (f) { return f.el.offsetHeight; }));
+    finestre.forEach(function (f) { f.el.style.height = alta + 'px'; f.w = f.el.offsetWidth; f.h = alta; });
     satelliti.forEach(function (s) { s.w = s.el.offsetWidth; s.h = s.el.offsetHeight; });
   }
   function centro() { return { x: W / 2, y: H * (stretto ? 0.5 : 0.52) }; }
