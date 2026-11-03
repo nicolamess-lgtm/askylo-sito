@@ -9,7 +9,22 @@ fondo, le altre app della famiglia. Pubblicata da GitHub Pages a ogni push su
 `main`. L'app vera sta su `app.askylostudio.it` (repository privato
 `askylo-studio`).
 
-Una pagina sola, `index.html`, senza compilazione: si apre così com'è. Per
+## La pre-home (dal 3/11/2026)
+
+`index.html` è la pre-home: il cuore di Askylo che pulsa, con Eventi, Libri e
+Assemblee che gli girano intorno, e le finestre delle app (Studio,
+Scriptorium, Yavi, NutryLab) legate da molle: si trascinano, si lanciano e
+tornano al loro posto. La fisica è scritta a mano nello script in fondo,
+senza librerie. «Entra nel sito» porta al sito di prima, che ora sta in
+`sito/index.html` (i percorsi verso `lingue/` e le pagine dei mestieri sono
+assoluti, `/lingue/…`, per questo). L'account con «cambia account» ed «esci»
+è una prova: si accende solo con `#prova` nell'indirizzo, finché non c'è un
+accesso unico vero; senza prova «Entra» porta al login di Askylo Studio e le
+finestre alle pagine del sito.
+
+## Il sito
+
+Una pagina sola, `sito/index.html`, senza compilazione: si apre così com'è. Per
 guardarla in locale basta un server statico, per esempio
 `python3 -m http.server 8765`.
 
@@ -20,7 +35,7 @@ guardarla in locale basta un server statico, per esempio
 «Carta» (crema `#FAF7F0`, inchiostro `#1A2233`, zafferano con parsimonia).
 Fraunces per titoli e numeri, DM Sans per il resto; angoli 14 / 18 / 22 e
 un'ombra leggera. I colori stanno tutti nelle variabili in cima a
-`index.html`: un pezzo nuovo usa quelle (`--card`, `--line`, `--giallo`,
+`sito/index.html`: un pezzo nuovo usa quelle (`--card`, `--line`, `--giallo`,
 `--accento`) e prende giorno e notte da solo. Le sezioni compaiono
 scorrendo (`.sv`), solo con JavaScript e non per chi ha chiesto meno
 movimento.
@@ -85,10 +100,10 @@ rumeno, ucraino, olandese, danese, svedese, albanese.
   solo quando servono. Un id senza traduzione resta in italiano;
 - si sceglie dal menu in alto (ricordata in `asky-lang`), altrimenti la lingua
   del browser; `?lingua=en` la forza;
-- **chi cambia o aggiunge un testo** lo cambia in `index.html` e in tutti i
+- **chi cambia o aggiunge un testo** lo cambia in `sito/index.html` e in tutti i
   dizionari, poi lancia `node tools/controlla_lingue.mjs`: dice cosa manca o
   è di troppo. Chi aggiunge una lingua la aggiunge all'elenco in fondo a
-  `index.html` e crea il suo file.
+  `sito/index.html` e crea il suo file.
 
 Le traduzioni sono automatiche: vanno riviste da un madrelingua prima di fare
 pubblicità nel paese.
