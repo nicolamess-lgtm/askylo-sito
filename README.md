@@ -86,7 +86,9 @@ con lo stile vecchio.
 
 Il pulsante con sole e luna funziona come sulle altre pagine Askylo: la scelta
 resta nel browser (`asky-theme`: `light` o `dark`); senza scelta la pagina
-segue il tema del sistema (`prefers-color-scheme`).
+segue il tema del sistema (`prefers-color-scheme`). La pre-home fa eccezione:
+senza scelta parte di notte (`data-theme="dark"` su `<html>`), e il sole la
+porta di giorno.
 
 ## Lingue
 
