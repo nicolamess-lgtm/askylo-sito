@@ -1,8 +1,12 @@
 <!doctype html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+// la pre-home parte di notte; vale la scelta fatta col sole e la luna (stessa chiave di askylo.com)
+try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'dark') document.documentElement.setAttribute('data-theme', p); } catch (e) {}
+</script>
 <!-- Pre-home: il cuore di Askylo e le app della famiglia. Il sito di prima sta in /sito/.
      Nata come prototipo il 3/11/2026; l'account (cambia account, esci) è una prova che si accende con #prova. -->
 <meta name="description" content="Askylo raccoglie e ricorda le domande delle persone. Intorno, le app della famiglia: Studio, il gestionale per chi lavora con i clienti, Scriptorium per i libri, Yavi per il pianoforte, NutryLab per la cucina.">
@@ -358,7 +362,6 @@ h1 em { font-style: italic; color: var(--accento); }
     var t = root.getAttribute('data-theme');
     return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'dark') root.setAttribute('data-theme', p); } catch (e) {}
   temaBtn.addEventListener('click', function () {
     var n = scuro() ? 'light' : 'dark';
     root.setAttribute('data-theme', n);
