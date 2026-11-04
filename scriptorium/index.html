@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>
+// parte di notte come la pre-home; vale la scelta fatta col sole e la luna (stessa chiave di askylo.com)
+try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'dark') document.documentElement.setAttribute('data-theme', p); } catch (e) {}
+</script>
+<!-- Pagina di presentazione di Askylo Scriptorium (tappa 4 di SCRIPTORIUM-VENDITA/docs/PIANO.md, 4/11/2026).
+     L'app online non c'è ancora: niente pagamenti, i piani sono «in arrivo», l'email parte dalla posta di chi scrive.
+     noindex finché non c'è il parere legale (PIANO §5); le regole dei testi stanno in CONTRATTO-VENDITA.md.
+     Lingue: l'italiano sta qui, le altre in lingue/<codice>.js (lingue.js, chiave asky-lang come Yavi). -->
+<meta name="robots" content="noindex">
+<title>Askylo Scriptorium · scrivi e impagina il tuo libro</title>
+<meta name="description" content="Askylo Scriptorium è il programma per scrivere, pianificare e impaginare libri da pubblicare su Amazon KDP: PDF di stampa, ePub e Word, e il tuo Claude che ti aiuta. In arrivo.">
+<meta name="theme-color" content="#12141C">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Askylo Scriptorium · scrivi e impagina il tuo libro">
+<meta property="og:description" content="Scrivi, pianifica e impagina il tuo libro per Amazon KDP, nel browser. In arrivo.">
+<meta property="og:site_name" content="Askylo Scriptorium">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312141C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='600' text-anchor='middle' fill='%23FFC61A'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
+<script src="/scriptorium/lingue.js" defer></script>
+<style>
+/* System design Asky, come la pre-home: di notte «Sala» (di partenza), di giorno «Carta». */
+:root {
+  --bg: #FAF7F0; --card: #FFFFFF; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
+  --ink: #1A2233; --muted: #6B7280;
+  --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+  --ombra: 0 1px 2px rgba(26,34,51,.06), 0 18px 40px -16px rgba(26,34,51,.22);
+  --serif: Fraunces, Georgia, "Times New Roman", serif;
+  --sans: "DM Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
+    --ink: #F3EFE6; --muted: #9AA0B4;
+    --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+    --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
+  --ink: #F3EFE6; --muted: #9AA0B4;
+  --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+  --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); }
+body { margin: 0; color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.55; overflow-x: hidden; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--giallo); outline-offset: 3px; }
+.nascosto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.salta { position: absolute; left: 16px; top: -60px; z-index: 10; padding: 8px 12px; border-radius: 10px; background: var(--giallo); color: var(--giallo-ink); font-weight: 700; text-decoration: none; }
+.salta:focus { top: 12px; }
+.contenitore { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* testata */
+.barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; }
+.marchio { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 21px; text-decoration: none; letter-spacing: -0.01em; min-width: 0; }
+.marchio .segno { flex: none; width: 32px; height: 32px; border-radius: 9px; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-style: italic; font-size: 21px; line-height: 1; }
+.marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); }
+.azioni { display: flex; align-items: center; gap: 8px; }
+.famiglia { font-size: 14px; color: var(--muted); text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+.famiglia:hover { color: var(--ink); border-color: var(--line-forte); }
+.sel-lingua { height: 38px; max-width: 132px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; }
+.tema { flex: none; width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.tema svg { width: 18px; height: 18px; }
+
+/* apertura */
+.apertura { padding-block: 40px 72px; }
+.apertura .contenitore { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
+.occhiello { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accento); }
+.occhiello .pallino { width: 8px; height: 8px; border-radius: 50%; background: var(--giallo); box-shadow: 0 0 0 4px var(--accento-soft); }
+h1 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 5.6vw, 4rem); line-height: 1.04; letter-spacing: -0.02em; text-wrap: balance; }
+h1 em, h2 em { font-style: italic; color: var(--accento); }
+.attacco { margin: 20px 0 0; font-size: 1.12rem; color: var(--muted); max-width: 52ch; }
+.inviti { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 20px; border-radius: 14px; font-weight: 700; text-decoration: none; font-size: 15px; font-family: var(--sans); border: 0; cursor: pointer; }
+.btn.pieno { background: var(--giallo); color: var(--giallo-ink); }
+.btn.vuoto { border: 1px solid var(--line-forte); color: var(--ink); background: transparent; }
+.btn:hover { filter: brightness(1.05); }
+.nota-invito { margin: 14px 0 0; font-size: 14px; color: var(--muted); }
+
+/* il libro, color carta di giorno e di notte: la penna scrive quattro righe sulla pagina di destra, poi la pagina si gira (un giro ogni 5 s).
+   Stesse proporzioni della finestra della pre-home; il libro ha misure fisse e cresce con scale(). */
+.scena { display: grid; place-items: center; }
+.tavolo { position: relative; width: 100%; max-width: 480px; aspect-ratio: 480 / 360; display: grid; place-items: center; }
+.libro-giro { width: 300px; height: 200px; transform: scale(1.5); transform-origin: center; direction: ltr; }
+.libro { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 1fr; perspective: 900px; filter: drop-shadow(0 10px 16px rgba(0,0,0,.28)); }
+.facciata, .fronte, .retro { background: #F7F2E6; padding: 12px 12px 0; display: flex; flex-direction: column; gap: 6px; overflow: hidden; }
+.facciata i, .fronte i, .retro i { display: block; flex: none; height: 4px; border-radius: 2px; background: #CFC6B0; }
+.facciata .cap { margin: 2px 0 4px; height: 7px; width: 54%; background: #C48C00; }
+.facciata .num, .retro .num { margin-top: auto; margin-bottom: 8px; align-self: center; width: 10px; height: 3px; opacity: .7; }
+.sx { border-radius: 8px 0 0 8px; box-shadow: inset -14px 0 16px -12px rgba(26,34,51,.35); }
+.dx { border-radius: 0 8px 8px 0; box-shadow: inset 14px 0 16px -12px rgba(26,34,51,.35); }
+.foglio { position: absolute; top: 0; bottom: 0; left: 50%; width: 50%; transform-origin: left center; transform-style: preserve-3d; animation: sfoglia 5s cubic-bezier(.55,.05,.35,1) infinite; }
+.fronte, .retro { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.fronte { border-radius: 0 8px 8px 0; }
+.retro { transform: rotateY(180deg); border-radius: 8px 0 0 8px; }
+.fronte i { transform-origin: left center; animation: 5s linear infinite; }
+.fronte .r1 { animation-name: riga1; } .fronte .r2 { animation-name: riga2; }
+.fronte .r3 { animation-name: riga3; } .fronte .r4 { animation-name: riga4; }
+@keyframes riga1 { 0%, 4% { transform: scaleX(0); } 16%, 100% { transform: scaleX(1); } }
+@keyframes riga2 { 0%, 18% { transform: scaleX(0); } 28%, 100% { transform: scaleX(1); } }
+@keyframes riga3 { 0%, 30% { transform: scaleX(0); } 42%, 100% { transform: scaleX(1); } }
+@keyframes riga4 { 0%, 44% { transform: scaleX(0); } 50%, 100% { transform: scaleX(1); } }
+@keyframes sfoglia { 0%, 58% { transform: rotateY(0deg); } 90%, 100% { transform: rotateY(-180deg); } }
+/* righe a 12 + 2, 24, 34, 44 px dall'alto (padding 12, riga 4, spazio 6) */
+.penna { position: absolute; width: 26px; height: 26px; z-index: 2; transform: translate(-2px, -24px); pointer-events: none; animation: scrive 5s linear infinite; filter: drop-shadow(0 2px 2px rgba(0,0,0,.3)); }
+@keyframes scrive {
+  0%   { left: calc(50% + 12px); top: 14px; opacity: 0; }
+  4%   { left: calc(50% + 12px); top: 14px; opacity: 1; }
+  16%  { left: calc(100% - 12px); top: 14px; }
+  18%  { left: calc(50% + 12px); top: 24px; }
+  28%  { left: calc(50% + 12px + (50% - 24px) * .88); top: 24px; }
+  30%  { left: calc(50% + 12px); top: 34px; }
+  42%  { left: calc(100% - 12px); top: 34px; }
+  44%  { left: calc(50% + 12px); top: 44px; }
+  50%  { left: calc(50% + 12px + (50% - 24px) * .5); top: 44px; opacity: 1; }
+  56%, 100% { left: calc(50% + 12px + (50% - 24px) * .5); top: 36px; opacity: 0; }
+}
+/* i cartellini intorno al libro */
+.cartellino { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--ombra); font-size: 13px; font-weight: 700; white-space: nowrap; }
+.cartellino .ok { width: 18px; height: 18px; flex: none; border-radius: 50%; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-size: 12px; }
+.cartellino.kdp { right: 0; top: 4%; }
+.cartellino.formati { left: 0; bottom: 4%; }
+.cartellino.formati span { padding: 2px 7px; border-radius: 999px; background: var(--accento-soft); color: var(--accento); font-size: 11.5px; letter-spacing: .04em; }
+
+/* sezioni */
+section { padding-block: 64px; }
+.fascia { background: var(--secondary); }
+h2 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em; text-wrap: balance; }
+.sotto-titolo { margin: 12px 0 0; color: var(--muted); font-size: 1.05rem; max-width: 62ch; }
+.griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+.carta { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; box-shadow: var(--ombra); }
+.carta .icona { width: 40px; height: 40px; border-radius: 12px; background: var(--accento-soft); color: var(--accento); display: grid; place-items: center; margin-bottom: 14px; }
+.carta .icona svg { width: 22px; height: 22px; }
+.carta h3 { margin: 0 0 6px; font-family: var(--serif); font-size: 1.2rem; font-weight: 600; }
+.carta p { margin: 0; color: var(--muted); font-size: 15px; }
+.carta.claude { border-color: var(--giallo); }
+.chi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
+.chi div { padding: 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
+.chi b { display: block; font-family: var(--serif); font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+.chi span { color: var(--muted); font-size: 14.5px; }
+.passi { list-style: none; padding: 0; margin: 32px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: passo; }
+.passi li { position: relative; padding: 22px 22px 22px 70px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); counter-increment: passo; }
+.passi li::before { content: counter(passo); position: absolute; left: 22px; top: 20px; width: 34px; height: 34px; border-radius: 50%; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-family: var(--serif); font-weight: 600; font-size: 18px; }
+[dir="rtl"] .passi li { padding: 22px 70px 22px 22px; }
+[dir="rtl"] .passi li::before { left: auto; right: 22px; }
+.passi b { display: block; margin-bottom: 4px; }
+.passi span { color: var(--muted); font-size: 15px; }
+
+/* piani */
+.piani { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; align-items: stretch; }
+.piano { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 26px 22px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--ombra); }
+.piano.forte { border: 2px solid var(--giallo); }
+.piano h3 { margin: 0; font-family: var(--serif); font-size: 1.6rem; font-weight: 600; }
+.piano .per { margin: -6px 0 0; color: var(--muted); font-size: 15px; }
+.piano .prezzo { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--accento); }
+.piano ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.piano li { position: relative; padding-left: 26px; }
+.piano li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--accento); font-weight: 700; }
+[dir="rtl"] .piano li { padding-left: 0; padding-right: 26px; }
+[dir="rtl"] .piano li::before { left: auto; right: 0; }
+.piano .etichetta { position: absolute; top: -12px; left: 22px; padding: 3px 10px; border-radius: 999px; background: var(--giallo); color: var(--giallo-ink); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+[dir="rtl"] .piano .etichetta { left: auto; right: 22px; }
+.in-arrivo { align-self: flex-start; margin-top: auto; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px dashed var(--line-forte); padding: 4px 10px; border-radius: 999px; }
+.nota-piani { margin: 18px 0 0; font-size: 14px; color: var(--muted); }
+
+/* avvisami */
+.avvisa { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; padding: 34px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--ombra); }
+.modulo { display: flex; flex-direction: column; gap: 10px; }
+.modulo .riga { display: flex; gap: 8px; }
+.modulo input { flex: 1; min-width: 0; height: 50px; padding: 0 14px; border-radius: 14px; border: 1px solid var(--line-forte); background: var(--bg); color: var(--ink); font: inherit; font-size: 16px; }
+.modulo small { color: var(--muted); font-size: 13.5px; }
+.esito { margin: 0; font-size: 14.5px; font-weight: 700; color: var(--accento); }
+.scrivi { margin: 6px 0 0; font-size: 15px; color: var(--muted); }
+.scrivi a { color: var(--accento); font-weight: 700; }
+
+/* domande */
+.domande { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; max-width: 820px; }
+details { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 0 18px; }
+summary { cursor: pointer; padding: 16px 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--accento); font-size: 20px; line-height: 1; }
+details[open] summary::after { content: "–"; }
+details p { margin: 0 0 16px; color: var(--muted); }
+
+footer { padding-block: 36px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer .contenitore { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+footer p { margin: 0; max-width: 70ch; }
+footer a { color: var(--ink); }
+
+@media (max-width: 960px) {
+  .apertura .contenitore { grid-template-columns: 1fr; gap: 24px; }
+  .griglia, .piani { grid-template-columns: 1fr 1fr; }
+  .chi { grid-template-columns: 1fr 1fr; }
+  .passi { grid-template-columns: 1fr; }
+  .avvisa { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .apertura { padding-block: 16px 48px; }
+  section { padding-block: 48px; }
+  .griglia, .piani, .chi { grid-template-columns: 1fr; }
+  .famiglia, .marchio small { display: none; }
+  .sel-lingua { max-width: 108px; }
+  .libro-giro { transform: scale(1.06); }
+  .tavolo { aspect-ratio: 360 / 300; }
+  .cartellino { font-size: 12px; padding: 6px 10px; }
+  .avvisa { padding: 22px; }
+  .modulo .riga { flex-direction: column; }
+  .modulo input { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) { .foglio, .fronte i { animation: none; } .penna { display: none; } }
+</style>
+</head>
+<body data-t-pagina="s">
+<a class="salta" href="#contenuto" data-t="c.salta">Vai al contenuto</a>
+
+<header class="contenitore barra">
+  <a class="marchio" href="/scriptorium/" aria-label="Askylo Scriptorium" translate="no"><span class="segno" aria-hidden="true">S</span><span>Scriptorium <small>Askylo</small></span></a>
+  <div class="azioni">
+    <a class="famiglia" href="/" data-t="c.famiglia">← Le app di Askylo</a>
+    <label class="nascosto" for="lingua" data-t="c.lingua">Lingua</label>
+    <select class="sel-lingua" id="lingua"></select>
+    <button class="tema" id="tema" type="button" aria-label="Cambia giorno e notte" data-t-aria="c.tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="contenuto">
+  <section class="apertura" aria-labelledby="titolo">
+    <div class="contenitore">
+      <div>
+        <p class="occhiello"><span class="pallino" aria-hidden="true"></span><span data-t="s.occhiello">In arrivo · per chi pubblica su Amazon KDP</span></p>
+        <h1 id="titolo" data-t="s.titolo">Scrivi il tuo libro. Scriptorium lo <em>impagina</em>.</h1>
+        <p class="attacco" data-t="s.attacco">Dalla prima idea al file da caricare su KDP, tutto in un posto: scrivi i capitoli, tieni in ordine personaggi e fonti, e scarica il PDF di stampa e l'ePub già controllati.</p>
+        <div class="inviti">
+          <a class="btn pieno" href="#avvisami" data-t="s.invito.avvisa">Avvisami quando apre</a>
+          <a class="btn vuoto" href="#piani" data-t="s.invito.piani">Guarda i piani</a>
+        </div>
+        <p class="nota-invito" data-t="s.invito.nota">Funzionerà nel browser, su computer e tablet. Senza installare niente.</p>
+      </div>
+      <div class="scena" aria-hidden="true">
+        <div class="tavolo">
+          <div class="libro-giro">
+            <div class="libro">
+              <div class="facciata sx"><i class="cap"></i><i></i><i style="width:90%"></i><i></i><i style="width:60%"></i><i></i><i style="width:84%"></i><i></i><i style="width:92%"></i><i></i><i style="width:40%"></i><i class="num"></i></div>
+              <div class="facciata dx"><i></i><i style="width:94%"></i><i></i><i style="width:72%"></i></div>
+              <div class="foglio">
+                <div class="fronte"><i class="r1"></i><i class="r2" style="width:88%"></i><i class="r3"></i><i class="r4" style="width:50%"></i></div>
+                <div class="retro"><i></i><i></i><i style="width:80%"></i><i style="width:66%"></i><i></i><i style="width:88%"></i><i></i><i style="width:54%"></i><i></i><i style="width:76%"></i><i class="num"></i></div>
+              </div>
+              <svg class="penna" viewBox="0 0 24 24"><path d="M2 22 L4.5 15.5 L17 3 a2.1 2.1 0 0 1 3 0 l1 1 a2.1 2.1 0 0 1 0 3 L8.5 19.5 Z" fill="#FFC61A" stroke="#1A2233" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 22 L4.5 15.5 L8.5 19.5 Z" fill="#1A2233"/></svg>
+            </div>
+          </div>
+          <span class="cartellino kdp"><span class="ok">✓</span><span data-t="s.demo.kdp">Controllo KDP: tutto a posto</span></span>
+          <span class="cartellino formati" translate="no"><span>PDF</span><span>ePub</span><span>Word</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fascia" id="cosa-fa" aria-labelledby="t-cosa">
+    <div class="contenitore">
+      <h2 id="t-cosa" data-t="s.cosa.titolo">Tutto quello che serve a un libro, <em>dall'idea alla stampa</em></h2>
+      <p class="sotto-titolo" data-t="s.cosa.sotto">Pensato per chi scrive da solo e pubblica da solo: niente impaginatore da pagare, niente file da rimandare avanti e indietro.</p>
+      <div class="griglia">
+        <article class="carta">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+          <h3 data-t="s.f.scrivi.t">Scrivi</h3>
+          <p data-t="s.f.scrivi.p">Capitoli, parti e scene, note a piè di pagina, immagini. Ogni versione resta salvata e torni indietro quando vuoi. Hai già il libro in Word? Lo importi.</p>
+        </article>
+        <article class="carta">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></svg></div>
+          <h3 data-t="s.f.impagina.t">Impagina per KDP</h3>
+          <p data-t="s.f.impagina.p">Scegli il formato e il tema, e il libro è impaginato. Il controllo KDP trova margini, immagini e caratteri che Amazon rifiuterebbe, prima che lo faccia Amazon.</p>
+        </article>
+        <article class="carta">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="8.5" y="14" width="7" height="7" rx="1.5"/><path d="M6.5 10v2h11v-2M12 12v2"/></svg></div>
+          <h3 data-t="s.f.pianifica.t">Pianifica</h3>
+          <p data-t="s.f.pianifica.p">Una bacheca con personaggi, luoghi ed eventi, la linea del tempo della storia e le relazioni. Le schede sanno in quali capitoli compare ognuno.</p>
+        </article>
+        <article class="carta">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><rect x="16" y="4" width="5" height="16" rx="1"/></svg></div>
+          <h3 data-t="s.f.rivedi.t">Rivedi</h3>
+          <p data-t="s.f.rivedi.p">Le correzioni arrivano come proposte, accanto al tuo testo, paragrafo per paragrafo: le accetti, le adatti o le ignori. L'ultima parola è sempre tua.</p>
+        </article>
+        <article class="carta">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h4v4H7zM13 7h4v4h-4z"/><path d="M11 11c0 3-1 5-4 6M17 11c0 3-1 5-4 6"/></svg></div>
+          <h3 data-t="s.f.fonti.t">Fonti e citazioni</h3>
+          <p data-t="s.f.fonti.p">Per la saggistica: aggiungi una fonte dal DOI o dall'ISBN, citala nel testo e la bibliografia si compone da sola, in APA, Chicago o MLA.</p>
+        </article>
+        <article class="carta claude">
+          <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+          <h3 data-t="s.f.claude.t">Con il tuo Claude</h3>
+          <p data-t="s.f.claude.p">Collega il tuo Claude a Scriptorium: legge il libro, controlla la stampa pagina per pagina, ti propone correzioni e fonti. Propone, non decide: decidi tu.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="per-chi" aria-labelledby="t-chi">
+    <div class="contenitore">
+      <h2 id="t-chi" data-t="s.chi.titolo">Per chi pubblica da sé</h2>
+      <p class="sotto-titolo" data-t="s.chi.sotto">Per gli autori indipendenti che pubblicano su Amazon KDP, in cartaceo e in ebook.</p>
+      <div class="chi">
+        <div><b data-t="s.chi.romanzi.t">Romanzi e saghe</b><span data-t="s.chi.romanzi.p">Più libri della stessa serie, con personaggi e mondo in comune.</span></div>
+        <div><b data-t="s.chi.saggi.t">Saggi e manuali</b><span data-t="s.chi.saggi.p">Note, fonti verificate e bibliografia in ordine.</span></div>
+        <div><b data-t="s.chi.quaderni.t">Quaderni ed eserciziari</b><span data-t="s.chi.quaderni.p">Righe, quadretti e spazi per scrivere, pronti per la stampa.</span></div>
+        <div><b data-t="s.chi.word.t">Chi ha già il libro in Word</b><span data-t="s.chi.word.p">Lo importi e in pochi minuti vedi com'è impaginato.</span></div>
+      </div>
+      <ol class="passi" aria-label="Come funziona" data-t-aria="s.passi.aria">
+        <li><b data-t="s.passo1.t">Scrivi o importa</b><span data-t="s.passo1.p">Parti da zero, da un file Word o dal libro d'esempio.</span></li>
+        <li><b data-t="s.passo2.t">Controlla</b><span data-t="s.passo2.p">Il controllo KDP e l'anteprima di stampa ti dicono cosa sistemare.</span></li>
+        <li><b data-t="s.passo3.t">Pubblica</b><span data-t="s.passo3.p">Scarichi PDF di stampa, ePub e Word, e li carichi su KDP.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="fascia" id="piani" aria-labelledby="t-piani">
+    <div class="contenitore">
+      <h2 id="t-piani" data-t="s.piani.titolo">Tre piani, <em>in arrivo</em></h2>
+      <p class="sotto-titolo" data-t="s.piani.sotto">Non si compra ancora niente: Scriptorium apre prima a pochi autori su invito. Lascia l'email e ti scriviamo noi.</p>
+      <div class="piani">
+        <article class="piano">
+          <h3 data-t="s.gratis.t">Gratis</h3>
+          <p class="per" data-t="s.gratis.per">Per scrivere e pubblicare il tuo libro.</p>
+          <ul>
+            <li data-t="s.gratis.1">Scrittura e impaginazione complete</li>
+            <li data-t="s.gratis.2">Temi, controllo KDP, PDF di stampa, ePub e Word</li>
+            <li data-t="s.gratis.3">Import da Word e cronologia delle versioni</li>
+            <li data-t="s.gratis.4">Un libro alla volta online</li>
+          </ul>
+          <span class="in-arrivo" data-t="s.piani.arrivo">In arrivo</span>
+        </article>
+        <article class="piano forte">
+          <span class="etichetta" data-t="s.pro.etichetta">Il cuore</span>
+          <h3 data-t="s.pro.t">Pro</h3>
+          <p class="per" data-t="s.pro.per">Per chi vuole il proprio Claude al lavoro sul libro.</p>
+          <ul>
+            <li data-t="s.pro.1">Tutto il Gratis, con tutti i tuoi libri</li>
+            <li data-t="s.pro.2">Il tuo Claude collegato a Scriptorium</li>
+            <li data-t="s.pro.3">Controllo di stampa pagina per pagina</li>
+            <li data-t="s.pro.4">Revisione, fonti e bibliografia</li>
+            <li data-t="s.pro.5">Bacheca, linea del tempo e audiolibro</li>
+          </ul>
+          <span class="in-arrivo" data-t="s.piani.arrivo">In arrivo</span>
+        </article>
+        <article class="piano">
+          <h3 data-t="s.studio.t">Studio</h3>
+          <p class="per" data-t="s.studio.per">Per chi non vuole pensare a chiavi e abbonamenti dell'IA.</p>
+          <ul>
+            <li data-t="s.studio.1">Tutto il Pro</li>
+            <li data-t="s.studio.2">Assistente IA con i crediti inclusi</li>
+            <li data-t="s.studio.3">Lavoro a più mani: coautori, editor, lettori di prova</li>
+          </ul>
+          <span class="in-arrivo" data-t="s.piani.arrivo">In arrivo</span>
+        </article>
+      </div>
+      <p class="nota-piani" data-t="s.piani.nota">Prezzi e contenuti dei piani possono ancora cambiare prima dell'apertura.</p>
+    </div>
+  </section>
+
+  <section id="avvisami" aria-labelledby="t-avvisa">
+    <div class="contenitore">
+      <div class="avvisa">
+        <div>
+          <h2 id="t-avvisa" data-t="s.avvisa.titolo">Vuoi provarlo <em>fra i primi</em>?</h2>
+          <p class="sotto-titolo" data-t="s.avvisa.sotto">Scriptorium apre prima a un piccolo gruppo di autori. Scrivi la tua email: ti avvisiamo noi, una volta, quando c'è posto.</p>
+        </div>
+        <form class="modulo" id="modulo" novalidate>
+          <label class="nascosto" for="email" data-t="s.avvisa.etichetta">La tua email</label>
+          <div class="riga">
+            <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@esempio.it" required>
+            <button class="btn pieno" type="submit" data-t="s.avvisa.invia">Avvisami</button>
+          </div>
+          <small data-t="s.avvisa.come">Si apre la tua posta con il messaggio già scritto: premi Invia e sei nella lista. Questa pagina non salva niente.</small>
+          <p class="esito" id="esito" role="status" aria-live="polite"></p>
+          <p class="scrivi" data-t="s.avvisa.scrivi">Hai una domanda? Scrivici a <a href="mailto:info@askylo.com?subject=Scriptorium" translate="no">info@askylo.com</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="fascia" id="domande" aria-labelledby="t-domande">
+    <div class="contenitore">
+      <h2 id="t-domande" data-t="s.dom.titolo">Domande</h2>
+      <div class="domande">
+        <details><summary data-t="s.dom1.d">Quando apre?</summary><p data-t="s.dom1.r">Prima a pochi autori su invito, poi a tutti. Chi lascia l'email riceve l'invito per primo.</p></details>
+        <details><summary data-t="s.dom2.d">Devo installare qualcosa?</summary><p data-t="s.dom2.r">No. Scriptorium si apre nel browser, su computer e tablet, con un account Askylo.</p></details>
+        <details><summary data-t="s.dom3.d">Il libro resta mio?</summary><p data-t="s.dom3.r">Sì. Il testo è tuo e lo scarichi quando vuoi in PDF, ePub e Word. Claude lo legge solo se lo colleghi tu.</p></details>
+        <details><summary data-t="s.dom4.d">Serve l'intelligenza artificiale?</summary><p data-t="s.dom4.r">No. Il piano Gratis non usa l'IA. Con il Pro colleghi il tuo Claude, se lo vuoi; con lo Studio l'assistente è già compreso.</p></details>
+        <details><summary data-t="s.dom5.d">In che lingua è?</summary><p data-t="s.dom5.r">L'app parla le stesse 16 lingue di questa pagina. Il libro lo scrivi nella lingua che vuoi.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="contenitore">
+    <p><span translate="no">Askylo Scriptorium</span> · <span data-t="s.piede.famiglia">un'app della famiglia</span> <a href="/" translate="no">Askylo</a></p>
+    <p data-t="s.piede.amazon">Amazon e Kindle Direct Publishing (KDP) sono marchi di Amazon.com, Inc. Scriptorium non è collegato ad Amazon.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement;
+  var T = function (id, it) { return window.SCRIPTORIUM_T ? window.SCRIPTORIUM_T(id, it) : it; };
+
+  // giorno e notte: stessa chiave della pre-home e di askylo.com
+  document.getElementById("tema").addEventListener("click", function () {
+    var t = root.getAttribute("data-theme");
+    var scuro = t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    var n = scuro ? "light" : "dark";
+    root.setAttribute("data-theme", n);
+    try { localStorage.setItem("asky-theme", n); } catch (e) {}
+  });
+
+  // «Avvisami»: niente server in questa tappa. Si apre la posta di chi scrive con il messaggio pronto,
+  // e chi preme Invia ci scrive per primo (è il suo consenso a essere ricontattato).
+  var modulo = document.getElementById("modulo"), campo = document.getElementById("email"), esito = document.getElementById("esito");
+  modulo.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var email = campo.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      esito.textContent = T("s.avvisa.errore", "Controlla l'email: sembra incompleta.");
+      campo.focus();
+      return;
+    }
+    var lingua = window.SCRIPTORIUM_LINGUA ? window.SCRIPTORIUM_LINGUA() : "it";
+    var oggetto = T("s.avvisa.oggetto", "Avvisami quando apre Scriptorium");
+    var testo = T("s.avvisa.testo", "Ciao, vorrei provare Askylo Scriptorium fra i primi. Avvisatemi quando c'è posto.") +
+      "\n\nEmail: " + email + "\n" + T("c.lingua", "Lingua") + ": " + lingua + "\n";
+    location.href = "mailto:info@askylo.com?subject=" + encodeURIComponent(oggetto) + "&body=" + encodeURIComponent(testo);
+    esito.textContent = T("s.avvisa.fatto", "Ora premi Invia nella tua posta. Grazie!");
+  });
+})();
+</script>
+</body>
+</html>

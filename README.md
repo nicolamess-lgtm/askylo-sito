@@ -31,9 +31,23 @@ finestra NutryLab della pre-home porta lì. Non si scrive a mano: è la build
 di `~/Documents/NUTRYLAB` con `VITE_DEMO=1` e `--base=/nutrylab/`, e si
 rifà con `zsh scripts/pubblica-askylostudio.sh` da quella cartella.
 
-La finestra Scriptorium porta ancora alla sezione «famiglia» del sito di
-prima: la sua pagina arriverà con la versione in vendita
-(`~/Documents/SCRIPTORIUM-VENDITA`, tappa 4 di `docs/PIANO.md`).
+## Scriptorium (dal 4/11/2026)
+
+La finestra Scriptorium della pre-home porta a `scriptorium/`, la pagina di
+presentazione di Askylo Scriptorium (tappa 4 di
+`~/Documents/SCRIPTORIUM-VENDITA/docs/PIANO.md`, anticipata: l'app online non
+c'è ancora). Cosa fa, per chi (autori che pubblicano su Amazon KDP), i piani
+Gratis, Pro e Studio come «in arrivo» e «Avvisami», che apre la posta di chi
+scrive con un messaggio pronto per info@askylo.com: nessun pagamento, nessun
+dato salvato dalla pagina. Resta in `noindex` finché non c'è il parere legale
+(PIANO §5); le regole dei testi stanno in `docs/CONTRATTO-VENDITA.md` di
+SCRIPTORIUM-VENDITA. Stile della pre-home
+(di notte di partenza, `asky-theme`), la penna che scrive e la pagina che si
+gira come nella finestra. Le 16 lingue come Yavi: l'italiano nell'HTML, le
+altre in `scriptorium/lingue/<codice>.js` (traduzione automatica, da
+rivedere), lette da `scriptorium/lingue.js` con la chiave `asky-lang`; arabo
+da destra a sinistra. Chi aggiunge un testo gli dà un `data-t` e lo aggiunge
+a tutti i dizionari.
 
 ## Il sito
 
