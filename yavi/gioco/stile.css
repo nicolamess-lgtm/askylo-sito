@@ -337,3 +337,19 @@ body.con-tastiera .tasto-lettera { display: inline-block; }
   .tasto.storto { outline: 2px solid var(--rosso-testo); outline-offset: -2px; }
   .nota.aspetta { box-shadow: 0 0 0 4px var(--accento-soft); }
 }
+
+/* la lingua, in alto (web/lingue.js) */
+.sel-lingua {
+  font: inherit; font-size: .9rem; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line-forte, var(--line)); border-radius: 999px; padding: 6px 10px; min-height: 38px; cursor: pointer; max-width: 130px;
+  margin-right: 8px;
+}
+@media (max-width: 560px) { .sel-lingua { max-width: 92px; font-size: .82rem; } }
+
+/* ---------- da destra a sinistra (arabo) ---------- */
+/* «Vai al contenuto» sta fuori dallo schermo: a sinistra allargherebbe la pagina in RTL */
+[dir="rtl"] .salta { left: auto; right: -999px; }
+[dir="rtl"] .salta:focus { right: 16px; }
+html { overflow-x: clip; }
+/* il pianoforte resta un pianoforte: i bassi a sinistra, in ogni lingua */
+[dir="rtl"] .palco, [dir="rtl"] .corsie, [dir="rtl"] .tasti { direction: ltr; }
