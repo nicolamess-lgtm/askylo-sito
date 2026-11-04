@@ -22,6 +22,15 @@ assoluti, `/lingue/…`, per questo). L'account con «cambia account» ed «esci
 accesso unico vero; senza prova «Entra» porta al login di Askylo Studio e le
 finestre alle pagine del sito.
 
+## La demo di NutryLab (dal 4/11/2026)
+
+`nutrylab/` è la versione dimostrativa di NutryLab (ricette, la settimana per
+la tua cucina, le 30 piante): niente Mac, niente profili di casa, niente
+importazione con Claude, i dati restano nel browser di chi la prova. La
+finestra NutryLab della pre-home porta lì. Non si scrive a mano: è la build
+di `~/Documents/NUTRYLAB` con `VITE_DEMO=1` e `--base=/nutrylab/`, e si
+rifà con `zsh scripts/pubblica-askylostudio.sh` da quella cartella.
+
 ## Scriptorium (dal 4/11/2026)
 
 La finestra Scriptorium della pre-home porta a `scriptorium/`, la pagina di
