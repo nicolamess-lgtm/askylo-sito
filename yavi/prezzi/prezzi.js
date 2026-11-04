@@ -10,7 +10,8 @@
   function formato(n) {
     var lingua = window.YAVI_LINGUA ? window.YAVI_LINGUA() : "it";
     try {
-      return new Intl.NumberFormat(lingua, { style: "currency", currency: valuta === "usd" ? "USD" : "EUR", maximumFractionDigits: 0 }).format(n);
+      return new Intl.NumberFormat(lingua, { style: "currency", currency: valuta === "usd" ? "USD" : "EUR",
+        minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 }).format(n);
     } catch (e) { return valuta === "usd" ? "$" + n : n + " €"; }
   }
 
@@ -39,6 +40,7 @@
   // Con attivo: false i pulsanti tornano «Presto disponibile».
   var PAYPAL = { attivo: true, conto: "nutrylab@gmail.com" };
   var PIANI = {
+    ypp: { nome: "Askylo Yavi You play+", mese: 4.99, anno: 39 },
     plus: { nome: "Askylo Yavi Plus", mese: 15, anno: 150 },
     pro: { nome: "Askylo Yavi Pro", mese: 30, anno: 300 },
     vita: { nome: "Askylo Yavi Pro a vita (fondatori)", unico: 493 }
@@ -79,7 +81,7 @@
       a.textContent = T("p.paga", "Paga con PayPal");
     });
   }
-  if (/[?&]pagato=(plus|pro|vita)\b/.test(location.search)) {
+  if (/[?&]pagato=(ypp|plus|pro|vita)\b/.test(location.search)) {
     var g = document.getElementById("grazie"); if (g) g.hidden = false;
   }
 

@@ -176,5 +176,10 @@ window.LINGUE_YAVI.de = {
  "p.meta.titolo": "Askylo Yavi — die Tarife",
  "p.meta.desc": "Die Tarife von Askylo Yavi: Kostenlos, Plus, Pro und Auf Lebenszeit für die Gründer. Einführungspreise, Zahlung mit PayPal.",
  "p.allanno": "/ Jahr",
- "p.paga": "Mit PayPal bezahlen"
+ "p.paga": "Mit PayPal bezahlen",
+ "p.ypp.testo": "Spielst nur du? Eigene Stücke ohne Limit in You play, mit deinen Fortschritten und Sternen, immer gespeichert.",
+ "p.plus.5": "<b>Regie</b>: deine Stücke hintereinander, verbunden wie von einem Pianisten, und „Überrasch mich“",
+ "p.pro.4": "<b>Bühne</b>, <b>Noten</b>, <b>Akkorde und Text</b> und <b>Aufnehmen</b>: für alle, die ernsthaft spielen und singen",
+ "p.conf.regia": "Regie und Überrasch mich",
+ "p.conf.palco": "Bühne, Noten, Akkorde und Text, Aufnehmen"
 };

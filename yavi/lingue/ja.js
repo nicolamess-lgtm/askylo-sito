@@ -176,5 +176,10 @@ window.LINGUE_YAVI.ja = {
   "p.meta.titolo": "Askylo Yavi — プラン",
   "p.meta.desc": "Askylo Yavi のプラン：無料、Plus、Pro、そして創設メンバー向けの「ずっと」プラン。ローンチ価格、PayPal でお支払い。",
   "p.allanno": "/ 年",
-  "p.paga": "PayPal で支払う"
+  "p.paga": "PayPal で支払う",
+ "p.ypp.testo": "弾くのはあなただけ？ You play なら自分の曲を無制限に追加でき、上達の記録と星もずっと保存されます。",
+ "p.plus.5": "<b>ディレクション</b>：あなたの曲を順番に並べて、ピアニストのようにつなぎます。「おまかせ」ボタンもあります",
+ "p.pro.4": "<b>ステージ</b>、<b>楽譜</b>、<b>コードと歌詞</b>、<b>録音</b>：本格的に弾いて歌いたい人へ",
+ "p.conf.regia": "ディレクションとおまかせ",
+ "p.conf.palco": "ステージ、楽譜、コードと歌詞、録音"
 };

@@ -176,5 +176,10 @@ window.LINGUE_YAVI.pl = {
  "p.meta.titolo": "Askylo Yavi — plany",
  "p.meta.desc": "Plany Askylo Yavi: Darmowy, Plus, Pro i Na całe życie dla założycieli. Ceny na start, płatność przez PayPal.",
  "p.allanno": "/ rok",
- "p.paga": "Zapłać przez PayPal"
+ "p.paga": "Zapłać przez PayPal",
+ "p.ypp.testo": "Grasz tylko ty? Własne utwory bez limitu w You play, a Twoje postępy i gwiazdki zawsze zapisane.",
+ "p.plus.5": "<b>Reżyseria</b>: Twoje utwory jeden po drugim, połączone jak zrobiłby to pianista, i „Zaskocz mnie”",
+ "p.pro.4": "<b>Scena</b>, <b>Nuty</b>, <b>Akordy i tekst</b> i <b>Nagrywaj</b>: dla tych, którzy grają i śpiewają na serio",
+ "p.conf.regia": "Reżyseria i Zaskocz mnie",
+ "p.conf.palco": "Scena, Nuty, Akordy i tekst, Nagrywaj"
 };
