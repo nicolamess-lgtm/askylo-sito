@@ -148,9 +148,11 @@ a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-vis
 .riga { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 
 /* studio */
-.app { display: grid; grid-template-columns: 46px 1fr; gap: 6px 10px; align-items: center; }
+/* gli appuntamenti si allungano fino a riempire la finestra */
+.app { flex: 1; display: grid; grid-template-columns: 46px 1fr; grid-auto-rows: 1fr; gap: 6px 10px; align-items: stretch; }
+.app time { display: flex; align-items: center; }
 .app time { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 12.5px; }
-.app div { padding: 6px 9px; border-radius: 9px; background: var(--secondary); border-left: 3px solid var(--giallo); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app div { display: flex; align-items: center; padding: 6px 9px; border-radius: 9px; background: var(--secondary); border-left: 3px solid var(--giallo); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .app div.ora { background: var(--accento-soft); }
 
 /* scriptorium */
@@ -163,7 +165,8 @@ a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-vis
 .qr b.v { background: transparent; }
 
 /* il libro che si sfoglia */
-.libro { position: relative; height: 92px; display: grid; grid-template-columns: 1fr 1fr; perspective: 700px; filter: drop-shadow(0 6px 10px rgba(26,34,51,.18)); }
+/* il libro cresce con la finestra; la penna resta sulle prime quattro righe */
+.libro { position: relative; flex: 1; min-height: 92px; display: grid; grid-template-columns: 1fr 1fr; perspective: 700px; filter: drop-shadow(0 6px 10px rgba(26,34,51,.18)); }
 .facciata, .fronte, .retro { background: var(--secondary); padding: 9px 9px 0; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
 .facciata i, .fronte i, .retro i { display: block; height: 4px; border-radius: 2px; background: var(--line-forte); }
 .facciata h4 { margin: 0 0 1px; font-family: var(--serif); font-size: 12.5px; font-weight: 600; line-height: 1.1; }
@@ -199,11 +202,12 @@ a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-vis
 .qr.mini { width: 26px; height: 26px; padding: 2px; border-radius: 4px; }
 
 /* yavi */
-.tasti { position: relative; height: 74px; display: flex; gap: 2px; border-radius: 8px; overflow: hidden; background: var(--secondary); padding-top: 34px; }
-.tasti > i { flex: 1; background: #fff; border: 1px solid var(--line-forte); border-radius: 0 0 4px 4px; position: relative; z-index: 1; }
+/* la tastiera cresce con la finestra: i tasti stanno nella metà bassa, le note scendono da tutta quella alta */
+.tasti { position: relative; flex: 1; min-height: 74px; display: flex; align-items: flex-end; gap: 2px; border-radius: 8px; overflow: hidden; background: var(--secondary); }
+.tasti > i { flex: 1; height: 54%; background: #fff; border: 1px solid var(--line-forte); border-radius: 0 0 4px 4px; position: relative; z-index: 1; }
 .tasti > i.su { background: var(--accento-soft); border-color: var(--giallo); }
 .nota { position: absolute; top: -14px; width: 10%; height: 14px; border-radius: 4px; background: var(--giallo); z-index: 2; animation: scende 2.4s linear infinite; }
-@keyframes scende { to { transform: translateY(48px); opacity: .2; } }
+@keyframes scende { from { top: -14px; } to { top: calc(46% - 14px); opacity: .2; } }
 .stelle { color: var(--accento); letter-spacing: 2px; font-size: 14px; }
 
 /* testo sotto il palco */
@@ -235,13 +239,12 @@ h1 em { font-style: italic; color: var(--accento); }
   .per, .dom:nth-child(n+4), .app > :nth-child(n+5) { display: none; }
   .conta { font-size: 20px; }
   .dom { padding: 5px 7px; }
-  .tasti { height: 54px; padding-top: 22px; }
-  .libro { height: 60px; }
+  .tasti { min-height: 54px; }
   .facciata, .fronte, .retro { padding: 6px 6px 0; gap: 4px; }
   .facciata h4 { font-size: 10px; }
   .facciata i:nth-of-type(n+3), .fronte i:nth-child(n+4), .retro i:nth-child(n+4) { display: none; }
   .qr.mini { display: none; }
-  .libro { height: 64px; }
+  .libro { min-height: 64px; }
   .penna { width: 15px; height: 15px; transform: translate(-2px, -13px); }
   .cuore { width: 96px; height: 96px; margin: -48px 0 0 -48px; }
   .cuore .a { font-size: 48px; }
@@ -319,11 +322,11 @@ h1 em { font-style: italic; color: var(--accento); }
     <div class="titolo"><span class="pallini"><i></i><i></i><i></i></span><b translate="no">Scriptorium</b><span class="badge">libri</span></div>
     <div class="corpo">
       <div class="libro" aria-hidden="true">
-        <div class="facciata sx"><h4>Capitolo 3</h4><i></i><i style="width:90%"></i><i></i><i style="width:60%"></i></div>
+        <div class="facciata sx"><h4>Capitolo 3</h4><i></i><i style="width:90%"></i><i></i><i style="width:60%"></i><i></i><i style="width:84%"></i><i></i><i style="width:92%"></i><i style="width:40%"></i></div>
         <div class="facciata dx"><i></i><i style="width:94%"></i><i></i><i style="width:72%"></i></div>
         <div class="foglio">
           <div class="fronte"><i class="r1"></i><i class="r2" style="width:88%"></i><i class="r3"></i><i class="r4" style="width:50%"></i></div>
-          <div class="retro"><i></i><i></i><i style="width:80%"></i><i style="width:66%"></i></div>
+          <div class="retro"><i></i><i></i><i style="width:80%"></i><i style="width:66%"></i><i></i><i style="width:88%"></i><i></i><i style="width:54%"></i></div>
         </div>
         <svg class="penna" viewBox="0 0 24 24"><path d="M2 22 L4.5 15.5 L17 3 a2.1 2.1 0 0 1 3 0 l1 1 a2.1 2.1 0 0 1 0 3 L8.5 19.5 Z" fill="var(--giallo)" stroke="var(--ink)" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 22 L4.5 15.5 L8.5 19.5 Z" fill="var(--ink)"/></svg>
       </div>
