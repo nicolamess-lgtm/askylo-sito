@@ -12,14 +12,14 @@ try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'da
      noindex finché non c'è il parere legale (PIANO §5); le regole dei testi stanno in CONTRATTO-VENDITA.md.
      Lingue: l'italiano sta qui, le altre in lingue/<codice>.js (lingue.js, chiave asky-lang come Yavi). -->
 <meta name="robots" content="noindex">
-<title>Askylo Scriptorium · scrivi e impagina il tuo libro</title>
-<meta name="description" content="Askylo Scriptorium è il programma per scrivere, pianificare e impaginare libri da pubblicare su Amazon KDP: PDF di stampa, ePub e Word, e il tuo Claude che ti aiuta. In arrivo.">
+<title>Askylo Scrivylo · scrivi e impagina il tuo libro</title>
+<meta name="description" content="Askylo Scrivylo è il programma per scrivere, pianificare e impaginare libri da pubblicare su Amazon KDP: PDF di stampa, ePub e Word, e il tuo Claude che ti aiuta. In arrivo.">
 <meta name="theme-color" content="#12141C">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Askylo Scriptorium · scrivi e impagina il tuo libro">
+<meta property="og:title" content="Askylo Scrivylo · scrivi e impagina il tuo libro">
 <meta property="og:description" content="Scrivi, pianifica e impagina il tuo libro per Amazon KDP, nel browser. In arrivo.">
-<meta property="og:site_name" content="Askylo Scriptorium">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312141C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='600' text-anchor='middle' fill='%23FFC61A'%3ES%3C/text%3E%3C/svg%3E">
+<meta property="og:site_name" content="Askylo Scrivylo">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231F4FA3'/%3E%3Cpath d='M18 14 L32 33 L46 14 M32 33 V52' fill='none' stroke='%23F2B705' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='34' r='3.2' fill='%231F4FA3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
@@ -29,7 +29,7 @@ try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'da
 :root {
   --bg: #FAF7F0; --card: #FFFFFF; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
   --ink: #1A2233; --muted: #6B7280;
-  --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
+  --giallo: #F2B705; --giallo-ink: #1A2233; --marchio-blu: #1F4FA3; --accento: #8A6400; --accento-soft: #FFF3C4;
   --ombra: 0 1px 2px rgba(26,34,51,.06), 0 18px 40px -16px rgba(26,34,51,.22);
   --serif: Fraunces, Georgia, "Times New Roman", serif;
   --sans: "DM Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -38,7 +38,7 @@ try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'da
   :root:not([data-theme="light"]) {
     --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
     --ink: #F3EFE6; --muted: #9AA0B4;
-    --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+    --giallo: #FFC61A; --giallo-ink: #12141C; --marchio-blu: #8FB4F7; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
     --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
     color-scheme: dark;
   }
@@ -46,7 +46,7 @@ try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'da
 :root[data-theme="dark"] {
   --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
   --ink: #F3EFE6; --muted: #9AA0B4;
-  --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
+  --giallo: #FFC61A; --giallo-ink: #12141C; --marchio-blu: #8FB4F7; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
   --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
   color-scheme: dark;
 }
@@ -63,7 +63,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* testata */
 .barra { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; }
 .marchio { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 21px; text-decoration: none; letter-spacing: -0.01em; min-width: 0; }
-.marchio .segno { flex: none; width: 32px; height: 32px; border-radius: 9px; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-style: italic; font-size: 21px; line-height: 1; }
+/* marchio Scrivylo (italiano) / Writylo (altre lingue), 5/11/2026: la Y-pennino gialla su blu, nella scritta la y gialla */
+.marchio .segno { flex: none; width: 32px; height: 32px; display: block; }
+.marchio .scritta { color: var(--marchio-blu); font-weight: 700; }
+.marchio .scritta .y { color: var(--giallo); }
 .marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); }
 .azioni { display: flex; align-items: center; gap: 8px; }
 .famiglia { font-size: 14px; color: var(--muted); text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
@@ -224,7 +227,7 @@ footer a { color: var(--ink); }
 <a class="salta" href="#contenuto" data-t="c.salta">Vai al contenuto</a>
 
 <header class="contenitore barra">
-  <a class="marchio" href="/scriptorium/" aria-label="Askylo Scriptorium" translate="no"><span class="segno" aria-hidden="true">S</span><span>Scriptorium <small>Askylo</small></span></a>
+  <a class="marchio" href="/scriptorium/" aria-label="Askylo Scrivylo" translate="no"><svg class="segno" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#1F4FA3"/><path d="M18 14 L32 33 L46 14 M32 33 V52" fill="none" stroke="#F2B705" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="34" r="3.2" fill="#1F4FA3"/></svg><span><span class="scritta" data-marchio-scritta>Scriv<span class="y">y</span>lo</span> <small>Askylo</small></span></a>
   <div class="azioni">
     <a class="famiglia" href="/" data-t="c.famiglia">← Le app di Askylo</a>
     <label class="nascosto" for="lingua" data-t="c.lingua">Lingua</label>
@@ -240,7 +243,7 @@ footer a { color: var(--ink); }
     <div class="contenitore">
       <div>
         <p class="occhiello"><span class="pallino" aria-hidden="true"></span><span data-t="s.occhiello">In arrivo · per chi pubblica su Amazon KDP</span></p>
-        <h1 id="titolo" data-t="s.titolo">Scrivi il tuo libro. Scriptorium lo <em>impagina</em>.</h1>
+        <h1 id="titolo" data-t="s.titolo">Scrivi il tuo libro. Scrivylo lo <em>impagina</em>.</h1>
         <p class="attacco" data-t="s.attacco">Dalla prima idea al file da caricare su KDP, tutto in un posto: scrivi i capitoli, tieni in ordine personaggi e fonti, e scarica il PDF di stampa e l'ePub già controllati.</p>
         <div class="inviti">
           <a class="btn pieno" href="#avvisami" data-t="s.invito.avvisa">Avvisami quando apre</a>
@@ -301,7 +304,7 @@ footer a { color: var(--ink); }
         <article class="carta claude">
           <div class="icona" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
           <h3 data-t="s.f.claude.t">Con il tuo Claude</h3>
-          <p data-t="s.f.claude.p">Collega il tuo Claude a Scriptorium: legge il libro, controlla la stampa pagina per pagina, ti propone correzioni e fonti. Propone, non decide: decidi tu.</p>
+          <p data-t="s.f.claude.p">Collega il tuo Claude a Scrivylo: legge il libro, controlla la stampa pagina per pagina, ti propone correzioni e fonti. Propone, non decide: decidi tu.</p>
         </article>
       </div>
     </div>
@@ -328,7 +331,7 @@ footer a { color: var(--ink); }
   <section class="fascia" id="piani" aria-labelledby="t-piani">
     <div class="contenitore">
       <h2 id="t-piani" data-t="s.piani.titolo">Tre piani, <em>in arrivo</em></h2>
-      <p class="sotto-titolo" data-t="s.piani.sotto">Non si compra ancora niente: Scriptorium apre prima a pochi autori su invito. Lascia l'email e ti scriviamo noi.</p>
+      <p class="sotto-titolo" data-t="s.piani.sotto">Non si compra ancora niente: Scrivylo apre prima a pochi autori su invito. Lascia l'email e ti scriviamo noi.</p>
       <div class="piani">
         <article class="piano">
           <h3 data-t="s.gratis.t">Gratis</h3>
@@ -347,7 +350,7 @@ footer a { color: var(--ink); }
           <p class="per" data-t="s.pro.per">Per chi vuole il proprio Claude al lavoro sul libro.</p>
           <ul>
             <li data-t="s.pro.1">Tutto il Gratis, con tutti i tuoi libri</li>
-            <li data-t="s.pro.2">Il tuo Claude collegato a Scriptorium</li>
+            <li data-t="s.pro.2">Il tuo Claude collegato a Scrivylo</li>
             <li data-t="s.pro.3">Controllo di stampa pagina per pagina</li>
             <li data-t="s.pro.4">Revisione, fonti e bibliografia</li>
             <li data-t="s.pro.5">Bacheca, linea del tempo e audiolibro</li>
@@ -374,7 +377,7 @@ footer a { color: var(--ink); }
       <div class="avvisa">
         <div>
           <h2 id="t-avvisa" data-t="s.avvisa.titolo">Vuoi provarlo <em>fra i primi</em>?</h2>
-          <p class="sotto-titolo" data-t="s.avvisa.sotto">Scriptorium apre prima a un piccolo gruppo di autori. Scrivi la tua email: ti avvisiamo noi, una volta, quando c'è posto.</p>
+          <p class="sotto-titolo" data-t="s.avvisa.sotto">Scrivylo apre prima a un piccolo gruppo di autori. Scrivi la tua email: ti avvisiamo noi, una volta, quando c'è posto.</p>
         </div>
         <form class="modulo" id="modulo" novalidate>
           <label class="nascosto" for="email" data-t="s.avvisa.etichetta">La tua email</label>
@@ -384,7 +387,7 @@ footer a { color: var(--ink); }
           </div>
           <small data-t="s.avvisa.come">Si apre la tua posta con il messaggio già scritto: premi Invia e sei nella lista. Questa pagina non salva niente.</small>
           <p class="esito" id="esito" role="status" aria-live="polite"></p>
-          <p class="scrivi" data-t="s.avvisa.scrivi">Hai una domanda? Scrivici a <a href="mailto:info@askylo.com?subject=Scriptorium" translate="no">info@askylo.com</a>.</p>
+          <p class="scrivi" data-t="s.avvisa.scrivi">Hai una domanda? Scrivici a <a href="mailto:info@askylo.com?subject=Scrivylo" translate="no">info@askylo.com</a>.</p>
         </form>
       </div>
     </div>
@@ -395,7 +398,7 @@ footer a { color: var(--ink); }
       <h2 id="t-domande" data-t="s.dom.titolo">Domande</h2>
       <div class="domande">
         <details><summary data-t="s.dom1.d">Quando apre?</summary><p data-t="s.dom1.r">Prima a pochi autori su invito, poi a tutti. Chi lascia l'email riceve l'invito per primo.</p></details>
-        <details><summary data-t="s.dom2.d">Devo installare qualcosa?</summary><p data-t="s.dom2.r">No. Scriptorium si apre nel browser, su computer e tablet, con un account Askylo.</p></details>
+        <details><summary data-t="s.dom2.d">Devo installare qualcosa?</summary><p data-t="s.dom2.r">No. Scrivylo si apre nel browser, su computer e tablet, con un account Askylo.</p></details>
         <details><summary data-t="s.dom3.d">Il libro resta mio?</summary><p data-t="s.dom3.r">Sì. Il testo è tuo e lo scarichi quando vuoi in PDF, ePub e Word. Claude lo legge solo se lo colleghi tu.</p></details>
         <details><summary data-t="s.dom4.d">Serve l'intelligenza artificiale?</summary><p data-t="s.dom4.r">No. Il piano Gratis non usa l'IA. Con il Pro colleghi il tuo Claude, se lo vuoi; con lo Studio l'assistente è già compreso.</p></details>
         <details><summary data-t="s.dom5.d">In che lingua è?</summary><p data-t="s.dom5.r">L'app parla le stesse 16 lingue di questa pagina. Il libro lo scrivi nella lingua che vuoi.</p></details>
@@ -406,8 +409,8 @@ footer a { color: var(--ink); }
 
 <footer>
   <div class="contenitore">
-    <p><span translate="no">Askylo Scriptorium</span> · <span data-t="s.piede.famiglia">un'app della famiglia</span> <a href="/" translate="no">Askylo</a></p>
-    <p data-t="s.piede.amazon">Amazon e Kindle Direct Publishing (KDP) sono marchi di Amazon.com, Inc. Scriptorium non è collegato ad Amazon.</p>
+    <p><span translate="no">Askylo <span data-marchio>Scrivylo</span></span> · <span data-t="s.piede.famiglia">un'app della famiglia</span> <a href="/" translate="no">Askylo</a></p>
+    <p data-t="s.piede.amazon">Amazon e Kindle Direct Publishing (KDP) sono marchi di Amazon.com, Inc. Scrivylo non è collegato ad Amazon.</p>
   </div>
 </footer>
 
@@ -438,8 +441,8 @@ footer a { color: var(--ink); }
       return;
     }
     var lingua = window.SCRIPTORIUM_LINGUA ? window.SCRIPTORIUM_LINGUA() : "it";
-    var oggetto = T("s.avvisa.oggetto", "Avvisami quando apre Scriptorium");
-    var testo = T("s.avvisa.testo", "Ciao, vorrei provare Askylo Scriptorium fra i primi. Avvisatemi quando c'è posto.") +
+    var oggetto = T("s.avvisa.oggetto", "Avvisami quando apre Scrivylo");
+    var testo = T("s.avvisa.testo", "Ciao, vorrei provare Askylo Scrivylo fra i primi. Avvisatemi quando c'è posto.") +
       "\n\nEmail: " + email + "\n" + T("c.lingua", "Lingua") + ": " + lingua + "\n";
     location.href = "mailto:info@askylo.com?subject=" + encodeURIComponent(oggetto) + "&body=" + encodeURIComponent(testo);
     esito.textContent = T("s.avvisa.fatto", "Ora premi Invia nella tua posta. Grazie!");

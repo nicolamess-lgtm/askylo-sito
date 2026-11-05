@@ -7,7 +7,9 @@
                data-t-aria="id"   → l'aria-label
                data-t-title="id"  → il title
    Per gli script: window.SCRIPTORIUM_T(id, testoItaliano) e l'evento «scriptorium-lingua» su document.
-   Un id senza traduzione resta in italiano. */
+   Un id senza traduzione resta in italiano.
+   Il nome segue la lingua (5/11/2026): Scrivylo in italiano, Writylo nelle altre, anche dove il testo resta
+   in italiano; [data-marchio] riceve il nome, [data-marchio-scritta] il nome con la «y» gialla. */
 (function () {
   "use strict";
   var LINGUE = [
@@ -30,11 +32,14 @@
   var meta = document.querySelector('meta[name="description"]');
   var desc0 = meta ? meta.getAttribute("content") : "";
 
+  function marchio(cod) { return cod === "it" ? "Scrivylo" : "Writylo"; }
+  function conMarchio(s) { return corrente === "it" || s == null ? s : String(s).replace(/Scrivylo/g, "Writylo"); }
+
   function dizionario(cod) { return cod === "it" ? {} : (window.LINGUE_SCRIPTORIUM[cod] || {}); }
 
   window.SCRIPTORIUM_T = function (id, italiano) {
     var v = dizionario(corrente)[id];
-    return v != null ? v : italiano;
+    return conMarchio(v != null ? v : italiano);
   };
   window.SCRIPTORIUM_LINGUA = function () { return corrente; };
 
@@ -53,11 +58,17 @@
   function applica(cod) {
     corrente = cod;
     var d = dizionario(cod);
-    elementi.forEach(function (e, i) { var v = d[e.getAttribute("data-t")]; e.innerHTML = v != null ? v : origine[i]; });
-    attributi.forEach(function (a) { var v = d[a.id]; a.el.setAttribute(a.nome, v != null ? v : a.it); });
+    elementi.forEach(function (e, i) { var v = d[e.getAttribute("data-t")]; e.innerHTML = conMarchio(v != null ? v : origine[i]); });
+    attributi.forEach(function (a) { var v = d[a.id]; a.el.setAttribute(a.nome, conMarchio(v != null ? v : a.it)); });
     var chiaveTitolo = document.body && document.body.getAttribute("data-t-pagina");
-    document.title = (chiaveTitolo && d[chiaveTitolo + ".meta.titolo"]) || titolo0;
-    if (meta) meta.setAttribute("content", (chiaveTitolo && d[chiaveTitolo + ".meta.desc"]) || desc0);
+    document.title = conMarchio((chiaveTitolo && d[chiaveTitolo + ".meta.titolo"]) || titolo0);
+    if (meta) meta.setAttribute("content", conMarchio((chiaveTitolo && d[chiaveTitolo + ".meta.desc"]) || desc0));
+    var nome = marchio(cod), y = nome.indexOf("y");
+    Array.prototype.forEach.call(document.querySelectorAll("[data-marchio]"), function (e) { e.textContent = nome; });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-marchio-scritta]"), function (e) {
+      e.innerHTML = nome.slice(0, y) + '<span class="y">y</span>' + nome.slice(y + 1);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".marchio[aria-label]"), function (e) { e.setAttribute("aria-label", "Askylo " + nome); });
     var h = document.documentElement;
     h.setAttribute("lang", cod);
     h.setAttribute("dir", RTL[cod] ? "rtl" : "ltr");
