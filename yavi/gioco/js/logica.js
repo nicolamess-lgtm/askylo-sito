@@ -6,6 +6,9 @@
   'use strict';
   const G = typeof window !== 'undefined' ? window : globalThis;
   const YG = (G.YG = G.YG || {});
+  // le lingue (web/lingue.js): T(chiave, testo italiano). Senza traduzione (o nelle prove, in node) resta l'italiano.
+  const T = (id, it) => (G.YAVI_T ? G.YAVI_T(id, it) : it);
+  const TF = (id, it, v) => T(id, it).replace(/\{(\w+)\}/g, (_, k) => (v[k] != null ? v[k] : ''));
 
   // ---------- i numeri del gioco: tutti qui (da tarare con persone vere, anche bambini) ----------
   const SOGLIE = {
@@ -48,7 +51,9 @@
   const NOMI = ['Do', 'Do♯', 'Re', 'Re♯', 'Mi', 'Fa', 'Fa♯', 'Sol', 'Sol♯', 'La', 'La♯', 'Si'];
   function nomeNota(n) {
     const YT = G.YT;
-    if (YT && YT.util && YT.util.nomeNota) return YT.util.nomeNota(n);
+    // le lingue che usano le lettere (C D E) lo dicono nel dizionario: «g.note.sistema» = «americano»
+    const sistema = T('g.note.sistema', '');
+    if (YT && YT.util && YT.util.nomeNota) return YT.util.nomeNota(n, sistema ? { sistema } : undefined);
     return NOMI[((n % 12) + 12) % 12];
   }
 
@@ -121,8 +126,8 @@
     });
     for (const lista of perNome.values()) {
       if (lista.length < 2) continue;
-      lista[0].segno = 'basso';
-      lista[lista.length - 1].segno = 'alto';
+      lista[0].segno = T('g.basso', 'basso');
+      lista[lista.length - 1].segno = T('g.alto', 'alto');
     }
     return fuori;
   }
@@ -197,9 +202,12 @@
   function toccoDiTroppo(ora, cambio) { return Number(ora) - Number(cambio) < SOGLIE.doppio_tocco_ms; }
 
   // il pianoforte vero si ascolta solo se la pagina viene da Yavier sul Mac (127.0.0.1 o localhost)
+  // o dal suo 📱 Telecomando (porta 8877, un indirizzo della rete di casa o un nome .local)
   function servitoDaYavier(loc) {
     const h = String((loc && loc.hostname) || '').toLowerCase();
-    return h === '127.0.0.1' || h === 'localhost' || h === '[::1]' || h === '::1';
+    if (h === '127.0.0.1' || h === 'localhost' || h === '[::1]' || h === '::1') return true;
+    if (String((loc && loc.port) || '') !== '8877') return false;
+    return /\.local$/.test(h) || /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)\d{1,3}\.\d{1,3}(\.\d{1,3})?$/.test(h);
   }
 
   // una porta Web MIDI che è il pianoforte già sentito dal ponte (si ignora: mai due volte)
@@ -414,24 +422,31 @@
   }
 
   // ---------- le parole della fine ----------
+  // (getter: le parole si leggono nella lingua scelta al momento della fine)
   const PAROLE_FINE = {
-    3: { titolo: 'Tre stelle!', frase: 'L’hai suonata come un pianista.' },
-    2: { titolo: 'Due stelle', frase: 'Ancora un giro e arriva la terza.' },
-    1: { titolo: 'Una stella', frase: 'Ogni volta suona un po’ meglio. Riproviamo?' },
+    get 3() { return { titolo: T('g.fine.3.titolo', 'Tre stelle!'), frase: T('g.fine.3.frase', 'L’hai suonata come un pianista.') }; },
+    get 2() { return { titolo: T('g.fine.2.titolo', 'Due stelle'), frase: T('g.fine.2.frase', 'Ancora un giro e arriva la terza.') }; },
+    get 1() { return { titolo: T('g.fine.1.titolo', 'Una stella'), frase: T('g.fine.1.frase', 'Ogni volta suona un po’ meglio. Riproviamo?') }; },
   };
 
   function dettaglio(r) {
-    const note = r.totale === 1 ? 'nota' : 'note';
-    let s = r.primo + ' ' + (r.primo === 1 ? 'nota' : 'note') + ' su ' + r.totale + ' al primo colpo';
-    if (r.primo === r.totale) s = 'Tutte le ' + r.totale + ' ' + note + ' al primo colpo';
-    if (r.aiuti) s += ' · ' + r.aiuti + (r.aiuti === 1 ? ' aiuto' : ' aiuti');
+    const v = { primo: r.primo, totale: r.totale, aiuti: r.aiuti };
+    let s = r.primo === 1 ? TF('g.dett.uno', '{primo} nota su {totale} al primo colpo', v)
+      : TF('g.dett.molte', '{primo} note su {totale} al primo colpo', v);
+    if (r.primo === r.totale) s = r.totale === 1 ? TF('g.dett.tutta', 'Tutte le {totale} nota al primo colpo', v)
+      : TF('g.dett.tutte', 'Tutte le {totale} note al primo colpo', v);
+    if (r.aiuti) s += ' · ' + (r.aiuti === 1 ? TF('g.dett.aiuto', '{aiuti} aiuto', v) : TF('g.dett.aiuti', '{aiuti} aiuti', v));
     return s;
   }
+  // il titolo e la riga sotto di una canzone, nella lingua scelta
+  const titolo = (c) => T('g.canzone.' + c.id, c.titolo);
+  const sotto = (c) => (c.sotto ? T('g.canzone.' + c.id + '.sotto', c.sotto) : '');
 
   YG.SOGLIE = SOGLIE;
+  YG.T = T; YG.TF = TF;
   YG.CANZONI = CANZONI;
   YG.logica = {
-    canzone, prepara, tastiDaMostrare, etichette, nomeIntero, riassunto, nero, nomeNota,
+    canzone, prepara, tastiDaMostrare, etichette, nomeIntero, riassunto, nero, nomeNota, titolo, sotto,
     mappaComputer, lettera, notaDaTasto, campoDiTesto,
     fantasma, doppione, toccoDiTroppo, servitoDaYavier, portaDelPiano,
     Partita, altezza, stelle, leggiStelle, conStelle, PAROLE_FINE, dettaglio,

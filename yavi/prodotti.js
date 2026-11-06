@@ -4,14 +4,16 @@
 (function () {
   "use strict";
   window.YAVIER_PRODOTTI = [
-    { id: "game", nome: "Game", icona: "🎮", gratuito: true, comprende: [],
-      breve: "Il gioco per mettere le mani sulla tastiera. Gratis, senza account." },
+    { id: "game", nome: "Gratis", icona: "🎹", gratuito: true, comprende: [],
+      breve: "You play e Yavi plays: suoni tu con le note che scendono, o il pianoforte suona per te. Fino a 20 brani tuoi. Senza account." },
+    { id: "youplay_plus", nome: "You play+", icona: "🎮", comprende: [],
+      breve: "Brani tuoi senza limiti in You play, con i progressi e le stelle salvati." },
     { id: "ascolto", nome: "Ascolto", icona: "🎧", comprende: [],
       breve: "Il Disklavier suona per te, con il tocco di un pianista. E nella Libreria i tuoi preferiti e le tue playlist." },
-    { id: "impara", nome: "Impara", icona: "🎓", comprende: ["ascolto"],
-      breve: "Impari un brano un tratto alla volta, canti con il pianoforte e con l'Archivio porti in Yavi la tua collezione di MIDI. Comprende Ascolto." },
-    { id: "pro", nome: "Pro", icona: "⭐", comprende: ["impara", "ascolto"],
-      breve: "Accordi e testo, Palco, Spartito. Comprende Impara e Ascolto." },
+    { id: "impara", nome: "Plus", icona: "🎓", comprende: ["ascolto"],
+      breve: "Libreria, Archivio, Tastiera, Canta e Regia, con fino a 200 brani tuoi." },
+    { id: "pro", nome: "Pro", icona: "⭐", comprende: ["impara", "ascolto", "locali", "scriptorium_musica"],
+      breve: "Tutto senza limiti: Accordi e testo, Palco, Spartito, Registra, Sottofondo e Askylo Scriptorium · Musica." },
     { id: "locali", nome: "Locali", icona: "🌙", comprende: ["ascolto"],
       breve: "Sottofondo per ore, a fasce orarie, per locali e centri benessere. Comprende Ascolto." },
     { id: "studio_insegnanti", nome: "Askylo Studio · Insegnanti di musica", icona: "🧑‍🏫", comprende: [], soloPro: true,

@@ -38,6 +38,9 @@
   if (G.YavierVirtuale && G.YavierVirtuale.versione) return;   // già caricato
   const V = (G.YavierVirtuale = {});
   V.versione = "2";
+  // lingue (web/lingue.js): l'italiano è il testo di partenza
+  const T = (id, it) => (G.YAVI_T ? G.YAVI_T(id, it) : it);
+  const TF = (id, it, v) => T(id, it).replace(/\{(\w+)\}/g, (_, k) => (v[k] != null ? v[k] : ""));
   // la modalità «solo suono» (vedi sopra): si legge una volta sola, al caricamento
   const SOLO_SUONO = (() => {
     try {
@@ -375,15 +378,15 @@
     const testo = (i) => String.fromCharCode(b[i], b[i + 1], b[i + 2], b[i + 3]);
     const u32 = (i) => ((b[i] << 24) >>> 0) + (b[i + 1] << 16) + (b[i + 2] << 8) + b[i + 3];
     const u16 = (i) => (b[i] << 8) + b[i + 1];
-    if (b.length < 14 || testo(0) !== "MThd") throw new Error("Non è un file MIDI.");
+    if (b.length < 14 || testo(0) !== "MThd") throw new Error(T("v.err.nonmidi", "Non è un file MIDI."));
     const lungTesta = u32(4);
     const formato = u16(8), nTracce = u16(10), divisione = u16(12);
-    if (formato > 2) throw new Error("Formato MIDI sconosciuto.");
+    if (formato > 2) throw new Error(T("v.err.formato", "Formato MIDI sconosciuto."));
     let tickSec = null, tpq = divisione;
     if (divisione & 0x8000) {                              // SMPTE: fotogrammi × suddivisioni
       const fps = 256 - (divisione >> 8), sub = divisione & 0xff;
       tickSec = 1 / (fps * sub || 1);
-    } else if (!tpq) throw new Error("Il tempo del file non è leggibile.");
+    } else if (!tpq) throw new Error(T("v.err.tempo", "Il tempo del file non è leggibile."));
     p = 8 + lungTesta;
     const eventi = [];       // { tick, ord, tipo, ch, a, v }
     const tempi = [];        // { tick, us }
@@ -597,7 +600,7 @@
   async function prendiMidi(url) {
     if (cacheMidi.has(url)) return cacheMidi.get(url);
     const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error("Non riesco a scaricare il brano (" + r.status + ").");
+    if (!r.ok) throw new Error(TF("v.err.scarica", "Non riesco a scaricare il brano ({stato}).", { stato: r.status }));
     const dati = leggiMidi(await r.arrayBuffer());
     if (cacheMidi.size > 6) cacheMidi.delete(cacheMidi.keys().next().value);
     cacheMidi.set(url, dati);
@@ -804,22 +807,22 @@
     const s = ultimo && ultimo.s;
     // un brano già partito resta dov'è: la scelta nuova vale dal prossimo (suona_midi.py non sa riprendere a metà)
     if (modoServer === "pianoforte") {
-      const poi = s && s.attivo && preferita === "virtuale" ? "dal prossimo brano suona il computer" : "";
+      const poi = s && s.attivo && preferita === "virtuale" ? T("v.prossimo.computer", "dal prossimo brano suona il computer") : "";
       return { t: "🎹 Disklavier", sotto: poi, azione: false };
     }
     if (modoServer !== "virtuale") return { t: "", sotto: "", azione: false };
     let sotto = "", azione = false;
     const suonando = vuoleVirtuale(s);
     if (problemaUscita) sotto = problemaUscita;
-    else if (suonando && preferita === "automatica" && s.motivo_virtuale === "scelta") sotto = "il Disklavier riprende dal prossimo brano";
-    else if (statoCarica === "carica") sotto = "sto preparando il pianoforte… " + Math.round(caricati / 88 * 100) + "%";
+    else if (suonando && preferita === "automatica" && s.motivo_virtuale === "scelta") sotto = T("v.riprende", "il Disklavier riprende dal prossimo brano");
+    else if (statoCarica === "carica") sotto = TF("v.preparando", "sto preparando il pianoforte… {perc}%", { perc: Math.round(caricati / 88 * 100) });
     else if (attesa && attesa.errore) sotto = attesa.errore;
-    else if (ceduto && suonando) { sotto = "suona in un'altra scheda · tocca qui"; azione = true; }
-    else if (suonando && (!ctx || ctx.state !== "running")) { sotto = "tocca qui per sentire"; azione = true; }
-    else if (muto || vol === 0) sotto = "senza volume";
-    else if (!suonando && s && s.motivo_virtuale === "nessun_pianoforte") sotto = "il Disklavier non è collegato";
-    else if (!suonando && s && s.motivo_virtuale === "scelta") sotto = "hai scelto «Sempre dal computer»";
-    return { t: "🔈 Suono dal computer", sotto, azione };
+    else if (ceduto && suonando) { sotto = T("v.altra", "suona in un'altra scheda · tocca qui"); azione = true; }
+    else if (suonando && (!ctx || ctx.state !== "running")) { sotto = T("v.tocca", "tocca qui per sentire"); azione = true; }
+    else if (muto || vol === 0) sotto = T("v.senzavolume", "senza volume");
+    else if (!suonando && s && s.motivo_virtuale === "nessun_pianoforte") sotto = T("v.noncollegato", "il Disklavier non è collegato");
+    else if (!suonando && s && s.motivo_virtuale === "scelta") sotto = T("v.scelto", "hai scelto «Sempre dal computer»");
+    return { t: T("v.computer", "🔈 Suono dal computer"), sotto, azione };
   }
   function disegna() {
     const ind = testoIndicatore();
@@ -830,12 +833,12 @@
         const sotto = m.ind.querySelector(".yv-ind-sotto");
         sotto.textContent = ind.sotto ? "· " + ind.sotto : "";
         m.ind.classList.toggle("yv-chiama", ind.azione);
-        m.ind.title = modoServer === "pianoforte" ? "Suona il Disklavier" : "Il suono esce dagli altoparlanti di questo computer";
+        m.ind.title = modoServer === "pianoforte" ? T("v.ind.pianoforte", "Suona il Disklavier") : T("v.ind.computer", "Il suono esce dagli altoparlanti di questo computer");
         m.vol.hidden = modoServer !== "virtuale";
         m.cursore.value = String(Math.round(vol * 100));
         m.muto.textContent = muto || vol === 0 ? "🔇" : "🔊";
         m.muto.setAttribute("aria-pressed", muto ? "true" : "false");
-        m.muto.setAttribute("aria-label", muto ? "Riaccendi il suono del computer" : "Spegni il suono del computer");
+        m.muto.setAttribute("aria-label", muto ? T("v.muto.riaccendi", "Riaccendi il suono del computer") : T("v.muto.spegni", "Spegni il suono del computer"));
       }
       m.radio.forEach((r) => { r.checked = r.value === preferita; r.disabled = preferita == null; });
       if (m.dove) m.dove.hidden = preferita == null;
@@ -868,7 +871,7 @@
       await controllaUscita(preferita);
     } catch (e) {
       preferita = prima;
-      if (typeof G.alert === "function") G.alert("Non sono riuscito a salvare la scelta: " + e.message);
+      if (typeof G.alert === "function") G.alert(TF("v.err.salva", "Non sono riuscito a salvare la scelta: {errore}", { errore: e.message }));
     }
     avvisa();
   }
@@ -907,7 +910,7 @@
         } catch (e) { /* si riprova sotto */ }
       }
       if (performance.now() >= fine) {
-        problemaUscita = "non riesco a tornare al Disklavier: chiudi e riapri Yavi";
+        problemaUscita = T("v.problema", "non riesco a tornare al Disklavier: chiudi e riapri Yavi");
         avvisa();
         return;
       }
@@ -931,35 +934,45 @@
   }
 
   let gruppoRadio = 0;
+  // testi fissi dei pezzi montati: al cambio di lingua (evento «yavi-lingua») si riscrivono
+  const testiFissi = [];
+  function fisso(el, proprieta, testo) {
+    const metti = () => { const t = testo(); if (proprieta === "aria-label") el.setAttribute(proprieta, t); else el[proprieta] = t; };
+    metti(); testiFissi.push(metti);
+  }
+  if (!SOLO_SUONO && G.document && typeof G.document.addEventListener === "function") {
+    G.document.addEventListener("yavi-lingua", () => { for (const f of testiFissi) f(); avvisa(); });
+  }
+  const sceltaDove = () => [
+    ["automatica", T("v.dove.auto", "Automatico"), T("v.dove.auto.spiega", "Il Disklavier se è collegato, altrimenti il computer.")],
+    ["virtuale", T("v.dove.virtuale", "Sempre dal computer"), T("v.dove.virtuale.spiega", "Anche con il pianoforte collegato: al pianoforte non arriva niente (utile di notte).")],
+  ];
   function radioDove(contenitore, conSpiegazione) {
     const nome = "yv-dove-" + (++gruppoRadio);
-    const scelte = [
-      ["automatica", "Automatico", "Il Disklavier se è collegato, altrimenti il computer."],
-      ["virtuale", "Sempre dal computer", "Anche con il pianoforte collegato: al pianoforte non arriva niente (utile di notte)."],
-    ];
+    const scelte = sceltaDove();
     const g = document.createElement("div");
-    g.className = "yv-scelte"; g.setAttribute("role", "radiogroup"); g.setAttribute("aria-label", "Dove suona");
+    g.className = "yv-scelte"; g.setAttribute("role", "radiogroup");
+    fisso(g, "aria-label", () => T("v.dove", "Dove suona"));
     const radio = [];
-    for (const [v, t, spiega] of scelte) {
+    for (const [i, [v]] of scelte.entries()) {
       const l = document.createElement("label"); l.className = "yv-scelta";
       const r = document.createElement("input"); r.type = "radio"; r.name = nome; r.value = v;
       r.onchange = () => { if (r.checked) impostaPreferita(v); };
       const s = document.createElement("span");
       s.innerHTML = "<b></b>" + (conSpiegazione ? '<span class="yv-spiega"></span>' : "");
-      s.firstChild.textContent = t;
-      if (conSpiegazione) s.lastChild.textContent = spiega;
+      fisso(s.firstChild, "textContent", () => sceltaDove()[i][1]);
+      if (conSpiegazione) { const sp = s.lastChild; fisso(sp, "textContent", () => sceltaDove()[i][2]); }
       l.appendChild(r); l.appendChild(s); g.appendChild(l); radio.push(r);
     }
     contenitore.appendChild(g);
     return radio;
   }
   /* CC BY 3.0 chiede di citare la fonte dei campioni (web/suoni/LICENZA.md) */
-  const CREDITI = "Suono del pianoforte del computer: FluidR3_GM (Frank Wen e collaboratori), " +
-    "licenza CC BY 3.0; file mp3 da midi-js-soundfonts di Benjamin Gleitzman.";
-  V.crediti = CREDITI;
+  const CREDITI = () => T("v.crediti", "Suono del pianoforte del computer: FluidR3_GM (Frank Wen e collaboratori), licenza CC BY 3.0; file mp3 da midi-js-soundfonts di Benjamin Gleitzman.");
+  Object.defineProperty(V, "crediti", { get: CREDITI, enumerable: true });
   function crediti(el) {
     if (!el || !G.document) return;
-    const p = G.document.createElement("p"); p.className = "yv-crediti"; p.textContent = CREDITI;
+    const p = G.document.createElement("p"); p.className = "yv-crediti"; fisso(p, "textContent", CREDITI);
     el.appendChild(p);
   }
   function stile() {
@@ -1001,8 +1014,10 @@
     radice.className = "yv-virtuale"; radice.hidden = true;
     radice.innerHTML = '<button type="button" class="yv-ind"><span class="yv-ind-testo"></span><span class="yv-ind-sotto"></span></button>' +
       '<span class="yv-vol"><button type="button" class="yv-muto">🔊</button>' +
-      '<input type="range" class="yv-cursore" min="0" max="100" step="1" aria-label="Volume del pianoforte del computer"></span>' +
-      '<details class="yv-dove"><summary>Dove suona ▾</summary></details>';
+      '<input type="range" class="yv-cursore" min="0" max="100" step="1"></span>' +
+      '<details class="yv-dove"><summary></summary></details>';
+    fisso(radice.querySelector(".yv-cursore"), "aria-label", () => T("v.volume", "Volume del pianoforte del computer"));
+    fisso(radice.querySelector(".yv-dove > summary"), "textContent", () => T("v.dove.menu", "Dove suona ▾"));
     const ind = radice.querySelector(".yv-ind");
     ind.onclick = () => { sblocca(); prendo(); riprova(); };
     const muteBtn = radice.querySelector(".yv-muto"), cursore = radice.querySelector(".yv-cursore");

@@ -8,6 +8,7 @@
   const G = window;
   const YG = G.YG;
   const L = YG.logica, S = YG.SOGLIE, F = YG.figure;
+  const T = YG.T, TF = YG.TF;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -75,7 +76,7 @@
     if (!inclusi) {
       lista.innerHTML = '';
       $('manca').hidden = false;
-      $('manca').textContent = 'Le canzoni non sono ancora arrivate. Ricarica la pagina tra un momento.';
+      $('manca').textContent = T('g.manca', 'Le canzoni non sono ancora arrivate. Ricarica la pagina tra un momento.');
       return;
     }
     $('manca').hidden = true;
@@ -87,20 +88,21 @@
       try { prep = L.prepara(b); } catch (e) { continue; }
       const r = L.riassunto(prep);
       const n = stelleSalvate[c.id] || 0;
-      const sotto = c.sotto || b.compositore || '';
-      const neri = r.neri ? ' · ' + r.neri + (r.neri === 1 ? ' nero' : ' neri') : '';
+      const sotto = L.sotto(c) || b.compositore || '';
+      const nNeri = r.neri ? (r.neri === 1 ? TF('g.nero', '{n} nero', { n: 1 }) : TF('g.neri', '{n} neri', { n: r.neri })) : '';
+      const neri = nNeri ? ' · ' + nNeri : '';
+      const nTasti = TF('g.tasti', '{n} tasti', { n: r.tasti });
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'scheda tinta-' + c.colore;
       btn.innerHTML =
         '<span class="scheda-figura">' + F.figura(c.figura) + '</span>' +
-        '<span class="scheda-titolo">' + esc(c.titolo) + '</span>' +
+        '<span class="scheda-titolo">' + esc(L.titolo(c)) + '</span>' +
         '<span class="scheda-sotto">' + esc(sotto) + '</span>' +
         '<span class="scheda-piede"><span class="scheda-stelle">' + F.stelline(n) + '</span>' +
-        '<span class="scheda-tasti">' + r.tasti + ' tasti' + neri + '</span></span>';
-      const quanteStelle = n ? n + (n === 1 ? ' stella' : ' stelle') + ' su 3' : 'ancora nessuna stella';
-      btn.setAttribute('aria-label', c.titolo + ', ' + sotto + '. ' + r.tasti + ' tasti' +
-        (r.neri ? ', ' + r.neri + (r.neri === 1 ? ' nero' : ' neri') : '') + '. ' + quanteStelle + '.');
+        '<span class="scheda-tasti">' + esc(nTasti + neri) + '</span></span>';
+      const quanteStelle = n ? (n === 1 ? T('g.stella.una', '1 stella su 3') : TF('g.stelle', '{n} stelle su 3', { n })) : T('g.stelle.nessuna', 'ancora nessuna stella');
+      btn.setAttribute('aria-label', L.titolo(c) + ', ' + sotto + '. ' + nTasti + (nNeri ? ', ' + nNeri : '') + '. ' + quanteStelle + '.');
       btn.addEventListener('click', () => {
         if (L.toccoDiTroppo(performance.now(), cambio)) return;   // il 2° tocco di un doppio tocco su «Un altro»
         YG.suono.sblocca();
@@ -133,7 +135,7 @@
     let prep;
     try { prep = L.prepara(b); } catch (e) { mostraScegli(); return; }
     attuale = { canzone: c, prep, partita: new L.Partita(prep, { velocita: c.velocita }), colonna: new Map(), pool: new Map(), primaPresa: false };
-    $('t-suona').textContent = c.titolo;
+    $('t-suona').textContent = L.titolo(c);
     costruisciPalco();
     mostra('suona');
     misura();
@@ -166,7 +168,7 @@
       b.innerHTML = '<span class="tasto-nome">' + esc(e.nome) + '</span>' +
         (e.segno ? '<span class="tasto-segno">' + esc(e.segno) + '</span>' : '') +
         (lettera ? '<kbd class="tasto-lettera">' + esc(lettera) + '</kbd>' : '');
-      b.setAttribute('aria-label', L.nomeIntero(e) + (lettera ? ', lettera ' + lettera : ''));
+      b.setAttribute('aria-label', L.nomeIntero(e) + (lettera ? ', ' + TF('g.lettera', 'lettera {l}', { l: lettera }) : ''));
       YG.ingressi.collegaTasto(b, e.nota);
       tasti.appendChild(b);
       attuale.colonna.set(e.nota, { i, corsia, tasto: b, et: e, lettera, codice });
@@ -178,7 +180,7 @@
     const sugg = document.createElement('p');
     sugg.className = 'suggerimento';
     sugg.id = 'suggerimento';
-    sugg.textContent = 'Quando la nota arriva sulla linea, premi il suo tasto.';
+    sugg.textContent = T('g.suggerimento', 'Quando la nota arriva sulla linea, premi il suo tasto.');
     corsie.appendChild(sugg);
     YG.ingressi.usaMappa(mappa);
     document.body.classList.toggle('molti-tasti', et.length > 7);
@@ -275,7 +277,7 @@
       else if (ev.tipo === 'arriva') {
         const gr = attuale.prep.gruppi[ev.gruppo];
         // come sul tasto: «Do basso» e «Do alto», se no chi non vede non sa quale dei due
-        annuncia('Adesso: ' + gr.note.map((n) => L.nomeIntero((attuale.colonna.get(n) || {}).et)).join(' e '));
+        annuncia(T('g.adesso', 'Adesso:') + ' ' + gr.note.map((n) => L.nomeIntero((attuale.colonna.get(n) || {}).et)).join(' ' + T('g.e', 'e') + ' '));
       } else if (ev.tipo === 'aiuto') {
         for (const n of ev.note) { const col = attuale.colonna.get(n); if (col) col.tasto.classList.add('aiuto'); }
       } else if (ev.tipo === 'presa') {
@@ -361,7 +363,7 @@
     const parole = L.PAROLE_FINE[r.stelle];
     const stelle = $('fine-stelle');
     stelle.innerHTML = F.stelline(r.stelle, 'grande');
-    stelle.setAttribute('aria-label', r.stelle + (r.stelle === 1 ? ' stella' : ' stelle') + ' su 3');
+    stelle.setAttribute('aria-label', r.stelle === 1 ? T('g.stella.una', '1 stella su 3') : TF('g.stelle', '{n} stelle su 3', { n: r.stelle }));
     $('t-fine').textContent = parole.titolo;
     $('fine-frase').textContent = parole.frase;
     $('fine-dettaglio').textContent = L.dettaglio(r);
@@ -389,17 +391,17 @@
   // breve: la versione stretta, sotto i tasti
   function htmlStrumenti(st, breve) {
     let html = '';
-    if (st.piano) html += '<span class="chip"><span class="spia accesa"></span>' + (breve ? 'Pianoforte collegato' : 'Pianoforte collegato: suona anche sui suoi tasti') + '</span>';
+    if (st.piano) html += '<span class="chip"><span class="spia accesa"></span>' + (breve ? T('g.piano.breve', 'Pianoforte collegato') : T('g.piano', 'Pianoforte collegato: suona anche sui suoi tasti')) + '</span>';
     if (!YG.ingressi.midiPossibile()) return html;
     if (st.midi === 'spento' || st.midi === 'negato') {
-      html += '<button class="pulsante secondo piccolo" type="button" data-azione="midi">' + ICONA_MIDI + 'Usa la mia tastiera MIDI</button>';
+      html += '<button class="pulsante secondo piccolo" type="button" data-azione="midi">' + ICONA_MIDI + esc(T('g.midi.usa', 'Usa la mia tastiera MIDI')) + '</button>';
     }
-    if (st.midi === 'negato') html += '<span class="tenue piccolo">Il browser non mi ha dato il permesso: puoi riprovare.</span>';
-    if (st.midi === 'chiedo') html += '<span class="chip">Chiedo il permesso al browser…</span>';
+    if (st.midi === 'negato') html += '<span class="tenue piccolo">' + esc(T('g.midi.negato', 'Il browser non mi ha dato il permesso: puoi riprovare.')) + '</span>';
+    if (st.midi === 'chiedo') html += '<span class="chip">' + esc(T('g.midi.chiedo', 'Chiedo il permesso al browser…')) + '</span>';
     if (st.midi === 'attivo') {
       html += '<span class="chip"><span class="spia' + (st.porte.length ? ' accesa' : '') + '"></span>' +
-        (st.porte.length ? (breve ? 'MIDI: ' : 'Tastiera MIDI: ') + esc(st.porte.join(', ')) : 'Collega la tastiera MIDI: la sento da sola') + '</span>';
-      html += '<label class="interruttore"><input type="checkbox" data-azione="suono-midi"' + (suonoMidi ? ' checked' : '') + '>Suono dal computer</label>';
+        (st.porte.length ? (breve ? 'MIDI: ' : T('g.midi.tastiera', 'Tastiera MIDI:') + ' ') + esc(st.porte.join(', ')) : esc(T('g.midi.collega', 'Collega la tastiera MIDI: la sento da sola'))) + '</span>';
+      html += '<label class="interruttore"><input type="checkbox" data-azione="suono-midi"' + (suonoMidi ? ' checked' : '') + '>' + esc(T('g.midi.suono', 'Suono dal computer')) + '</label>';
     }
     return html;
   }
@@ -466,6 +468,26 @@
     // il primo gesto sblocca il suono (anche su iPhone e iPad, dove conta il dito che si alza)
     for (const tipo of ['pointerup', 'touchend', 'keydown', 'click']) G.addEventListener(tipo, () => YG.suono.sblocca(), { capture: true, passive: true });
     G.addEventListener('hashchange', leggiIndirizzo);
+    // cambio di lingua (web/lingue.js): si ridisegnano le canzoni e gli strumenti
+    document.addEventListener('yavi-lingua', () => {
+      if (!$('s-scegli').hidden) disegnaScegli();
+      else if (attuale) {
+        // a partita iniziata si cambiano solo le scritte, al loro posto (le note che scendono restano)
+        $('t-suona').textContent = L.titolo(attuale.canzone);
+        const sugg = $('suggerimento');
+        if (sugg) sugg.textContent = T('g.suggerimento', 'Quando la nota arriva sulla linea, premi il suo tasto.');
+        for (const e of L.etichette(attuale.prep.tasti)) {
+          const col = attuale.colonna.get(e.nota);
+          if (!col) continue;
+          col.et = e;
+          const nome = col.tasto.querySelector('.tasto-nome'), segno = col.tasto.querySelector('.tasto-segno');
+          if (nome) nome.textContent = e.nome;
+          if (segno) segno.textContent = e.segno;
+          col.tasto.setAttribute('aria-label', L.nomeIntero(e) + (col.lettera ? ', ' + TF('g.lettera', 'lettera {l}', { l: col.lettera }) : ''));
+        }
+      }
+      disegnaStrumenti();
+    });
     G.addEventListener('resize', () => { if (attuale) { misura(); sveglia(); } });
     if (typeof ResizeObserver === 'function') new ResizeObserver(() => { if (attuale) { misura(); sveglia(); } }).observe($('corsie'));
     document.addEventListener('visibilitychange', () => {
@@ -491,7 +513,7 @@
     col.lettera = letteraDi(col.codice);
     const k = col.tasto.querySelector('.tasto-lettera');
     if (k) k.textContent = col.lettera;
-    col.tasto.setAttribute('aria-label', L.nomeIntero(col.et) + ', lettera ' + col.lettera);
+    col.tasto.setAttribute('aria-label', L.nomeIntero(col.et) + ', ' + TF('g.lettera', 'lettera {l}', { l: col.lettera }));
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', avvia);
