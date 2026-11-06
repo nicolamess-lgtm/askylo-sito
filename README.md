@@ -9,31 +9,36 @@ fondo, le altre app della famiglia. Pubblicata da GitHub Pages a ogni push su
 `main`. L'app vera sta su `app.askylostudio.it` (repository privato
 `askylo-studio`).
 
-## La pre-home (dal 3/11/2026)
+## La casa dell'ecosistema (dal 6/11/2026)
 
-`index.html` è la pre-home: il cuore di Askylo che pulsa, con Eventi, Libri e
-Assemblee che gli girano intorno, e le finestre delle app (Studio,
-Scriptorium, Yavi, NutryLab) legate da molle: si trascinano, si lanciano e
-tornano al loro posto. La fisica è scritta a mano nello script in fondo,
-senza librerie. «Entra nel sito» porta al sito di prima, che ora sta in
-`sito/index.html` (i percorsi verso `lingue/` e le pagine dei mestieri sono
-assoluti, `/lingue/…`, per questo). L'account con «cambia account» ed «esci»
-è una prova: si accende solo con `#prova` nell'indirizzo, finché non c'è un
-accesso unico vero; senza prova «Entra» porta al login di Askylo Studio e le
-finestre alle pagine del sito.
+`index.html` è la casa di tutte le app di Askylo, decisa da Nicola il
+6/11/2026. Al centro c'è Askylo Live, la piazza delle domande; intorno
+Scrivylo, Suonylo, Clientylo e Nutrylo (in arrivo), legati dai fili di chi si
+parla. Le pagine delle quattro app stanno in `scrivylo/`, `suonylo/`,
+`clientylo/` e `nutrylo/` finché i loro domini non sono attivi; i caratteri
+stanno in `font/`. Qui non si scrivono a mano: la fonte è il repository
+`~/Documents/ASKYLO-LANDING` (`askylo-prehome/` e le cartelle delle app). Si
+rifanno lì con `bun run scripts/costruisci.ts && bun run scripts/askylostudio.ts`,
+poi si copia `dist/askylostudio/` nella radice di questo repository.
+
+La pre-home di prima sta in `prima/index.html`, fuori dai motori di ricerca:
+il cuore che pulsa con le finestre a molle, e l'account di prova che si
+accende con `#prova`. Serve da riferimento per il menu dell'account quando
+arriverà l'accesso unico. Il sito di prima resta in `sito/index.html` (i
+percorsi verso `lingue/` e le pagine dei mestieri sono assoluti, `/lingue/…`).
 
 ## La demo di NutryLab (dal 4/11/2026)
 
 `nutrylab/` è la versione dimostrativa di NutryLab (ricette, la settimana per
 la tua cucina, le 30 piante): niente Mac, niente profili di casa, niente
 importazione con Claude, i dati restano nel browser di chi la prova. La
-finestra NutryLab della pre-home porta lì. Non si scrive a mano: è la build
+pagina di Nutrylo (`nutrylo/`) porta lì. Non si scrive a mano: è la build
 di `~/Documents/NUTRYLAB` con `VITE_DEMO=1` e `--base=/nutrylab/`, e si
 rifà con `zsh scripts/pubblica-askylostudio.sh` da quella cartella.
 
 ## Scriptorium (dal 4/11/2026)
 
-La finestra Scriptorium della pre-home porta a `scriptorium/`, la pagina di
+Nella pre-home di prima (`prima/`) la finestra Scriptorium porta a `scriptorium/`, la pagina di
 presentazione di Askylo Scriptorium (tappa 4 di
 `~/Documents/SCRIPTORIUM-VENDITA/docs/PIANO.md`, anticipata: l'app online non
 c'è ancora). Cosa fa, per chi (autori che pubblicano su Amazon KDP), i piani

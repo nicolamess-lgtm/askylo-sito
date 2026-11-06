@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suonylo · il pianoforte che respira: ascolti, impari, suoni</title>
+<meta name="description" content="Un MIDI piatto suonato come un pianista, playlist legate dai ponti e medley a sorpresa, il Game con le note che ti aspettano, lezioni e Canta. Un'app di Askylo.">
+<link rel="canonical" href="https://askylostudio.it/suonylo/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Suonylo · il pianoforte che respira: ascolti, impari, suoni">
+<meta property="og:description" content="Un MIDI piatto suonato come un pianista, playlist legate dai ponti e medley a sorpresa, il Game con le note che ti aspettano, lezioni e Canta. Un'app di Askylo.">
+<meta property="og:url" content="https://askylostudio.it/suonylo/">
+<meta name="theme-color" content="#1C0F29">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="/font/Fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/font/DMSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/font/caratteri.css">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}.piede a{color:inherit;text-underline-offset:2px}</style>
+<style>
+/* Layout: in alto la sala (prugna notte) con il rullo delle note e la tastiera: si ascolta lo stesso brano piatto e umano;
+   sotto, su avorio, cinque capitoli con un pezzo dell'app che risponde (Regia, Archivio, Game, Canta, il resto); in fondo la porta. */
+:root{
+  --carta:#FBF7EE; --superficie:#FFFFFF; --inchiostro:#1E1626; --muto:#62596E; --linea:#E2D9CB;
+  --prugna:#3A1D52; --prugna-testo:#5B2D86; --giallo:#F2B705; --ambra:#E8913A; --verde:#2E7A57; --rosso:#B9412C; --segno:#FFF1B8;
+  --sala:#1C0F29; --sala-2:#331A4B; --sala-testo:#F6F0E6; --sala-muto:#C3B5D3;
+  --avorio:#FBF7EE; --ebano:#17101D;
+  --f-titolo:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-testo:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --carta:#130B1C; --superficie:#1E1329; --inchiostro:#EFE8DD; --muto:#B0A4BF; --linea:#36263F;
+    --prugna-testo:#D2B8F0; --verde:#7BCDA4; --rosso:#E8907A; --segno:#4A3F1C; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --carta:#130B1C; --superficie:#1E1329; --inchiostro:#EFE8DD; --muto:#B0A4BF; --linea:#36263F;
+  --prugna-testo:#D2B8F0; --verde:#7BCDA4; --rosso:#E8907A; --segno:#4A3F1C; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--carta);color:var(--inchiostro);font-family:var(--f-testo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--sala)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-titolo);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--giallo);outline-offset:3px;border-radius:6px}
+
+/* ---------- sala ---------- */
+.hero{background:radial-gradient(110% 90% at 80% 0%,var(--sala-2) 0%,var(--sala) 58%) var(--sala);color:var(--sala-testo);padding-block:14px 46px}
+.testata{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.marchio{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.marchio svg{width:34px;height:34px;flex:none}
+.parola{font-family:var(--f-titolo);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.parola b{color:var(--giallo)}
+.by{font-size:12px;color:var(--sala-muto);letter-spacing:.04em}
+.salta{font-size:14px;color:var(--sala-testo);text-decoration:none;border:1px solid rgba(246,240,230,.28);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.salta:hover{border-color:var(--giallo);color:#FFE7A0}
+.apertura{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:end;margin-top:34px}
+.occhiello{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#FFD86B;font-weight:500}
+.hero h1{font-size:clamp(34px,5.6vw,64px);line-height:1.02;margin-top:10px}
+.hero h1 em{font-style:italic;font-weight:400;color:#FFE08A}
+.sotto{color:var(--sala-muto);font-size:17px;max-width:46ch}
+.sotto strong{color:var(--sala-testo);font-weight:500}
+
+.palco{margin-top:28px;background:linear-gradient(180deg,#24123A,#170B22);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;box-shadow:inset 0 0 60px rgba(0,0,0,.35)}
+.palco-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.brano{font-family:var(--f-titolo);font-size:17px}
+.brano span{color:var(--sala-muto);font-family:var(--f-testo);font-size:13.5px;margin-left:6px}
+.scelta{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:3px}
+.scelta button{border:0;background:transparent;padding:7px 15px;border-radius:999px;font-size:14px;color:var(--sala-muto)}
+.scelta button[aria-pressed="true"]{background:var(--giallo);color:#24132F;font-weight:700}
+.ascolta{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--sala-testo);color:#24132F;font-weight:700;border-radius:999px;padding:8px 16px;font-size:14.5px}
+.ascolta:hover{background:#fff}
+.rullo{position:relative;margin-top:14px;border-radius:12px;overflow:hidden;background:#120A1B;border:1px solid rgba(255,255,255,.07)}
+.rullo canvas{display:block;width:100%;height:clamp(150px,22vw,230px)}
+.tastiera{position:relative;height:clamp(58px,8vw,92px);margin-top:8px;display:flex;user-select:none;-webkit-user-select:none}
+.tastiera .b{flex:1;background:var(--avorio);border:1px solid #CBBFAE;border-radius:0 0 6px 6px;margin:0 1px;transition:background .12s,box-shadow .12s}
+.tastiera .n{position:absolute;top:0;height:62%;background:var(--ebano);border-radius:0 0 4px 4px;z-index:2;transition:background .12s}
+.tastiera .b.on{background:#FFD27A;box-shadow:inset 0 -10px 14px rgba(232,145,58,.65)}
+.tastiera .n.on{background:#C77826}
+.segni{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.segni li{list-style:none;font-size:13px;border:1px solid rgba(255,255,255,.16);color:var(--sala-muto);border-radius:999px;padding:3px 11px;transition:all .3s}
+.segni li.acceso{border-color:var(--giallo);color:#FFE7A0;background:rgba(242,183,5,.1)}
+.segni{padding:0;margin-bottom:0}
+.nota-piccola{font-size:13px;color:var(--sala-muto);margin-top:10px}
+
+/* ---------- capitoli ---------- */
+.cap{padding-block:clamp(52px,8vw,96px);border-top:1px solid var(--linea)}
+.cap:first-of-type{border-top:0}
+.cap .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.cap.giro .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.cap.giro .testo{order:2}
+.etichetta{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--prugna-testo);font-weight:700}
+.cap h2{font-size:clamp(28px,3.6vw,42px);line-height:1.08;margin-top:10px}
+.cap .testo p{margin-top:14px;max-width:52ch;color:var(--muto);font-size:17px}
+.cap .testo p strong{color:var(--inchiostro);font-weight:500}
+.punti{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.punti li{font-size:13.5px;border:1px solid var(--linea);border-radius:999px;padding:4px 11px;background:var(--superficie)}
+.finestra{background:var(--superficie);border:1px solid var(--linea);border-radius:16px;box-shadow:0 18px 50px rgba(58,29,82,.12);overflow:hidden;min-width:0}
+.barra{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--linea);font-size:13px;color:var(--muto)}
+.barra .pallini{display:flex;gap:5px;margin-right:6px}
+.barra .pallini i{width:9px;height:9px;border-radius:50%;background:var(--linea);display:block}
+.barra .dx{margin-left:auto}
+.corpo{padding:16px}
+.btn-mini{border:1px solid var(--linea);background:var(--carta);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500}
+.btn-mini:hover{border-color:var(--prugna-testo)}
+.btn-mini.forte{background:var(--prugna);border-color:var(--prugna);color:#fff}
+.piccolo{font-size:12.5px;color:var(--muto)}
+
+/* regia */
+.fila{display:flex;align-items:center;gap:0;overflow-x:auto;padding-bottom:6px}
+.pezzo{flex:none;width:150px;border:1px solid var(--linea);border-radius:12px;padding:10px 11px;background:var(--carta);font-size:13px;line-height:1.35}
+.pezzo b{font-family:var(--f-titolo);font-size:15px;font-weight:600;display:block}
+.pezzo .chiave{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--prugna-testo)}
+.ponte{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:84px;font-size:11px;color:var(--muto)}
+.ponte i{display:block;width:100%;height:2px;background:repeating-linear-gradient(90deg,var(--giallo) 0 6px,transparent 6px 10px)}
+.ponte button{border:1px solid var(--linea);background:var(--superficie);border-radius:999px;padding:2px 8px;font-size:11px}
+.sorprendimi{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.durate{display:inline-flex;border:1px solid var(--linea);border-radius:999px;padding:3px;background:var(--carta)}
+.durate button{border:0;background:transparent;border-radius:999px;padding:4px 11px;font-size:13px;color:var(--muto)}
+.durate button[aria-pressed="true"]{background:var(--prugna);color:#fff;font-weight:500}
+.medley{margin-top:12px;display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid var(--linea)}
+.medley span{display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#fff;white-space:nowrap;overflow:hidden;padding:0 4px;animation:cresce .6s cubic-bezier(.2,.8,.2,1) both}
+.medley span.p{background:repeating-linear-gradient(135deg,#F2B705 0 6px,#E8913A 6px 12px);color:#2A1B10;font-weight:700;flex:none;width:26px}
+@keyframes cresce{from{transform:scaleX(.2);opacity:0}to{transform:none;opacity:1}}
+.racconto{margin-top:10px;font-family:var(--f-titolo);font-size:15.5px;line-height:1.5;min-height:3em}
+
+/* archivio */
+.gruppi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gruppo{border:1px solid var(--linea);border-radius:10px;padding:9px 10px;background:var(--carta);font-size:13px}
+.gruppo b{font-family:var(--f-titolo);font-size:20px;display:block;font-variant-numeric:tabular-nums}
+.file{margin-top:12px;border:1px solid var(--linea);border-radius:12px;padding:12px;display:grid;gap:8px}
+.file .riga{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13.5px}
+.file code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;background:var(--carta);border:1px solid var(--linea);border-radius:6px;padding:1px 6px}
+.stato{font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;border:1px solid currentColor}
+.stato.no{color:var(--rosso)}
+.stato.si{color:var(--verde)}
+.controlli{display:grid;gap:4px;font-size:13px}
+.controlli span{display:flex;gap:8px;align-items:baseline}
+
+/* game */
+.game{display:grid;gap:10px}
+.pista{position:relative;height:210px;border-radius:12px;background:linear-gradient(180deg,#22113A,#120A1B);overflow:hidden}
+.pista .linea{position:absolute;left:0;right:0;bottom:22px;height:2px;background:rgba(255,216,107,.7)}
+.blocco{position:absolute;height:26px;border-radius:7px;background:#F2B705;color:#24132F;font-size:12px;font-weight:700;display:grid;place-items:center;transition:bottom .35s cubic-bezier(.2,.8,.2,1),opacity .3s;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.blocco.prossimo{animation:pulsa 1s ease-in-out infinite}
+@keyframes pulsa{50%{box-shadow:0 0 0 4px rgba(242,183,5,.35),0 4px 12px rgba(0,0,0,.4)}}
+.tasti5{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.tasti5 button{height:78px;border:1px solid #CBBFAE;border-radius:0 0 8px 8px;background:var(--avorio);color:#3B2B4A;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:6px;font-size:12px;transition:background .1s}
+.tasti5 button small{font-size:10.5px;color:#8A7C94}
+.tasti5 button.giusto{background:#FFD27A}
+.tasti5 button.sbagliato{background:#F2B1A4;animation:trema .25s}
+@keyframes trema{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.esito{font-size:14px;min-height:1.5em}
+.stelle{color:var(--giallo);font-size:20px;letter-spacing:2px}
+.percorso{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.percorso span{font-size:12.5px;border-radius:999px;padding:3px 10px;background:var(--carta);border:1px solid var(--linea)}
+.percorso span.qui{background:var(--prugna);border-color:var(--prugna);color:#fff}
+
+/* canta */
+.canta canvas{display:block;width:100%;height:190px;border-radius:12px;background:var(--carta);border:1px solid var(--linea)}
+.voti{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:10px}
+.voti span{font-size:11.5px;text-align:center;border-radius:8px;padding:5px 2px;border:1px solid var(--linea);line-height:1.3}
+.voti span b{display:block;font-size:12.5px}
+.voti .ok{color:var(--verde)}
+.voti .giu{color:#B7791F}
+.voti .su{color:var(--rosso)}
+
+/* il resto */
+.altro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.attrezzo{border:1px solid var(--linea);background:var(--superficie);border-radius:14px;padding:14px;min-width:0}
+.attrezzo h3{font-size:18px}
+.attrezzo p{font-size:14px;color:var(--muto);margin-top:6px}
+.attrezzo .piano{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--prugna-testo);font-weight:700}
+.cap-altro .wrap{display:block}
+.cap-altro h2{max-width:22ch}
+.cap-altro .intro{margin-top:12px;color:var(--muto);font-size:17px;max-width:60ch}
+.cap-altro .altro{margin-top:24px}
+
+.disk{background:var(--superficie);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding-block:28px}
+.disk .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:baseline;justify-content:space-between}
+.disk h3{font-size:22px}
+.disk p{color:var(--muto);max-width:62ch}
+
+.porta{background:var(--sala);color:var(--sala-testo);padding-block:clamp(56px,9vw,104px)}
+.porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
+.porta h2{font-size:clamp(30px,4.4vw,52px);line-height:1.04}
+.porta h2 em{color:#FFE08A;font-weight:400}
+.porta p{color:var(--sala-muto);margin-top:14px;font-size:17px;max-width:50ch}
+.porta .btns{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent}
+.btn.pieno{background:var(--giallo);color:#24132F}
+.btn.pieno:hover{background:#FFC928}
+.btn.vuoto{background:transparent;color:var(--sala-testo);border-color:rgba(246,240,230,.3)}
+.piede{background:var(--sala);color:var(--sala-muto);font-size:13px;padding-block:18px 26px;border-top:1px solid rgba(255,255,255,.08)}
+.piede .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:#24132F;color:#F6F0E6;border-radius:12px;padding:10px 14px;font-size:14px;max-width:min(92vw,460px);z-index:40;transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.vedi{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:860px){
+  .apertura{grid-template-columns:1fr;gap:14px}
+  .cap .wrap,.cap.giro .wrap,.porta .wrap{grid-template-columns:1fr}
+  .cap.giro .testo{order:0}
+  .altro{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .altro{grid-template-columns:1fr}
+  .gruppi{grid-template-columns:1fr 1fr}
+  .voti span{font-size:10.5px}
+  .hero h1{font-size:clamp(32px,9vw,44px)}
+  .pezzo{width:132px}
+  .ponte{width:64px}
+}
+@media (prefers-reduced-motion:reduce){
+  .blocco,.medley span,.tastiera .b,.tastiera .n{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="testata">
+      <a class="marchio" href="./" aria-label="Suonylo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3A1D52"/><path d="M9 7.5 16 15.5l7-8" fill="none" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 15v8.6" stroke="#F2B705" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="13.2" cy="24.4" rx="3.7" ry="2.7" transform="rotate(-22 13.2 24.4)" fill="#F2B705"/></svg>
+        <span><span class="parola">Suon<b>y</b>lo</span><br><span class="by">by Askylo</span></span>
+      </a>
+      <a class="salta" href="#inizia">Salta ↓</a>
+    </div>
+
+    <div class="apertura">
+      <div>
+        <p class="occhiello">Per chi suona, impara e ascolta il pianoforte</p>
+        <h1>Lo stesso brano. <em>Ora respira.</em></h1>
+      </div>
+      <p class="sotto">Un MIDI piatto suona come una macchina. Suonylo lo suona come un pianista: <strong>forza, passo e respiro</strong> nota per nota, con regole da musicista e senza cambiare una nota. Ascolta il file com'è, poi come lo suona Suonylo.</p>
+    </div>
+
+    <div class="palco">
+      <div class="palco-top">
+        <p class="brano">Rondò alla turca <span>W. A. Mozart · i primi 16 secondi</span></p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <div class="scelta" role="group" aria-label="Versione">
+            <button type="button" id="v-piatto" aria-pressed="false">Piatto, come il file</button>
+            <button type="button" id="v-umano" aria-pressed="true">Umano, come Suonylo</button>
+          </div>
+          <button class="ascolta" type="button" id="ascolta" aria-label="Ascolta">▶ Ascolta</button>
+        </div>
+      </div>
+      <div class="rullo"><canvas id="rullo" aria-label="Le note del brano: altezza e durata, più chiare quando sono più forti"></canvas></div>
+      <div class="tastiera" id="tastiera" aria-hidden="true"></div>
+      <ul class="segni" id="segni">
+        <li data-k="dinamica">Dinamica: ogni nota con la sua forza, non tutte a 90</li>
+        <li data-k="respiro">Passo e respiro: il tempo giusto, con piccoli scarti</li>
+        <li data-k="articolazione">Articolazione: note staccate, come le suona un pianista</li>
+        <li data-k="sicurezza">Sicurezza: ribattute ad almeno 150 ms</li>
+      </ul>
+      <p class="nota-piccola" id="stato-ascolto">Sono i due file veri: quello piatto e quello umanizzato dal motore di Suonylo. Il suono parte quando premi Ascolta, con i campioni di un pianoforte vero.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="cap" id="regia">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Regia e Sorprendimi</p>
+        <h2>La tua playlist diventa un concerto.</h2>
+        <p>Metti in fila i brani e Suonylo li <strong>unisce con un ponte</strong>, un passaggio suonato che li lega senza silenzi. Ascolti il passaggio prima di decidere.</p>
+        <p>Quando i brani sono tanti, premi <strong>Sorprendimi</strong>: ne esce un medley da 3, 6 o 9 minuti, con il racconto di come è costruito.</p>
+        <ul class="punti"><li>Ponti in 4 stili</li><li>Scalette salvate</li><li>Relax per il sottofondo</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Regia<span class="dx">6 brani</span></div>
+        <div class="corpo">
+          <div class="fila">
+            <div class="pezzo"><b>Gymnopédie n. 1</b>Erik Satie<span class="chiave">Re maggiore</span></div>
+            <div class="ponte"><span>ponte</span><i></i><button type="button" id="passaggio">▶ Ascolta</button></div>
+            <div class="pezzo"><b>Clair de lune</b>Claude Debussy<span class="chiave">Re♭ maggiore</span></div>
+            <div class="ponte"><span>ponte</span><i></i></div>
+            <div class="pezzo"><b>Notturno op. 9 n. 2</b>Fryderyk Chopin<span class="chiave">Mi♭ maggiore</span></div>
+          </div>
+          <p class="piccolo" style="margin-top:6px">In playlist anche: Per Elisa, Preludio in Do, Träumerei.</p>
+          <div class="sorprendimi">
+            <div class="durate" role="group" aria-label="Durata del medley">
+              <button type="button" data-min="3" aria-pressed="true">3 min</button>
+              <button type="button" data-min="6" aria-pressed="false">6 min</button>
+              <button type="button" data-min="9" aria-pressed="false">9 min</button>
+            </div>
+            <button class="btn-mini forte" type="button" id="sorprendimi">✦ Sorprendimi</button>
+          </div>
+          <div class="medley" id="medley" aria-live="polite"></div>
+          <p class="racconto" id="racconto">Scegli la durata e premi Sorprendimi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="archivio">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Archivio</p>
+        <h2>Tutti i tuoi MIDI, in ordine e sicuri.</h2>
+        <p>Indichi la cartella e Suonylo <strong>mette in ordine la collezione</strong>: per autore, durata e carattere, con i brani simili vicini e i doppioni trovati.</p>
+        <p>Un file d'orchestra si <strong>riduce per pianoforte</strong>, anche se è rovinato. Prima di suonare, ogni brano passa i controlli che proteggono la meccanica.</p>
+        <ul class="punti"><li>Ribattute ≥ 150 ms</li><li>Forza massima 100</li><li>Stop di sicurezza</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Archivio · la tua cartella<span class="dx">esempio</span></div>
+        <div class="corpo">
+          <div class="gruppi">
+            <div class="gruppo"><b>412</b>pianoforte solo</div>
+            <div class="gruppo"><b>37</b>d'orchestra, da ridurre</div>
+            <div class="gruppo"><b>24</b>lenti e lunghi, per te</div>
+            <div class="gruppo"><b>12</b>doppioni trovati</div>
+          </div>
+          <div class="file">
+            <div class="riga"><code>sinfonia_finale.mid</code><span class="stato no" id="stato-file">16 tracce · ribattute a 75 ms</span></div>
+            <div class="controlli" id="controlli">
+              <span>✗ Troppe tracce per due mani</span>
+              <span>✗ Note ribattute troppo vicine per i martelletti</span>
+            </div>
+            <button class="btn-mini forte" type="button" id="riduci" style="justify-self:start">Riduci per pianoforte</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap" id="impara">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Game e lezioni</p>
+        <h2>Impari giocando, dieci minuti al giorno.</h2>
+        <p>Le note scendono e <strong>ti aspettano sulla linea</strong>: niente fretta, niente errori che scappano. Con il tocco, la tastiera del computer o una tastiera vera.</p>
+        <p>Poi il percorso: ascolti, trovi le note, suoni insieme al pianoforte dal 60 al 100% della velocità, e alla fine c'è il saggio.</p>
+        <div class="percorso"><span>Ascolta</span><span>Trova le note</span><span>Suoniamo insieme</span><span>Il saggio</span></div>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Game · Inno alla gioia<span class="dx" id="contatore">0 / 15</span></div>
+        <div class="corpo game">
+          <div class="pista" id="pista"><div class="linea"></div></div>
+          <div class="tasti5" id="tasti5"></div>
+          <p class="esito" id="esito">Premi il tasto che si illumina. Sul computer vanno bene anche A S D F G.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="canta">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Canta</p>
+        <h2>Canti, e il pianoforte ti segue.</h2>
+        <p>Il pianoforte ti dà la nota e <strong>la sposta con la tua voce</strong>. Il microfono ascolta solo te, non il pianoforte, e ogni nota riceve un voto in centesimi di tono.</p>
+        <p>Vedi la tua voce come una linea sopra le note giuste: intonata, calante o crescente, nota per nota.</p>
+        <ul class="punti"><li>Vocalizzi con Ascoltami</li><li>Voto in cent</li><li>Progressi nel tempo</li></ul>
+      </div>
+      <div class="finestra canta">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Canta · vocalizzo Do-Sol<span class="dx">esempio</span></div>
+        <div class="corpo">
+          <canvas id="voce" aria-label="La linea della voce sopra le cinque note del vocalizzo"></canvas>
+          <div class="voti">
+            <span class="ok"><b>Do</b>intonata<br>+3 cent</span>
+            <span class="ok"><b>Re</b>intonata<br>−6 cent</span>
+            <span class="giu"><b>Mi</b>calante<br>−28 cent</span>
+            <span class="ok"><b>Fa</b>intonata<br>+8 cent</span>
+            <span class="su"><b>Sol</b>crescente<br>+31 cent</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap cap-altro" id="altro">
+    <div class="wrap">
+      <p class="etichetta">E poi</p>
+      <h2>Tutto quello che serve a chi suona davvero.</h2>
+      <p class="intro">Gli strumenti dei piani a pagamento, per chi studia sul serio, insegna o suona in pubblico.</p>
+      <div class="altro">
+        <div class="attrezzo"><span class="piano">Dall'mp3</span><h3>Da una registrazione al MIDI</h3><p>Carichi un mp3 e Suonylo scrive le note e il pedale, pronte da suonare.</p></div>
+        <div class="attrezzo"><span class="piano">Spartito</span><h3>Legge e scrive spartiti</h3><p>Da una foto o un PDF al MIDI. E da quello che hai suonato, lo spartito a due pentagrammi.</p></div>
+        <div class="attrezzo"><span class="piano">Registra</span><h3>Pianoforte e voce</h3><p>Registri insieme pianoforte e microfono, con il volume già giusto per la pubblicazione.</p></div>
+        <div class="attrezzo"><span class="piano">Concerto</span><h3>Separa voce e strumenti</h3><p>Da una canzone ricava la parte del pianoforte e la base senza pianoforte, con il karaoke.</p></div>
+        <div class="attrezzo"><span class="piano">Accordi e Palco</span><h3>Per chi suona in pubblico</h3><p>Accordi per battuta anche in Nashville, scaletta, prova generale.</p></div>
+        <div class="attrezzo"><span class="piano">Insegnanti</span><h3>Allievi, compiti e saggi</h3><p>Con Clientylo per le lezioni e Askylo Live per il saggio di fine anno.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="disk">
+  <div class="wrap">
+    <h3>Hai un pianoforte che suona da solo?</h3>
+    <p>Suonylo lo fa suonare con le stesse regole e con la sicurezza per la meccanica; il telefono o il tablet diventano il telecomando. Compatibile con Yamaha Disklavier ENSPIRE. Yamaha e Disklavier sono marchi di Yamaha Corporation.</p>
+  </div>
+</section>
+
+<section class="porta" id="inizia">
+  <div class="wrap">
+    <div>
+      <h2>Suona ora, <em>gratis</em>.</h2>
+      <p>Sette brani, le note che scendono e ti aspettano, le stelle alla fine. Nel browser, senza account. Il resto lo scopri quando ti va.</p>
+    </div>
+    <div class="btns">
+      <a class="btn pieno" href="https://askylostudio.it/yavi/gioco/">Suona ora</a>
+      <a class="btn vuoto" href="https://app.askylostudio.it/demo/musica/">Sei un insegnante?</a>
+    </div>
+  </div>
+</section>
+<footer class="piede">
+  <div class="wrap"><span>Suonylo in Italia, Soundylo nel resto del mondo. Un'app di <a href="/">Askylo</a>.</span><span><a href="https://askylo.com/privacy">Privacy</a> · <a href="https://askylo.com/termini">Termini</a> · numeri, cartelle e voti sono esempi · brani di pubblico dominio · suono del pianoforte: FluidR3_GM di Frank Wen e collaboratori, <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, dai file midi-js-soundfonts di Benjamin Gleitzman</span></div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const toast = document.getElementById("toast");
+  let tt = 0;
+  const avvisa = (t) => { toast.textContent = t; toast.classList.add("vedi"); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove("vedi"), 2800); };
+  document.querySelectorAll("[data-toast]").forEach((b) => b.addEventListener("click", () => avvisa(b.dataset.toast)));
+
+  // ---------- suono: un pianoforte semplice fatto nel browser ----------
+  let ctx = null, uscita = null;
+  function audio() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      ctx = new AC();
+      uscita = ctx.createGain();
+      uscita.gain.value = 0.55;
+      const comp = ctx.createDynamicsCompressor();
+      uscita.connect(comp); comp.connect(ctx.destination);
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  // pianoforte vero: campioni FluidR3_GM (CC BY 3.0), con il sintetizzatore di riserva se non arrivano
+  const NOMI_N = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
+  const CAMPIONI = [45, 47, 48, 52, 55, 57, 59, 60, 64, 67, 68, 69, 71, 72, 74, 75, 76, 77, 78, 79, 80, 81, 83, 84];
+  const campioni = new Map();
+  let carica = null;
+  function caricaCampioni() {
+    if (carica || !ctx) return carica || Promise.resolve();
+    carica = Promise.all(CAMPIONI.map(async (m) => {
+      try {
+        const r = await fetch("suoni/" + NOMI_N[m % 12] + (Math.floor(m / 12) - 1) + ".mp3");
+        if (!r.ok) return;
+        const b = await ctx.decodeAudioData(await r.arrayBuffer());
+        const d = b.getChannelData(0);
+        let i = 0;
+        while (i < d.length && Math.abs(d[i]) < 0.01) i++;
+        campioni.set(m, { b, inizio: Math.max(0, i / b.sampleRate - 0.003) });
+      } catch (e) { /* resta il sintetizzatore */ }
+    }));
+    return carica;
+  }
+  function suona(midi, t, dur, vel, k) {
+    let vicino = null;
+    for (const m of campioni.keys()) if (vicino === null || Math.abs(m - midi) < Math.abs(vicino - midi)) vicino = m;
+    if (vicino === null) return suonaSintetico(midi, t, dur, vel);
+    const c = campioni.get(vicino);
+    const s = ctx.createBufferSource();
+    s.buffer = c.b;
+    s.playbackRate.value = Math.pow(2, (midi - vicino) / 12);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(Math.pow(vel / 127, 1.35) * 1.15 * (k || 1), t);
+    g.gain.setTargetAtTime(0.0001, t + dur, 0.05);
+    s.connect(g); g.connect(uscita);
+    s.start(t, c.inizio);
+    s.stop(t + dur + 0.45);
+  }
+  function suonaSintetico(midi, t, dur, vel) {
+    const f = 440 * Math.pow(2, (midi - 69) / 12);
+    const v = Math.pow(vel / 127, 1.7) * 0.42;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(v + 0.0001, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(v * 0.42 + 0.0001, t + 0.22);
+    g.gain.setTargetAtTime(v * 0.18 + 0.0001, t + 0.22, 0.9);
+    g.gain.setTargetAtTime(0.0001, t + dur, 0.09);
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass"; lp.frequency.value = 900 + vel * 28;
+    const o1 = ctx.createOscillator(); o1.type = "triangle"; o1.frequency.value = f;
+    const o2 = ctx.createOscillator(); o2.type = "sine"; o2.frequency.value = f * 2.003;
+    const g2 = ctx.createGain(); g2.gain.value = 0.22;
+    o1.connect(lp); o2.connect(g2); g2.connect(lp); lp.connect(g); g.connect(uscita);
+    const fine = t + dur + 0.6;
+    o1.start(t); o2.start(t); o1.stop(fine); o2.stop(fine);
+  }
+
+  // ---------- il Rondò: i due file veri, piatto e umanizzato dal motore (primi 16 secondi) ----------
+  const DATI = {"piatto":[[71,0,0.25,90],[69,0.25,0.25,90],[68,0.5,0.25,90],[69,0.75,0.25,90],[57,1,0.5,90],[72,1,0.5,90],[64,1.5,0.5,90],[60,1.5,0.5,90],[74,2,0.25,90],[64,2,0.5,90],[60,2,0.5,90],[72,2.25,0.25,90],[71,2.5,0.25,90],[64,2.5,0.5,90],[60,2.5,0.5,90],[72,2.75,0.25,90],[57,3,0.5,90],[76,3,0.5,90],[64,3.5,0.5,90],[60,3.5,0.5,90],[77,4,0.25,90],[64,4,0.5,90],[60,4,0.5,90],[76,4.25,0.25,90],[75,4.5,0.25,90],[60,4.5,0.5,90],[64,4.5,0.5,90],[76,4.75,0.25,90],[83,5,0.25,90],[57,5,0.5,90],[81,5.25,0.25,90],[80,5.5,0.25,90],[64,5.5,0.5,90],[60,5.5,0.5,90],[81,5.75,0.25,90],[83,6,0.25,90],[57,6,0.5,90],[81,6.25,0.25,90],[80,6.5,0.25,90],[64,6.5,0.5,90],[60,6.5,0.5,90],[81,6.75,0.25,90],[57,7,0.5,90],[84,7,1,90],[64,7.5,0.5,90],[60,7.5,0.5,90],[60,8,0.5,90],[64,8,0.5,90],[81,8,0.5,90],[84,8.5,0.443,90],[64,8.5,0.5,90],[60,8.5,0.5,90],[79,8.943,0.026,90],[81,8.971,0.026,90],[52,9,0.5,90],[83,9,0.5,90],[64,9.5,0.5,90],[59,9.5,0.5,90],[81,9.5,0.5,90],[78,9.5,0.5,90],[64,10,0.5,90],[59,10,0.5,90],[79,10,0.5,90],[76,10,0.5,90],[81,10.5,0.443,90],[78,10.5,0.443,90],[64,10.5,0.5,90],[59,10.5,0.5,90],[79,10.943,0.026,90],[81,10.971,0.026,90],[52,11,0.5,90],[83,11,0.5,90],[59,11.5,0.5,90],[64,11.5,0.5,90],[78,11.5,0.5,90],[81,11.5,0.5,90],[64,12,0.5,90],[59,12,0.5,90],[79,12,0.5,90],[76,12,0.5,90],[81,12.5,0.443,90],[78,12.5,0.443,90],[64,12.5,0.5,90],[59,12.5,0.5,90],[79,12.943,0.026,90],[81,12.971,0.026,90],[52,13,0.5,90],[83,13,0.5,90],[64,13.5,0.5,90],[59,13.5,0.5,90],[81,13.5,0.5,90],[78,13.5,0.5,90],[47,14,0.5,90],[79,14,0.5,90],[76,14,0.5,90],[59,14.5,0.5,90],[75,14.5,0.5,90],[78,14.5,0.5,90],[52,15,1,90],[76,15,1,90]],"umano":[[71,0,0.109,54],[69,0.111,0.115,44],[68,0.236,0.115,48],[69,0.367,0.116,45],[72,0.496,0.2,52],[57,0.498,0.2,39],[64,0.749,0.125,34],[60,0.756,0.125,34],[74,0.994,0.115,55],[64,1,0.178,42],[60,1.001,0.178,41],[72,1.118,0.116,49],[71,1.243,0.115,51],[64,1.248,0.125,36],[60,1.249,0.125,34],[72,1.365,0.116,46],[76,1.494,0.2,54],[57,1.503,0.2,41],[60,1.748,0.125,35],[64,1.75,0.125,34],[77,1.991,0.115,56],[64,1.997,0.18,44],[60,2.006,0.176,45],[76,2.12,0.115,48],[75,2.242,0.115,53],[64,2.247,0.125,37],[60,2.252,0.125,38],[76,2.36,0.115,49],[83,2.491,0.116,56],[57,2.506,0.2,42],[81,2.619,0.115,52],[80,2.743,0.116,55],[60,2.743,0.125,37],[64,2.751,0.125,35],[81,2.864,0.115,49],[83,2.99,0.115,63],[57,3.007,0.2,47],[81,3.116,0.115,52],[80,3.238,0.115,56],[64,3.244,0.125,38],[60,3.247,0.125,39],[81,3.364,0.115,54],[84,3.491,0.45,58],[57,3.502,0.2,44],[64,3.75,0.125,41],[60,3.758,0.125,39],[81,3.998,0.2,63],[64,4.003,0.172,48],[60,4.008,0.176,49],[64,4.245,0.125,42],[84,4.252,0.177,57],[60,4.254,0.125,40],[79,4.384,0.05,49],[81,4.439,0.05,49],[83,4.494,0.2,59],[52,4.501,0.2,46],[81,4.735,0.2,61],[59,4.747,0.125,39],[78,4.747,0.2,52],[64,4.753,0.125,42],[76,4.993,0.2,53],[79,4.994,0.2,62],[64,4.998,0.184,43],[59,5.002,0.166,44],[59,5.238,0.125,38],[81,5.244,0.124,57],[78,5.244,0.177,48],[64,5.253,0.125,39],[79,5.382,0.05,47],[81,5.438,0.05,47],[83,5.493,0.2,57],[52,5.499,0.2,44],[78,5.744,0.2,48],[81,5.745,0.2,56],[64,5.75,0.125,39],[59,5.751,0.125,37],[76,5.993,0.2,50],[64,5.994,0.185,43],[79,5.994,0.2,60],[59,6.001,0.184,40],[81,6.241,0.126,53],[78,6.242,0.177,47],[64,6.249,0.125,35],[59,6.256,0.125,34],[79,6.381,0.05,43],[81,6.436,0.05,43],[83,6.492,0.2,53],[52,6.501,0.2,39],[81,6.735,0.2,54],[78,6.741,0.2,44],[64,6.743,0.125,36],[59,6.751,0.125,36],[47,6.992,0.2,38],[79,6.993,0.2,56],[76,6.995,0.2,48],[78,7.235,0.2,50],[75,7.245,0.2,43],[59,7.25,0.125,33],[52,7.494,0.425,39],[76,7.496,0.456,49],[76,8.023,0.2,57],[72,8.027,0.2,51],[77,8.27,0.2,55],[74,8.272,0.2,44],[76,8.518,0.184,46],[79,8.521,0.179,55],[48,8.531,0.2,40],[79,8.77,0.2,53],[76,8.772,0.2,45],[60,8.78,0.125,35],[81,9.02,0.115,60],[52,9.043,0.2,44],[79,9.148,0.115,50],[77,9.275,0.115,53],[64,9.285,0.125,36],[76,9.401,0.115,50],[71,9.518,0.2,50],[74,9.525,0.45,59],[55,9.531,0.4,43],[67,9.775,0.2,48],[72,10.018,0.2,56],[76,10.029,0.2,62],[77,10.267,0.2,60],[74,10.281,0.2,50],[76,10.523,0.178,54],[79,10.526,0.173,63],[48,10.532,0.2,45],[79,10.769,0.2,59],[76,10.772,0.2,53],[60,10.786,0.125,38],[81,11.019,0.115,65],[52,11.03,0.2,50],[79,11.148,0.116,57],[64,11.283,0.125,42],[77,11.285,0.115,56],[76,11.396,0.115,54],[71,11.524,0.45,56],[74,11.525,0.45,64],[55,11.533,0.4,46],[72,12.018,0.2,63],[69,12.025,0.2,52],[71,12.271,0.2,49],[74,12.277,0.2,58],[72,12.522,0.184,53],[76,12.525,0.181,59],[45,12.53,0.2,44],[76,12.776,0.2,57],[72,12.777,0.2,49],[57,12.781,0.125,38],[77,13.028,0.116,61],[48,13.04,0.2,43],[76,13.155,0.115,50],[74,13.272,0.115,54],[60,13.289,0.125,35],[72,13.402,0.115,49],[71,13.523,0.45,56],[68,13.531,0.2,49],[52,13.535,0.4,43],[64,13.773,0.2,50],[69,14.017,0.2,52],[72,14.022,0.2,58],[74,14.274,0.2,54],[71,14.277,0.2,47],[76,14.526,0.172,57],[72,14.527,0.176,46],[45,14.528,0.2,39],[76,14.769,0.2,56],[72,14.773,0.2,46],[57,14.78,0.125,36],[77,15.025,0.115,55],[48,15.034,0.2,38],[76,15.149,0.115,45],[74,15.279,0.116,48],[60,15.282,0.125,32],[72,15.396,0.116,43],[68,15.515,0.478,45],[52,15.525,0.426,39],[71,15.527,0.463,52]]};
+  const TRATTO = 16;
+  const comeNote = (arr) => arr.map(([m, t, d, v]) => ({ m, t, d: Math.min(d, TRATTO - t), v }));
+  const VERSIONI = {
+    piatto: { note: comeNote(DATI.piatto), durata: TRATTO },
+    umano: { note: comeNote(DATI.umano), durata: TRATTO },
+  };
+  // stesso volume medio per le due versioni: la differenza deve essere il modo di suonare, non il volume
+  const media = (n) => n.reduce((s, x) => s + Math.pow(x.v / 127, 1.35), 0) / n.length;
+  const NORMA = { piatto: 1, umano: media(VERSIONI.piatto.note) / media(VERSIONI.umano.note) };
+  const FORZE = VERSIONI.umano.note.map((n) => n.v);
+  const VMIN = Math.min(...FORZE), VMAX = Math.max(...FORZE);
+  let versione = "umano";
+
+  // rullo
+  const rullo = document.getElementById("rullo");
+  const rg = rullo.getContext("2d");
+  const BASSO = 44, ALTO = 85;
+  let testina = -1;
+  function disegnaRullo() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = rullo.clientWidth, h = rullo.clientHeight;
+    if (rullo.width !== Math.round(w * dpr)) { rullo.width = Math.round(w * dpr); rullo.height = Math.round(h * dpr); }
+    rg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    rg.clearRect(0, 0, w, h);
+    const { note } = VERSIONI[versione];
+    const tot = TRATTO;
+    const alto = h - 12;
+    const X = (t) => 8 + (t / tot) * (w - 16);
+    const Y = (m) => 6 + (1 - (m - BASSO) / (ALTO - BASSO)) * alto;
+    const rh = Math.max(2.5, alto / (ALTO - BASSO) - 0.6);
+    rg.strokeStyle = "rgba(255,255,255,.05)";
+    for (let s = 0; s <= tot; s += 2) {
+      const x = X(s);
+      rg.beginPath(); rg.moveTo(x, 4); rg.lineTo(x, h - 4); rg.stroke();
+    }
+    for (const n of note) {
+      // nella versione umana le note più forti sono più chiare; nel file piatto sono tutte uguali
+      const a = versione === "umano" ? 0.3 + ((n.v - VMIN) / Math.max(1, VMAX - VMIN)) * 0.7 : 0.55;
+      const x = X(n.t), y = Y(n.m) - rh / 2;
+      const ww = Math.max(2, X(n.t + n.d) - x - 1);
+      const attiva = testina >= n.t && testina <= n.t + n.d;
+      rg.fillStyle = attiva ? "rgba(255,210,122,1)" : versione === "umano" ? "rgba(242,183,5," + a.toFixed(2) + ")" : "rgba(195,181,211," + a + ")";
+      rg.beginPath();
+      if (rg.roundRect) rg.roundRect(x, y, ww, rh, 1.5); else rg.rect(x, y, ww, rh);
+      rg.fill();
+    }
+    if (testina >= 0) {
+      rg.strokeStyle = "rgba(255,255,255,.8)"; rg.lineWidth = 1.5;
+      rg.beginPath(); rg.moveTo(X(testina), 2); rg.lineTo(X(testina), h - 2); rg.stroke(); rg.lineWidth = 1;
+    }
+  }
+
+  // tastiera
+  const tastiera = document.getElementById("tastiera");
+  const PRIMO = 45, ULTIMO = 84;
+  const nere = new Set([1, 3, 6, 8, 10]);
+  const tasti = {};
+  const bianchi = [];
+  for (let m = PRIMO; m <= ULTIMO; m++) if (!nere.has(m % 12)) bianchi.push(m);
+  bianchi.forEach((m) => { const d = document.createElement("div"); d.className = "b"; tastiera.appendChild(d); tasti[m] = d; });
+  const largB = 100 / bianchi.length;
+  for (let m = PRIMO; m <= ULTIMO; m++) {
+    if (!nere.has(m % 12)) continue;
+    const sinistra = bianchi.indexOf(m - 1);
+    const d = document.createElement("div");
+    d.className = "n";
+    d.style.left = (sinistra + 1) * largB - largB * 0.32 + "%";
+    d.style.width = largB * 0.64 + "%";
+    tastiera.appendChild(d);
+    tasti[m] = d;
+  }
+  function accendiTasti(t) {
+    const accesi = new Set();
+    if (t >= 0) for (const n of VERSIONI[versione].note) if (t >= n.t && t <= n.t + Math.min(n.d, 0.3)) accesi.add(n.m);
+    for (const m in tasti) tasti[m].classList.toggle("on", accesi.has(+m));
+  }
+
+  // segni dell'umanizzazione
+  const segni = document.querySelectorAll("#segni li");
+  const mostraSegni = () => segni.forEach((li) => li.classList.toggle("acceso", versione === "umano"));
+
+  let inizio = 0, anim = 0, suonando = false;
+  const bAscolta = document.getElementById("ascolta");
+  const stato = document.getElementById("stato-ascolto");
+  function ferma() {
+    suonando = false; testina = -1; cancelAnimationFrame(anim);
+    if (uscita) { uscita.gain.cancelScheduledValues(ctx.currentTime); uscita.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.05); }
+    bAscolta.textContent = "▶ Ascolta";
+    accendiTasti(-1); disegnaRullo();
+  }
+  async function parti() {
+    if (!audio()) { avvisa("Questo browser non può suonare qui."); return; }
+    if (!campioni.size) {
+      bAscolta.disabled = true;
+      stato.textContent = "Preparo il pianoforte…";
+      await caricaCampioni();
+      bAscolta.disabled = false;
+    }
+    uscita.gain.cancelScheduledValues(ctx.currentTime);
+    uscita.gain.setValueAtTime(0.55, ctx.currentTime);
+    inizio = ctx.currentTime + 0.12;
+    // il tratto finisce a metà frase: sfuma l'ultimo secondo e mezzo
+    uscita.gain.setValueAtTime(0.55, inizio + TRATTO - 1.5);
+    uscita.gain.linearRampToValueAtTime(0.0001, inizio + TRATTO);
+    const k = NORMA[versione];
+    for (const n of VERSIONI[versione].note) suona(n.m, inizio + n.t, n.d, n.v, k);
+    suonando = true;
+    bAscolta.textContent = "■ Ferma";
+    stato.textContent = versione === "umano"
+      ? "Come lo suona Suonylo: il passo giusto, ogni nota con la sua forza, le note staccate e piccoli respiri. Le note sono quelle del file."
+      : "Il file com'è: tutte le note a forza 90, al tempo del metronomo, una attaccata all'altra.";
+    const giro = () => {
+      testina = ctx.currentTime - inizio;
+      accendiTasti(testina);
+      disegnaRullo();
+      if (testina > VERSIONI[versione].durata + 0.4) { ferma(); return; }
+      anim = requestAnimationFrame(giro);
+    };
+    anim = requestAnimationFrame(giro);
+  }
+  bAscolta.addEventListener("click", () => (suonando ? ferma() : parti()));
+  function scegli(v) {
+    const eraAcceso = suonando;
+    if (suonando) ferma();
+    versione = v;
+    document.getElementById("v-piatto").setAttribute("aria-pressed", String(v === "piatto"));
+    document.getElementById("v-umano").setAttribute("aria-pressed", String(v === "umano"));
+    mostraSegni(); disegnaRullo();
+    if (eraAcceso) setTimeout(parti, 160);
+  }
+  document.getElementById("v-piatto").addEventListener("click", () => scegli("piatto"));
+  document.getElementById("v-umano").addEventListener("click", () => scegli("umano"));
+  mostraSegni();
+  disegnaRullo();
+  window.addEventListener("resize", disegnaRullo);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(disegnaRullo);
+
+  // ---------- regia ----------
+  document.getElementById("passaggio").addEventListener("click", () => {
+    if (!audio()) return;
+    caricaCampioni();
+    const t0 = ctx.currentTime + 0.08;
+    uscita.gain.cancelScheduledValues(t0 - 0.05); uscita.gain.setValueAtTime(0.55, t0 - 0.05);
+    const accordi = [[50, 62, 66, 69], [47, 59, 62, 66], [44, 56, 60, 63, 66], [49, 61, 65, 68]];
+    accordi.forEach((a, i) => a.forEach((m, j) => suona(m, t0 + i * 0.9 + j * 0.03, 1.1, j === 0 ? 70 : 54)));
+    avvisa("Il ponte: dal Re della Gymnopédie al Re♭ di Clair de lune.");
+  });
+  const PEZZI = {
+    3: { parti: [["Gymnopédie", 34], ["p"], ["Clair de lune", 36], ["p"], ["Notturno", 30]], racconto: "Tre minuti, tre brani. Si comincia piano con la Gymnopédie, un ponte scende di mezzo tono verso Clair de lune, e il Notturno di Chopin chiude salendo in Mi♭." },
+    6: { parti: [["Preludio", 16], ["p"], ["Gymnopédie", 18], ["p"], ["Clair de lune", 22], ["p"], ["Träumerei", 16], ["p"], ["Notturno", 20]], racconto: "Sei minuti: il Preludio di Bach apre luminoso, la Gymnopédie rallenta, Clair de lune è il centro. Träumerei prepara il finale, e chiude il Notturno." },
+    9: { parti: [["Per Elisa", 12], ["p"], ["Preludio", 14], ["p"], ["Gymnopédie", 15], ["p"], ["Clair de lune", 19], ["p"], ["Träumerei", 14], ["p"], ["Notturno", 18]], racconto: "Nove minuti, tutti e sei i brani. Si parte dalla Per Elisa che tutti conoscono e si scende, brano dopo brano, verso i più lenti. Ogni ponte cambia tonalità senza strappi." },
+  };
+  let minuti = 3;
+  const colori = ["#5B2D86", "#7A3E9E", "#3A1D52", "#8E4FAF", "#4C2A6B", "#6A3590"];
+  document.querySelectorAll(".durate button").forEach((b) => b.addEventListener("click", () => {
+    minuti = +b.dataset.min;
+    document.querySelectorAll(".durate button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+  document.getElementById("sorprendimi").addEventListener("click", () => {
+    const box = document.getElementById("medley");
+    box.innerHTML = "";
+    let c = 0;
+    PEZZI[minuti].parti.forEach(([nome, peso], i) => {
+      const s = document.createElement("span");
+      if (nome === "p") { s.className = "p"; s.textContent = "~"; s.title = "ponte"; }
+      else { s.style.flex = String(peso); s.style.background = colori[c++ % colori.length]; s.textContent = nome; }
+      s.style.animationDelay = i * 0.06 + "s";
+      box.appendChild(s);
+    });
+    document.getElementById("racconto").textContent = PEZZI[minuti].racconto;
+  });
+
+  // ---------- archivio ----------
+  document.getElementById("riduci").addEventListener("click", (e) => {
+    const st = document.getElementById("stato-file");
+    st.className = "stato si";
+    st.textContent = "2 mani · pronto da suonare";
+    document.getElementById("controlli").innerHTML =
+      "<span>✓ Ridotto per pianoforte: melodia a destra, basso e armonia a sinistra</span>" +
+      "<span>✓ Ribattute portate da 75 a 150 ms</span>" +
+      "<span>✓ Forza massima 100, stop di sicurezza dopo 3 secondi</span>";
+    e.currentTarget.disabled = true;
+    e.currentTarget.textContent = "Fatto ✓";
+  });
+
+  // ---------- game: Inno alla gioia ----------
+  const MELODIA = [64, 64, 65, 67, 67, 65, 64, 62, 60, 60, 62, 64, 64, 62, 62];
+  const CINQUE = [60, 62, 64, 65, 67];
+  const NOMI = ["Do", "Re", "Mi", "Fa", "Sol"];
+  const LETTERE = ["A", "S", "D", "F", "G"];
+  const pista = document.getElementById("pista");
+  const tasti5 = document.getElementById("tasti5");
+  const contatore = document.getElementById("contatore");
+  const esito = document.getElementById("esito");
+  CINQUE.forEach((m, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.innerHTML = NOMI[i] + "<small>" + LETTERE[i] + "</small>";
+    b.addEventListener("pointerdown", (ev) => { ev.preventDefault(); premi(i); });
+    b.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); premi(i); } });
+    tasti5.appendChild(b);
+  });
+  let pos = 0, errori = 0, blocchi = [];
+  function disegnaPista() {
+    blocchi.forEach((b) => b.remove());
+    blocchi = [];
+    const visti = MELODIA.slice(pos, pos + 5);
+    visti.forEach((m, j) => {
+      const i = CINQUE.indexOf(m);
+      const d = document.createElement("div");
+      d.className = "blocco" + (j === 0 ? " prossimo" : "");
+      d.style.left = "calc(" + i * 20 + "% + 6px)";
+      d.style.width = "calc(20% - 12px)";
+      d.style.bottom = 24 + j * 38 + "px";
+      d.textContent = NOMI[i];
+      pista.appendChild(d);
+      blocchi.push(d);
+    });
+    contatore.textContent = pos + " / " + MELODIA.length;
+  }
+  function premi(i) {
+    if (pos >= MELODIA.length) { pos = 0; errori = 0; esito.textContent = "Di nuovo. Premi il tasto che si illumina."; disegnaPista(); return; }
+    const b = tasti5.children[i];
+    if (audio()) { caricaCampioni(); uscita.gain.cancelScheduledValues(ctx.currentTime); uscita.gain.setValueAtTime(0.55, ctx.currentTime); suona(CINQUE[i], ctx.currentTime + 0.01, 0.45, 76); }
+    if (CINQUE[i] === MELODIA[pos]) {
+      b.classList.add("giusto"); setTimeout(() => b.classList.remove("giusto"), 160);
+      pos++;
+      if (pos === MELODIA.length) {
+        const stelle = errori <= 1 ? 3 : errori <= 4 ? 2 : 1;
+        disegnaPista();
+        esito.innerHTML = '<span class="stelle">' + "★".repeat(stelle) + "☆".repeat(3 - stelle) + "</span> Fatto! Nel Game ci sono altri sei brani così. Tocca un tasto per ricominciare.";
+        return;
+      }
+      disegnaPista();
+    } else {
+      errori++;
+      b.classList.add("sbagliato"); setTimeout(() => b.classList.remove("sbagliato"), 250);
+    }
+  }
+  document.addEventListener("keydown", (ev) => {
+    if (ev.target.closest && ev.target.closest("input,textarea,[contenteditable='true']")) return;
+    const i = LETTERE.indexOf(ev.key.toUpperCase());
+    if (i < 0 || ev.repeat || ev.metaKey || ev.ctrlKey) return;
+    const r = pista.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return;
+    premi(i);
+  });
+  disegnaPista();
+
+  // ---------- canta: la linea della voce ----------
+  const voce = document.getElementById("voce");
+  const vg = voce.getContext("2d");
+  const SCARTI = [3, -6, -28, 8, 31];
+  let fase = 0;
+  function disegnaVoce(av) {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = voce.clientWidth, h = voce.clientHeight;
+    if (voce.width !== Math.round(w * dpr)) { voce.width = Math.round(w * dpr); voce.height = Math.round(h * dpr); }
+    vg.setTransform(dpr, 0, 0, dpr, 0, 0);
+    vg.clearRect(0, 0, w, h);
+    const css = getComputedStyle(document.documentElement);
+    const linea = css.getPropertyValue("--linea").trim() || "#E2D9CB";
+    const muto = css.getPropertyValue("--muto").trim() || "#62596E";
+    const passi = [0, 2, 4, 5, 7];
+    const Y = (semi) => h - 26 - (semi / 8) * (h - 50);
+    const larg = (w - 20) / 5;
+    vg.font = "12px DM Sans, system-ui, sans-serif";
+    passi.forEach((s, i) => {
+      vg.fillStyle = linea;
+      const x = 10 + i * larg + 6;
+      vg.fillRect(x, Y(s) - 5, larg - 12, 10);
+      vg.fillStyle = muto;
+      vg.fillText(["Do", "Re", "Mi", "Fa", "Sol"][i], x, h - 6);
+    });
+    vg.strokeStyle = "#E8913A"; vg.lineWidth = 2.5; vg.lineJoin = "round";
+    vg.beginPath();
+    const fino = av * 5;
+    for (let k = 0; k <= 200; k++) {
+      const u = (k / 200) * 5;
+      if (u > fino) break;
+      const i = Math.min(4, Math.floor(u));
+      const dentro = u - i;
+      let semi = passi[i] + SCARTI[i] / 100 + Math.sin((u + fase) * 18) * 0.05;
+      if (dentro < 0.15 && i > 0) semi = passi[i - 1] + SCARTI[i - 1] / 100 + (passi[i] - passi[i - 1] + (SCARTI[i] - SCARTI[i - 1]) / 100) * (dentro / 0.15);
+      const x = 10 + u * larg;
+      if (k === 0) vg.moveTo(x, Y(semi)); else vg.lineTo(x, Y(semi));
+    }
+    vg.stroke();
+  }
+  let partito = false;
+  function animaVoce() {
+    if (fermo) { disegnaVoce(1); return; }
+    const t0 = performance.now();
+    const giro = (t) => {
+      const av = Math.min(1, (t - t0) / 4200);
+      fase = t / 1600;
+      disegnaVoce(av);
+      if (av < 1) requestAnimationFrame(giro); else setTimeout(() => animaVoce(), 2600);
+    };
+    requestAnimationFrame(giro);
+  }
+  disegnaVoce(1);
+  const io = "IntersectionObserver" in window ? new IntersectionObserver((v) => {
+    if (v.some((e) => e.isIntersecting) && !partito) { partito = true; animaVoce(); }
+  }, { threshold: 0.3 }) : null;
+  if (io) io.observe(voce); else disegnaVoce(1);
+  window.addEventListener("resize", () => disegnaVoce(1));
+})();
+</script>
+</body>
+</html>

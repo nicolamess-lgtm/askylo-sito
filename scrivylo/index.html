@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scrivylo · scrivi, impagina e fai leggere il tuo libro</title>
+<meta name="description" content="La bacheca del libro con personaggi, luoghi e linea del tempo, le fonti al loro posto, l'impaginazione automatica per la stampa e i primi lettori con un link. Un'app di Askylo.">
+<link rel="canonical" href="https://askylostudio.it/scrivylo/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Scrivylo · scrivi, impagina e fai leggere il tuo libro">
+<meta property="og:description" content="La bacheca del libro con personaggi, luoghi e linea del tempo, le fonti al loro posto, l'impaginazione automatica per la stampa e i primi lettori con un link. Un'app di Askylo.">
+<meta property="og:url" content="https://askylostudio.it/scrivylo/">
+<meta name="theme-color" content="#0F2250">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="/font/Fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/font/DMSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/font/caratteri.css">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}.piede a{color:inherit;text-underline-offset:2px}</style>
+<style>
+/* Layout: in alto un tavolo blu notte con schede di carta e fili gialli (la bacheca vera, da toccare);
+   sotto quattro capitoli su carta, ognuno con un pezzo dello strumento in miniatura; in fondo la porta. */
+:root{
+  --carta:#FAF7F0; --superficie:#FFFFFF; --inchiostro:#17213A; --muto:#5A6378; --linea:#DED7C8;
+  --blu:#1F4FA3; --blu-testo:#1F4FA3; --giallo:#F2B705; --rosso:#B9412C; --verde:#2E7A57; --segno:#FFF1B8;
+  --notte:#0F2250; --notte-2:#173270; --notte-testo:#F3EFE5; --notte-muto:#B3BEDA;
+  --scheda:#FBF8F1; --scheda-testo:#1B2440; --scheda-bordo:#E4DCCB; --postit:#FFF3C9;
+  --f-titolo:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-testo:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mano:"Caveat","Bradley Hand","Segoe Print",cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --carta:#0C1430; --superficie:#141E40; --inchiostro:#ECE7DC; --muto:#A0A9BF; --linea:#283360;
+    --blu-testo:#A9C1F7; --rosso:#E58A73; --verde:#77C9A1; --segno:#4A4220; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --carta:#0C1430; --superficie:#141E40; --inchiostro:#ECE7DC; --muto:#A0A9BF; --linea:#283360;
+  --blu-testo:#A9C1F7; --rosso:#E58A73; --verde:#77C9A1; --segno:#4A4220; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--carta);color:var(--inchiostro);font-family:var(--f-testo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--notte)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-titolo);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--giallo);outline-offset:3px;border-radius:6px}
+
+/* ---------- testata e tavolo ---------- */
+.hero{background:radial-gradient(120% 90% at 85% 0%,var(--notte-2) 0%,var(--notte) 55%) var(--notte);color:var(--notte-testo);padding-block:14px 44px}
+.testata{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.marchio{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.marchio svg{width:34px;height:34px;flex:none}
+.parola{font-family:var(--f-titolo);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.parola b{color:var(--giallo);font-weight:700}
+.by{font-size:12px;color:var(--notte-muto);letter-spacing:.04em}
+.salta{font-size:14px;color:var(--notte-testo);text-decoration:none;border:1px solid rgba(243,239,229,.28);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.salta:hover{border-color:var(--giallo);color:#FFE7A0}
+.apertura{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:end;margin-top:34px}
+.occhiello{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#FFD86B;font-weight:500}
+.hero h1{font-size:clamp(34px,5.4vw,62px);line-height:1.02;margin-top:10px;font-weight:600}
+.hero h1 em{font-style:italic;color:#FFE08A;font-weight:400}
+.sotto{color:var(--notte-muto);font-size:17px;max-width:46ch}
+.sotto strong{color:var(--notte-testo);font-weight:500}
+.comandi{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:26px}
+.vista{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:3px}
+.vista button{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-size:14px;color:var(--notte-muto)}
+.vista button[aria-pressed="true"]{background:var(--giallo);color:#1D2140;font-weight:700}
+.suggerimento{font-size:13.5px;color:var(--notte-muto)}
+.suggerimento kbd{font-family:inherit;border:1px solid rgba(255,255,255,.22);border-radius:5px;padding:0 5px}
+
+.tavolo{position:relative;container-type:inline-size;margin-top:14px;aspect-ratio:16/9.4;border-radius:18px;overflow:hidden;
+  background:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.3px) 0 0/22px 22px,linear-gradient(160deg,#173375,#0E2050 70%);
+  border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 0 80px rgba(0,0,0,.35)}
+.fili{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transition:opacity .45s}
+.fili line{stroke:var(--giallo);stroke-width:1.6;opacity:.82;stroke-linecap:round}
+.verbo{position:absolute;transform:translate(-50%,-50%);font-size:clamp(9px,1.08cqi,12.5px);color:#FFE7A0;background:#132A63;border:1px solid rgba(242,183,5,.55);
+  padding:1px 7px;border-radius:999px;white-space:nowrap;pointer-events:none;transition:opacity .45s}
+.griglia{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s}
+.tavolo[data-vista="tempo"] .griglia{opacity:1}
+.tavolo[data-vista="tempo"] .fili,.tavolo[data-vista="tempo"] .verbo{opacity:0}
+.g-col{position:absolute;top:12%;bottom:3%;border-left:1px dashed rgba(255,255,255,.13)}
+.g-riga{position:absolute;left:20.5%;right:1.5%;border-top:1px solid rgba(255,255,255,.12)}
+.g-testa{position:absolute;transform:translate(-50%,-50%);font-family:var(--f-titolo);font-size:clamp(10px,1.25cqi,14px);color:#FFE08A;white-space:nowrap}
+.g-trama{position:absolute;font-size:clamp(8.5px,.98cqi,11.5px);letter-spacing:.1em;text-transform:uppercase;color:var(--notte-muto);white-space:nowrap}
+
+.s{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) rotate(var(--r,0deg));width:13.4cqi;
+  background:var(--scheda);color:var(--scheda-testo);border:1px solid var(--scheda-bordo);border-radius:10px;padding:.5em .6em .55em;
+  box-shadow:0 7px 18px rgba(4,10,30,.38);font-size:clamp(9.5px,1.3cqi,14.5px);line-height:1.25;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;
+  transition:left .85s cubic-bezier(.2,.75,.2,1),top .85s cubic-bezier(.2,.75,.2,1),transform .85s cubic-bezier(.2,.75,.2,1),width .6s,opacity .4s,box-shadow .2s;z-index:2}
+.s:hover{box-shadow:0 10px 24px rgba(4,10,30,.5)}
+.s.trascino{transition:none;cursor:grabbing;z-index:8;box-shadow:0 16px 32px rgba(4,10,30,.55)}
+.s::before{content:"";position:absolute;top:-.38em;left:50%;width:.72em;height:.72em;border-radius:50%;transform:translateX(-50%);background:var(--giallo);box-shadow:0 1px 2px rgba(0,0,0,.4)}
+.s .riga1{display:flex;align-items:center;gap:.45em}
+.s .faccia{flex:none;width:2.1em;height:2.1em;border-radius:50%;display:grid;place-items:center;font-family:var(--f-titolo);font-weight:700;color:#fff;font-size:.95em;overflow:hidden;background:var(--c,#1F4FA3)}
+.s .faccia img{width:100%;height:100%;object-fit:cover;display:block}
+.s .tipo{font-size:.68em;letter-spacing:.09em;text-transform:uppercase;color:var(--c,#1F4FA3);font-weight:700;display:block}
+.s .nome{font-family:var(--f-titolo);font-weight:600;font-size:1.12em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s .note{display:block;margin-top:.35em;font-size:.8em;color:#5B6274}
+.s.ev{width:8.9cqi;background:var(--postit);border-color:#EAD9A0;font-size:clamp(8.5px,1.08cqi,13px);padding:.45em .5em .5em}
+.s.ev::before{background:#C9302C}
+.s.ev .lib{font-size:.75em;letter-spacing:.08em;text-transform:uppercase;color:#8A6A10;font-weight:700;display:block}
+.s.ev .tit{font-weight:500;display:block;margin-top:.15em}
+.s.compatta{width:15.5cqi;cursor:pointer}
+.s.compatta .note{display:none}
+.tavolo[data-vista="tempo"] .s.ev{cursor:default}
+.s.spento{opacity:.28}
+.s.acceso{box-shadow:0 0 0 2px var(--giallo),0 8px 20px rgba(4,10,30,.45)}
+
+.aperta{position:absolute;right:1.6cqi;top:1.6cqi;width:31cqi;max-height:calc(100% - 3.2cqi);overflow:auto;background:var(--scheda);color:var(--scheda-testo);
+  border-radius:14px;padding:16px 16px 14px;box-shadow:0 18px 40px rgba(0,0,0,.45);z-index:20;font-size:14px}
+.aperta h3{font-size:22px;margin-top:2px}
+.aperta .chiudi{position:absolute;top:8px;right:8px;border:0;background:transparent;font-size:20px;line-height:1;padding:4px 8px;color:#5B6274}
+.aperta dl{margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px}
+.aperta dt{color:#6A7184}
+.aperta dd{margin:0}
+.aperta ul{margin:8px 0 0;padding-left:18px;font-size:13.5px}
+.ritratto{margin-top:12px;display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
+.ritratto canvas{width:96px;height:120px;border-radius:10px;display:block;transition:filter 1.8s ease,opacity 1.8s ease}
+.ritratto canvas.sviluppo{filter:blur(9px) saturate(0);opacity:.35}
+.btn-mini{border:1px solid #CFC6B3;background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:500;color:#1B2440}
+.btn-mini:hover{border-color:var(--blu)}
+.piccolo{font-size:12px;color:#6A7184}
+
+/* ---------- capitoli ---------- */
+.cap{padding-block:clamp(52px,8vw,96px);border-top:1px solid var(--linea)}
+.cap:first-of-type{border-top:0}
+.cap .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.cap.giro .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.cap.giro .testo{order:2}
+.etichetta{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blu-testo);font-weight:700}
+.cap h2{font-size:clamp(28px,3.6vw,42px);line-height:1.08;margin-top:10px}
+.cap .testo p{margin-top:14px;max-width:52ch;color:var(--muto);font-size:17px}
+.cap .testo p strong{color:var(--inchiostro);font-weight:500}
+.punti{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.punti li{font-size:13.5px;border:1px solid var(--linea);border-radius:999px;padding:4px 11px;color:var(--inchiostro);background:var(--superficie)}
+.finestra{background:var(--superficie);border:1px solid var(--linea);border-radius:16px;box-shadow:0 18px 50px rgba(15,34,80,.12);overflow:hidden;min-width:0}
+.barra{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--linea);font-size:13px;color:var(--muto)}
+.barra .pallini{display:flex;gap:5px;margin-right:6px}
+.barra .pallini i{width:9px;height:9px;border-radius:50%;background:var(--linea);display:block}
+.barra .dx{margin-left:auto}
+.corpo{padding:16px}
+
+/* fonti */
+.fonti{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:16px}
+.lista{display:grid;gap:8px;align-content:start}
+.voce{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start;padding:8px;border:1px solid var(--linea);border-radius:10px;font-size:13px;line-height:1.35}
+.voce .ico{width:30px;height:30px;border-radius:7px;display:grid;place-items:center;font-size:10.5px;font-weight:700;color:#fff;background:var(--blu)}
+.voce .ico.web{background:var(--verde)}
+.voce .ico.vid{background:var(--rosso)}
+.voce .ico.voc{background:#8A6A10}
+.voce .meta{display:block;color:var(--muto);font-size:12px;margin-top:2px}
+.livello{display:inline-block;font-size:10.5px;font-weight:700;border-radius:5px;padding:0 5px;margin-left:4px;border:1px solid currentColor;color:var(--verde)}
+.pagina-testo{border:1px solid var(--linea);border-radius:10px;padding:14px 16px;font-family:var(--f-titolo);font-size:16px;line-height:1.6;background:var(--carta)}
+.pagina-testo .cit{font-family:var(--f-testo);font-size:13px;color:var(--blu-testo);background:var(--segno);border-radius:4px;padding:0 4px;transition:background 1.2s}
+.numero{margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;border:1px dashed var(--linea);border-radius:10px;padding:8px 10px}
+.numero b{font-variant-numeric:tabular-nums}
+.ok{color:var(--verde);font-weight:700}
+
+/* impaginazione */
+.dorso{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#EDE7DA;padding:16px;border-radius:12px}
+.pag{background:#FFFDF8;aspect-ratio:5/7.6;padding:9% 10% 8%;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.15);color:#2A2F3E;min-width:0}
+.pag:first-child{border-right:1px solid #E2DACA}
+.pag .testa{font-size:9px;letter-spacing:.14em;text-align:center;color:#8C8577;font-family:var(--f-testo)}
+.pag .num{position:absolute;bottom:4%;left:0;right:0;text-align:center;font-size:9px;color:#8C8577;font-family:var(--f-testo)}
+.righe{margin-top:9%;display:grid;gap:5.5%}
+.righe i{display:block;height:3px;border-radius:2px;background:#BDB6A8}
+.righe i.corta{width:42%}
+.righe i.cap-titolo{height:7px;width:55%;background:#2A2F3E;margin:6% auto 4%}
+.bandierina{position:absolute;right:-6px;font-size:10.5px;font-family:var(--f-testo);background:var(--rosso);color:#fff;border-radius:999px;padding:1px 8px;white-space:nowrap;transition:opacity .4s,transform .4s}
+.dorso.dopo .bandierina{opacity:0;transform:scale(.8)}
+.dorso .vedova{position:absolute;left:10%;right:10%;top:16%;height:3px;width:30%;border-radius:2px;background:var(--rosso);transition:opacity .4s}
+.dorso.dopo .vedova{opacity:0}
+.dorso .buco{position:absolute;left:10%;right:10%;height:16%;bottom:14%;border:1.5px dashed var(--rosso);border-radius:4px;transition:opacity .4s}
+.dorso.dopo .buco{opacity:0}
+.dorso .riempi{opacity:0;transition:opacity .6s .2s}
+.dorso.dopo .riempi{opacity:1}
+.interruttore{display:inline-flex;border:1px solid var(--linea);border-radius:999px;padding:3px;background:var(--carta)}
+.interruttore button{border:0;background:transparent;padding:5px 12px;border-radius:999px;font-size:13px;color:var(--muto)}
+.interruttore button[aria-pressed="true"]{background:var(--blu);color:#fff;font-weight:500}
+
+/* revisione */
+.tre{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:13.5px}
+.col h4{margin:0 0 6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muto);font-family:var(--f-testo)}
+.foglio{border:1px solid var(--linea);border-radius:10px;padding:10px 11px;background:var(--carta);line-height:1.5;position:relative;min-height:140px;font-family:var(--f-titolo)}
+.foglio mark{background:var(--segno);color:inherit;border-radius:3px;padding:0 2px}
+.mano{position:absolute;right:6px;bottom:4px;font-family:var(--f-mano);font-size:19px;color:#C2412D;transform:rotate(-4deg);line-height:1}
+.prop{border:1px solid var(--linea);border-radius:10px;padding:10px;background:var(--superficie);transition:opacity .3s}
+.prop.ignorata{opacity:.4}
+.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;background:#E4ECFB;color:#1F4FA3;margin:0 4px 4px 0}
+.tag.rischio{background:#E3F2EA;color:#2E7A57}
+.prop .perche{color:var(--muto);font-size:12.5px;margin-top:4px}
+.prop .azioni{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.prop .azioni button{border:1px solid var(--linea);background:var(--carta);border-radius:999px;padding:3px 10px;font-size:12.5px}
+.prop .azioni button.primo{background:var(--blu);border-color:var(--blu);color:#fff}
+.letta{margin-top:8px;font-size:12px;color:var(--rosso);font-family:var(--f-testo)}
+.nuovo{transition:background 1s}
+.nuovo.fatto{background:var(--segno)}
+
+/* lettori */
+.lettori{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:20px;align-items:center}
+.telefono{background:#111;border-radius:30px;padding:10px;box-shadow:0 20px 50px rgba(15,34,80,.25);max-width:230px}
+.schermo{background:#FBF8F1;border-radius:22px;padding:16px 14px 12px;color:#2A2F3E;min-height:380px;display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+.schermo .capitolo{font-family:var(--f-titolo);font-size:17px;font-weight:600;color:#17213A}
+.schermo p{font-family:var(--f-titolo);line-height:1.55}
+.schermo .segnato{background:#FFE8A3;border-radius:3px}
+.fumetto{background:#1F4FA3;color:#fff;border-radius:12px 12px 12px 3px;padding:7px 9px;font-family:var(--f-testo);font-size:12px}
+.fumetto small{display:block;opacity:.8;font-size:10.5px}
+.audio{margin-top:auto;display:flex;align-items:center;gap:8px;background:#EFE9DC;border-radius:999px;padding:5px 8px}
+.audio button{width:26px;height:26px;border-radius:50%;border:0;background:#1F4FA3;color:#fff;font-size:11px;flex:none}
+.audio .traccia{flex:1;height:4px;border-radius:2px;background:#D6CDB9;overflow:hidden}
+.audio .traccia i{display:block;height:100%;width:18%;background:#1F4FA3;transition:width .3s linear}
+.collega{display:grid;gap:12px}
+.link-amici{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border:1px solid var(--linea);background:var(--superficie);border-radius:12px;padding:10px 12px;font-size:14px}
+.link-amici code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;background:var(--carta);border:1px solid var(--linea);border-radius:6px;padding:2px 6px;overflow-wrap:anywhere}
+.mini-bacheca{border:1px solid var(--linea);background:var(--superficie);border-radius:12px;padding:12px}
+.mini-bacheca h4{margin:0 0 8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muto);font-family:var(--f-testo)}
+.domande{display:flex;flex-wrap:wrap;gap:8px}
+.dom{background:var(--postit);color:#2A2F3E;border:1px solid #EAD9A0;border-radius:8px;padding:6px 9px;font-size:13px;max-width:100%;animation:entra .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes entra{from{transform:translateY(10px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none}
+.btn.pieno{background:var(--giallo);color:#1D2140}
+.btn.pieno:hover{background:#FFC928}
+.btn.vuoto{border-color:var(--linea);background:transparent;color:var(--inchiostro)}
+.btn.vuoto:hover{border-color:var(--blu-testo)}
+
+/* porta */
+.porta{background:var(--notte);color:var(--notte-testo);padding-block:clamp(56px,9vw,104px)}
+.porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
+.porta h2{font-size:clamp(30px,4.4vw,52px);line-height:1.04}
+.porta h2 em{color:#FFE08A;font-weight:400}
+.porta p{color:var(--notte-muto);margin-top:14px;font-size:17px;max-width:50ch}
+.porta .btns{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.porta .btn.vuoto{color:var(--notte-testo);border-color:rgba(243,239,229,.3)}
+.porta .btn{justify-content:center}
+.piede{background:var(--notte);color:var(--notte-muto);font-size:13px;padding-block:18px 26px;border-top:1px solid rgba(255,255,255,.08)}
+.piede .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:#17213A;color:#F3EFE5;border-radius:12px;padding:10px 14px;font-size:14px;max-width:min(92vw,460px);z-index:40;transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.vedi{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:860px){
+  .apertura{grid-template-columns:1fr;gap:14px}
+  .cap .wrap,.cap.giro .wrap,.porta .wrap{grid-template-columns:1fr}
+  .cap.giro .testo{order:0}
+  .fonti{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .tavolo{aspect-ratio:3/4.35}
+  .s{width:30cqi;font-size:clamp(10px,3.4cqi,14px);padding:.45em .5em}
+  .s .tipo,.s .note{display:none}
+  .s .faccia{width:1.7em;height:1.7em;font-size:.8em}
+  .s .nome{font-size:1.02em;text-overflow:clip}
+  .s.ev{width:25cqi;font-size:clamp(9px,2.9cqi,12.5px)}
+  .s.compatta{width:9.6cqi;height:9.6cqi;padding:0;border-radius:50%;display:grid;place-items:center}
+  .s.compatta .tipo,.s.compatta .nome{display:none}
+  .s.compatta .faccia{width:100%;height:100%}
+  .s.compatta::before{display:none}
+  .verbo{display:none}
+  .verbo.mostra{display:block;font-size:10px}
+  .g-col{top:14%}
+  .aperta{left:3cqi;right:3cqi;top:auto;bottom:3cqi;width:auto;max-height:62%}
+  .tre{grid-template-columns:1fr}
+  .lettori{grid-template-columns:1fr;justify-items:center}
+  .collega{width:100%}
+  .hero h1{font-size:clamp(32px,9vw,44px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .s,.fili,.verbo,.griglia,.ritratto canvas,.bandierina,.dom{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="testata">
+      <a class="marchio" href="./" aria-label="Scrivylo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1F4FA3"/><path d="M9 7.5 16 16l7-8.5" fill="none" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 15.5v5.2" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round"/><path d="M12.6 20.4 16 27.2l3.4-6.8z" fill="#F2B705"/><path d="M16 22.4v2.6" stroke="#1F4FA3" stroke-width="1.1" stroke-linecap="round"/></svg>
+        <span><span class="parola">Scriv<b>y</b>lo</span><br><span class="by">by Askylo</span></span>
+      </a>
+      <a class="salta" href="#inizia">Salta ↓</a>
+    </div>
+
+    <div class="apertura">
+      <div>
+        <p class="occhiello">Per chi scrive libri · in prova su invito</p>
+        <h1>Il tuo libro, <em>prima ancora</em> della prima riga.</h1>
+      </div>
+      <p class="sotto">Metti sul tavolo <strong>personaggi, luoghi e fili della trama</strong>. Scrivylo li tiene insieme mentre scrivi, trova le fonti, impagina il libro e lo fa leggere ai primi lettori.</p>
+    </div>
+
+    <div class="comandi">
+      <div class="vista" role="group" aria-label="Vista della bacheca">
+        <button type="button" id="v-bacheca" aria-pressed="true">Bacheca</button>
+        <button type="button" id="v-tempo" aria-pressed="false">Linea del tempo</button>
+      </div>
+      <p class="suggerimento" id="sugg">Trascina le schede. Tocca un nome per aprirlo.</p>
+    </div>
+
+    <div class="tavolo" id="tavolo" data-vista="bacheca" aria-label="Bacheca d'esempio: l'Odissea">
+      <svg class="fili" id="fili" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="griglia" id="griglia" aria-hidden="true"></div>
+      <div class="aperta" id="aperta" hidden role="dialog" aria-modal="false" aria-labelledby="ap-nome"></div>
+    </div>
+    <p class="suggerimento" style="margin-top:10px">Questa è la bacheca vera del libro d'esempio, l'<em>Odissea</em> di Pindemonte, ridotta a nove schede e otto eventi.</p>
+  </div>
+</header>
+
+<main>
+  <section class="cap" id="fonti">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Ricerca e fonti</p>
+        <h2>Le fonti al loro posto, la citazione già scritta.</h2>
+        <p>PDF, pagine web, video con la trascrizione, memo vocali dal telefono: entrano <strong>dentro il libro</strong>, ognuno con la sua fonte. Quando ti serve, la citi e Scrivylo la scrive in <strong>APA</strong>.</p>
+        <p>Per i saggi ogni dato ha il suo livello di affidabilità, dalla A alla D, e i <strong>Numeri del libro</strong> controllano che i conti tornino in tutti i capitoli.</p>
+        <ul class="punti"><li>PDF e pagine web</li><li>Video con trascrizione</li><li>Memo vocali dal telefono</li><li>Bibliografia APA 7</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Ricerca del libro<span class="dx">4 fonti</span></div>
+        <div class="corpo fonti">
+          <div class="lista">
+            <div class="voce"><span class="ico">PDF</span><span>Omero, <em>Odissea</em>, trad. Pindemonte (1822)<span class="meta">Libro IX · p. 212 <span class="livello">A</span></span></span></div>
+            <div class="voce"><span class="ico web">WEB</span><span>Wikisource, testo completo<span class="meta">pagina web pulita, senza pubblicità</span></span></div>
+            <div class="voce"><span class="ico vid">▶</span><span>Lezione: la nave di Ulisse<span class="meta">video · trascrizione 12:40</span></span></div>
+            <div class="voce"><span class="ico voc">♪</span><span>Memo vocale dal telefono<span class="meta">«controlla quanti anni manca da Itaca»</span></span></div>
+          </div>
+          <div>
+            <div class="pagina-testo" id="testo-cit">Vent'anni lontano da casa: dieci di guerra e dieci di viaggio<span id="cit-qui"></span>.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+              <button class="btn-mini" type="button" id="cita">Cita la fonte</button>
+            </div>
+            <div class="numero"><span>Numeri del libro:</span> anni lontano da Itaca = <b>10</b> di guerra + <b>10</b> di viaggio = <b>20</b> <span class="ok">✓ torna in tutti i capitoli</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="impagina">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Impaginazione automatica</p>
+        <h2>Un clic, e il libro è pronto per la stampa.</h2>
+        <p>«Formatta per KDP» sceglie formato, margini e sillabazione. Poi Scrivylo <strong>guarda ogni pagina</strong> e sistema da solo righe vedove, orfane e buchi bianchi.</p>
+        <p>Esce un PDF da stampare, un ePub e un file Word. I formati sono 25, compatibili con KDP, Ingram e Lulu.</p>
+        <ul class="punti"><li>Controllo pagina per pagina</li><li>PDF, ePub, Word</li><li>Anteprima come su KDP</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Controllo di stampa<span class="dx"><span class="interruttore" role="group" aria-label="Prima o dopo"><button type="button" id="prima" aria-pressed="true">Prima</button><button type="button" id="dopo" aria-pressed="false">Dopo</button></span></span></div>
+        <div class="corpo">
+          <div class="dorso" id="dorso">
+            <div class="pag"><div class="testa">ODISSEA</div><div class="righe"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="corta"></i></div><div class="buco"></div><span class="bandierina" style="bottom:20%">buco bianco</span><div class="num">212</div></div>
+            <div class="pag"><div class="testa">LIBRO IX</div><div class="vedova"></div><span class="bandierina" style="top:13%">riga vedova</span><div class="righe"><i class="riempi"></i><i class="cap-titolo"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="corta"></i></div><div class="num">213</div></div>
+          </div>
+          <p class="piccolo" style="margin-top:10px" id="esito-stampa">2 problemi su queste pagine. Premi «Dopo»: Scrivylo li sistema e ricontrolla.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap" id="revisione">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Revisione con Claude</p>
+        <h2>Claude propone, tu decidi. Anche a penna.</h2>
+        <p>Ogni proposta ha <strong>un'etichetta, un rischio e la fonte verificata</strong>. La applichi, la adatti o la ignori, paragrafo per paragrafo, con il tuo testo sempre accanto.</p>
+        <p>Nella revisione accompagnata scrivi a mano sulla pagina stampata, e Claude legge anche le tue note.</p>
+        <ul class="punti"><li>Applica · Adatta · Ignora</li><li>Fonti con livello A-D</li><li>Note a mano lette da Claude</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Revisione · Capitolo 3</div>
+        <div class="corpo tre">
+          <div class="col"><h4>Il tuo testo</h4><div class="foglio">Era una <mark>notte buia</mark> e piena di vento, e la <mark>notte</mark> non passava mai.<span class="mano">più lento qui →</span></div></div>
+          <div class="col"><h4>La proposta di Claude</h4><div class="prop" id="prop"><span class="tag">Ripetizione</span><span class="tag rischio">Rischio basso</span><p class="perche">«Notte» torna due volte nella stessa frase. Tengo il ritmo lento che hai chiesto a penna.</p><div class="azioni"><button class="primo" type="button" id="applica">Applica</button><button type="button" id="adatta">Adatta</button><button type="button" id="ignora">Ignora</button></div><p class="letta">✎ Ho letto la tua nota a mano</p></div></div>
+          <div class="col"><h4>Il testo nuovo</h4><div class="foglio nuovo" id="nuovo" contenteditable="false">Era una notte buia e piena di vento, e la notte non passava mai.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="lettori">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Lettori di prova</p>
+        <h2>Fallo leggere prima di pubblicarlo.</h2>
+        <p>Mandi un link ai tuoi primi lettori. Leggono sul telefono, segnano, ascoltano l'audiolibro e <strong>ti lasciano domande</strong>, senza scaricare niente.</p>
+        <p>Le domande tornano sulla tua bacheca come schede. Quando il libro esce, il QR stampato le porta su Askylo.</p>
+        <ul class="punti"><li>Un link per ogni lettore</li><li>Segnalibri e appunti</li><li>Audio scelto link per link</li></ul>
+      </div>
+      <div class="lettori">
+        <div class="telefono" aria-hidden="true">
+          <div class="schermo">
+            <span class="capitolo">3 · La tempesta</span>
+            <p>Il vento girò all'improvviso. <span class="segnato">Nessuno a bordo parlava più</span>, e la vela batteva come un cuore.</p>
+            <p>Lontano, una luce si accese e si spense due volte.</p>
+            <div class="fumetto" id="fumetto">Chi accende la luce? Non l'ho capito.<small>Lettrice di prova · capitolo 3</small></div>
+            <div class="audio"><button type="button" id="play" aria-label="Ascolta">▶</button><span class="traccia"><i id="traccia"></i></span><span>3:12</span></div>
+          </div>
+        </div>
+        <div class="collega">
+          <div class="link-amici"><span>Link per i lettori:</span> <code>scrivylo.askylo.com/l/•••••</code></div>
+          <button class="btn vuoto" type="button" id="manda" style="justify-self:start">Manda la domanda alla bacheca</button>
+          <div class="mini-bacheca"><h4>Domande dei lettori</h4><div class="domande" id="domande"><span class="dom">Capitolo 1 · «Quanti anni ha il protagonista?»</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="porta" id="inizia">
+  <div class="wrap">
+    <div>
+      <h2>Dentro trovi già un libro intero: <em>l'Odissea</em>.</h2>
+      <p>40 personaggi, 28 eventi su 5 trame, fonti, revisioni d'esempio e glossario. Aprila, smontala e guarda come lavora Scrivylo. Poi comincia il tuo.</p>
+    </div>
+    <div class="btns">
+      <a class="btn pieno" href="https://scrivylo.askylo.com/">Prova nel browser</a>
+      <a class="btn vuoto" href="mailto:info@askylo.com?subject=Invito%20a%20Scrivylo">Chiedi l'invito</a>
+    </div>
+  </div>
+</section>
+<footer class="piede">
+  <div class="wrap"><span>Scrivylo in Italia, Writylo nel resto del mondo. Un'app di <a href="/">Askylo</a>.</span><span><a href="https://askylo.com/privacy">Privacy</a> · <a href="https://askylo.com/termini">Termini</a> · lettori e domande nella pagina sono esempi</span></div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const CARDS = [
+    { id: "ulisse", t: "personaggio", n: "Ulisse", c: "#1F4FA3", d: "Re di Itaca. Torna a casa dopo vent'anni.", alt: "Odisseo, il Laerziade" },
+    { id: "penelope", t: "personaggio", n: "Penelope", c: "#9C3D6B", d: "Regina di Itaca. Di giorno tesse la tela, di notte la disfa.", alt: "figlia d'Icario", ritratto: true },
+    { id: "telemaco", t: "personaggio", n: "Telemaco", c: "#2E7A57", d: "Figlio di Ulisse e Penelope. Parte per cercare il padre." },
+    { id: "minerva", t: "personaggio", n: "Minerva", c: "#8A6A10", d: "Dea. Protegge Ulisse e guida Telemaco.", alt: "Atena, Pallade" },
+    { id: "polifemo", t: "personaggio", n: "Polifemo", c: "#B9412C", d: "Ciclope, figlio di Nettuno." },
+    { id: "itaca", t: "luogo", n: "Itaca", c: "#2E7A57", d: "L'isola di Ulisse." },
+    { id: "ogigia", t: "luogo", n: "Ogigia", c: "#2E7A57", d: "L'isola di Calipso. Ulisse ci resta sette anni." },
+    { id: "arco", t: "oggetto", n: "L'arco", c: "#B9412C", d: "Solo Ulisse riesce a tenderlo." },
+  ];
+  const PLOTS = ["Telemachia", "Il viaggio", "Ritorno a Itaca"];
+  const EVENTS = [
+    { id: "e1", lib: "I", p: 0, n: "Minerva va da Telemaco", who: ["minerva", "telemaco"] },
+    { id: "e2", lib: "IV", p: 0, n: "Telemaco a Sparta", who: ["telemaco"] },
+    { id: "e3", lib: "V", p: 1, n: "Ulisse lascia Ogigia", who: ["ulisse", "ogigia"] },
+    { id: "e4", lib: "IX", p: 1, n: "Polifemo accecato", who: ["ulisse", "polifemo"] },
+    { id: "e5", lib: "X", p: 1, n: "Da Circe", who: ["ulisse"] },
+    { id: "e6", lib: "XIII", p: 2, n: "Arrivo a Itaca", who: ["ulisse", "itaca", "minerva"] },
+    { id: "e7", lib: "XXI", p: 2, n: "La gara dell'arco", who: ["ulisse", "penelope", "telemaco", "arco", "itaca"] },
+    { id: "e8", lib: "XXIII", p: 2, n: "Penelope lo riconosce", who: ["penelope", "ulisse", "itaca"] },
+  ];
+  const LINKS = [
+    ["ulisse", "penelope", "ama"], ["telemaco", "ulisse", "figlio di"], ["minerva", "ulisse", "protegge"],
+    ["ulisse", "polifemo", "acceca"], ["ulisse", "itaca", "torna a"], ["penelope", "itaca", "regina di"],
+    ["ulisse", "ogigia", "resta 7 anni a"], ["arco", "ulisse", "è di"],
+  ];
+  const BOARD = {
+    wide: { ulisse: [50, 47], penelope: [74, 27], telemaco: [74, 69], minerva: [27, 24], polifemo: [26, 64], itaca: [89, 48], ogigia: [50, 13], arco: [51, 83], deck: [11, 85] },
+    narrow: { ulisse: [50, 43], penelope: [77, 24], telemaco: [77, 61], minerva: [23, 24], polifemo: [23, 61], itaca: [77, 80], ogigia: [50, 9], arco: [43, 77], deck: [18, 90] },
+  };
+
+  const tavolo = document.getElementById("tavolo");
+  const fili = document.getElementById("fili");
+  const griglia = document.getElementById("griglia");
+  const aperta = document.getElementById("aperta");
+  const mq = window.matchMedia("(max-width: 640px)");
+  const fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let vista = "bacheca";
+  let toccato = false;
+  const pos = {}; // posizioni in bacheca spostate a mano, per layout
+  const el = {};
+
+  const layout = () => (mq.matches ? "narrow" : "wide");
+  const iniz = (s) => s.split(" ").map((w) => w[0]).join("").replace(/[^A-Za-zÀ-ÿ]/g, "").slice(0, 1).toUpperCase();
+
+  // schede
+  for (const c of CARDS) {
+    const d = document.createElement("div");
+    d.className = "s";
+    d.tabIndex = 0;
+    d.setAttribute("role", "button");
+    d.setAttribute("aria-label", c.n + ", " + c.t);
+    d.style.setProperty("--c", c.c);
+    d.dataset.id = c.id;
+    d.innerHTML = '<span class="riga1"><span class="faccia">' + (c.t === "personaggio" ? iniz(c.n) : c.t === "luogo" ? "⌂" : "✦") + '</span><span style="min-width:0"><span class="tipo">' + c.t + '</span><span class="nome">' + c.n + "</span></span></span>" + (c.alt ? '<span class="note">anche: ' + c.alt + "</span>" : "");
+    tavolo.appendChild(d);
+    el[c.id] = d;
+  }
+  EVENTS.forEach((e, i) => {
+    const d = document.createElement("div");
+    d.className = "s ev";
+    d.dataset.id = e.id;
+    d.innerHTML = '<span class="lib">Libro ' + e.lib + '</span><span class="tit">' + e.n + "</span>";
+    tavolo.appendChild(d);
+    el[e.id] = d;
+  });
+
+  // fili e verbi
+  const lineEls = LINKS.map(([a, b, v]) => {
+    const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    l.setAttribute("vector-effect", "non-scaling-stroke");
+    fili.appendChild(l);
+    const s = document.createElement("span");
+    s.className = "verbo";
+    s.textContent = v;
+    tavolo.insertBefore(s, aperta);
+    return { a, b, l, s };
+  });
+
+  function centro(id) {
+    const r = tavolo.getBoundingClientRect();
+    const b = el[id].getBoundingClientRect();
+    return [((b.left + b.width / 2 - r.left) / r.width) * 100, ((b.top + b.height / 2 - r.top) / r.height) * 100];
+  }
+  function sincronizzaFili() {
+    for (const k of lineEls) {
+      const [x1, y1] = centro(k.a);
+      const [x2, y2] = centro(k.b);
+      k.l.setAttribute("x1", x1); k.l.setAttribute("y1", y1); k.l.setAttribute("x2", x2); k.l.setAttribute("y2", y2);
+      k.s.style.left = (x1 + x2) / 2 + "%";
+      k.s.style.top = (y1 + y2) / 2 + "%";
+    }
+  }
+  let anim = 0;
+  function seguiPerUnPo(ms) {
+    const fine = performance.now() + ms;
+    cancelAnimationFrame(anim);
+    const passo = () => { sincronizzaFili(); if (performance.now() < fine) anim = requestAnimationFrame(passo); };
+    anim = requestAnimationFrame(passo);
+  }
+
+  function metti(id, x, y, r) {
+    const d = el[id];
+    d.style.setProperty("--x", x + "%");
+    d.style.setProperty("--y", y + "%");
+    d.style.setProperty("--r", (r || 0) + "deg");
+  }
+
+  function disegnaGriglia() {
+    griglia.innerHTML = "";
+    const add = (cls, css, txt) => { const g = document.createElement("div"); g.className = cls; Object.assign(g.style, css); if (txt) g.textContent = txt; griglia.appendChild(g); };
+    if (layout() === "wide") {
+      const x0 = 21, w = 77 / EVENTS.length;
+      EVENTS.forEach((e, i) => {
+        add("g-col", { left: x0 + i * w + "%" });
+        add("g-testa", { left: x0 + (i + 0.5) * w + "%", top: "17%" }, "Libro " + e.lib);
+      });
+      PLOTS.forEach((p, j) => {
+        const top = 22 + j * 24.67;
+        add("g-riga", { top: top + "%" });
+        add("g-trama", { left: "21.6%", top: top + 1.4 + "%" }, p);
+      });
+    } else {
+      PLOTS.forEach((p, j) => add("g-testa", { left: 29.7 + j * 27.3 + "%", top: "16.5%", fontSize: "11px" }, p));
+      EVENTS.forEach((e, i) => {
+        const top = 19 + i * 9.875;
+        add("g-riga", { top: top + "%", left: "3%" });
+        add("g-trama", { left: "3.5%", top: top + 3.4 + "%" }, "Lib. " + e.lib);
+      });
+    }
+  }
+
+  function applica(animato) {
+    const L = layout();
+    tavolo.dataset.vista = vista;
+    for (const c of CARDS) el[c.id].classList.toggle("compatta", vista === "tempo");
+    if (vista === "bacheca") {
+      for (const c of CARDS) {
+        const p = (pos[L] && pos[L][c.id]) || BOARD[L][c.id];
+        metti(c.id, p[0], p[1], 0);
+      }
+      const [dx, dy] = BOARD[L].deck;
+      EVENTS.forEach((e, i) => metti(e.id, dx + i * (L === "wide" ? 0.55 : 0.9), dy - i * (L === "wide" ? 0.8 : 0.55), -7 + i * 1.8));
+      for (const e of EVENTS) el[e.id].classList.remove("spento", "acceso");
+      for (const c of CARDS) el[c.id].classList.remove("spento", "acceso");
+    } else {
+      if (L === "wide") {
+        CARDS.forEach((c, i) => metti(c.id, 9.6, 15 + i * 10.6, 0));
+        const x0 = 21, w = 77 / EVENTS.length;
+        EVENTS.forEach((e, i) => metti(e.id, x0 + (i + 0.5) * w, 22 + e.p * 24.67 + 14.2, 0));
+      } else {
+        CARDS.forEach((c, i) => metti(c.id, 8.5 + i * 11.86, 7, 0));
+        EVENTS.forEach((e, i) => metti(e.id, 29.7 + e.p * 27.3, 19 + (i + 0.5) * 9.875, 0));
+      }
+    }
+    disegnaGriglia();
+    if (animato) seguiPerUnPo(950); else sincronizzaFili();
+    document.getElementById("v-bacheca").setAttribute("aria-pressed", String(vista === "bacheca"));
+    document.getElementById("v-tempo").setAttribute("aria-pressed", String(vista === "tempo"));
+    document.getElementById("sugg").textContent = vista === "bacheca"
+      ? "Trascina le schede. Tocca un nome per aprirlo."
+      : "Tocca un personaggio: si accendono gli eventi in cui compare.";
+  }
+
+  function evidenzia(id) {
+    for (const e of EVENTS) {
+      const dentro = !id || e.who.includes(id);
+      el[e.id].classList.toggle("spento", !dentro);
+      el[e.id].classList.toggle("acceso", !!id && dentro);
+    }
+    for (const c of CARDS) el[c.id].classList.toggle("acceso", c.id === id);
+  }
+
+  function cambiaVista(v, daUtente) {
+    if (daUtente) toccato = true;
+    if (v === vista) return;
+    vista = v;
+    chiudi();
+    applica(true);
+  }
+  document.getElementById("v-bacheca").addEventListener("click", () => cambiaVista("bacheca", true));
+  document.getElementById("v-tempo").addEventListener("click", () => cambiaVista("tempo", true));
+
+  // scheda aperta
+  function apri(id) {
+    const c = CARDS.find((x) => x.id === id);
+    if (!c) return;
+    const links = LINKS.filter((l) => l[0] === id || l[1] === id).map((l) => {
+      const altro = CARDS.find((x) => x.id === (l[0] === id ? l[1] : l[0])).n;
+      return l[0] === id ? c.n + " " + l[2] + " " + altro : altro + " " + l[2] + " " + c.n;
+    });
+    const eventi = EVENTS.filter((e) => e.who.includes(id)).map((e) => "Libro " + e.lib);
+    aperta.innerHTML =
+      '<button class="chiudi" type="button" aria-label="Chiudi">×</button>' +
+      '<span class="piccolo" style="text-transform:uppercase;letter-spacing:.1em;color:' + c.c + ';font-weight:700">' + c.t + "</span>" +
+      '<h3 id="ap-nome">' + c.n + "</h3><p style=\"margin-top:4px\">" + c.d + "</p>" +
+      "<dl>" + (c.alt ? "<dt>Altri nomi</dt><dd>" + c.alt + "</dd>" : "") +
+      "<dt>Compare in</dt><dd>" + (eventi.length ? eventi.join(", ") : "nessun evento qui") + "</dd></dl>" +
+      (links.length ? '<ul>' + links.map((t) => "<li>" + t + "</li>").join("") + "</ul>" : "") +
+      (c.ritratto ? '<div class="ritratto"><canvas id="tela-ritratto" width="192" height="240"></canvas><div><button class="btn-mini" type="button" id="crea-ritratto">✦ Crea il ritratto</button><p class="piccolo" style="margin-top:6px" id="stato-ritratto">L\'IA lo crea dalla descrizione della scheda. Qui è un esempio disegnato.</p></div></div>' : "") +
+      (c.alt ? '<p class="piccolo" style="margin-top:10px">Con gli altri nomi Scrivylo la trova anche quando il testo la chiama in un altro modo.</p>' : "");
+    aperta.hidden = false;
+    aperta.querySelector(".chiudi").addEventListener("click", chiudi);
+    const b = aperta.querySelector("#crea-ritratto");
+    if (b) b.addEventListener("click", creaRitratto);
+    if (vista === "tempo") evidenzia(id);
+    lineEls.forEach((k) => k.s.classList.toggle("mostra", k.a === id || k.b === id));
+  }
+  function chiudi() {
+    aperta.hidden = true;
+    lineEls.forEach((k) => k.s.classList.remove("mostra"));
+  }
+
+  function disegnaRitratto(cv) {
+    const g = cv.getContext("2d"), w = cv.width, h = cv.height;
+    const bg = g.createLinearGradient(0, 0, w, h);
+    bg.addColorStop(0, "#2B5CBB"); bg.addColorStop(1, "#0F2250");
+    g.fillStyle = bg; g.fillRect(0, 0, w, h);
+    g.strokeStyle = "rgba(242,183,5,.33)"; g.lineWidth = 2;
+    for (let x = 10; x < w; x += 14) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+    g.fillStyle = "rgba(242,183,5,.6)";
+    g.beginPath(); g.moveTo(w * 0.28, h * 0.34); g.quadraticCurveTo(w * 0.5, h * 0.06, w * 0.72, h * 0.34); g.lineTo(w * 0.78, h * 0.78); g.quadraticCurveTo(w * 0.5, h * 0.62, w * 0.22, h * 0.78); g.closePath(); g.fill();
+    g.fillStyle = "rgba(250,247,240,.95)";
+    g.beginPath(); g.moveTo(w * 0.14, h); g.quadraticCurveTo(w * 0.2, h * 0.66, w * 0.5, h * 0.63); g.quadraticCurveTo(w * 0.8, h * 0.66, w * 0.86, h); g.closePath(); g.fill();
+    g.beginPath(); g.ellipse(w * 0.5, h * 0.42, w * 0.15, h * 0.15, 0, 0, Math.PI * 2); g.fill();
+  }
+  function creaRitratto() {
+    const cv = document.getElementById("tela-ritratto");
+    const st = document.getElementById("stato-ritratto");
+    const b = document.getElementById("crea-ritratto");
+    if (!cv) return;
+    b.disabled = true;
+    cv.classList.add("sviluppo");
+    disegnaRitratto(cv);
+    st.textContent = "Sto creando il ritratto…";
+    requestAnimationFrame(() => requestAnimationFrame(() => cv.classList.remove("sviluppo")));
+    setTimeout(() => {
+      st.textContent = "Fatto. Il ritratto va anche sulla scheda. Qui è un esempio disegnato.";
+      const f = el.penelope.querySelector(".faccia");
+      f.innerHTML = '<img alt="" src="' + cv.toDataURL("image/png") + '">';
+    }, fermo ? 50 : 1800);
+  }
+
+  // trascinamento
+  let tr = null;
+  tavolo.addEventListener("pointerdown", (ev) => {
+    const d = ev.target.closest(".s");
+    if (!d || d.classList.contains("ev")) return;
+    const id = d.dataset.id;
+    toccato = true;
+    if (vista === "tempo") { apri(id); return; }
+    tr = { id, d, x: ev.clientX, y: ev.clientY, mosso: false };
+    d.setPointerCapture(ev.pointerId);
+  });
+  tavolo.addEventListener("pointermove", (ev) => {
+    if (!tr) return;
+    if (!tr.mosso && Math.hypot(ev.clientX - tr.x, ev.clientY - tr.y) < 5) return;
+    if (!tr.mosso) { tr.mosso = true; tr.d.classList.add("trascino"); chiudi(); }
+    const r = tavolo.getBoundingClientRect();
+    const x = Math.min(93, Math.max(7, ((ev.clientX - r.left) / r.width) * 100));
+    const y = Math.min(92, Math.max(8, ((ev.clientY - r.top) / r.height) * 100));
+    const L = layout();
+    (pos[L] = pos[L] || {})[tr.id] = [x, y];
+    metti(tr.id, x, y, 0);
+    sincronizzaFili();
+  });
+  const fineTrascino = () => {
+    if (!tr) return;
+    const { d, id, mosso } = tr;
+    d.classList.remove("trascino");
+    tr = null;
+    if (!mosso) apri(id);
+  };
+  tavolo.addEventListener("pointerup", fineTrascino);
+  tavolo.addEventListener("pointercancel", fineTrascino);
+  tavolo.addEventListener("keydown", (ev) => {
+    const d = ev.target.closest(".s");
+    if (d && (ev.key === "Enter" || ev.key === " ") && !d.classList.contains("ev")) { ev.preventDefault(); toccato = true; apri(d.dataset.id); }
+    if (ev.key === "Escape") chiudi();
+  });
+
+  mq.addEventListener("change", () => { chiudi(); applica(false); });
+  window.addEventListener("resize", () => sincronizzaFili());
+
+  applica(false);
+  requestAnimationFrame(sincronizzaFili);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sincronizzaFili);
+
+  // la prima volta la bacheca si mostra da sola: linea del tempo, poi di nuovo bacheca
+  if (!fermo) {
+    setTimeout(() => {
+      if (toccato) return;
+      vista = "tempo"; applica(true);
+      setTimeout(() => { if (!toccato && vista === "tempo") evidenzia("penelope"); }, 1300);
+      setTimeout(() => { if (!toccato && vista === "tempo") { vista = "bacheca"; applica(true); } }, 8200);
+    }, 3200);
+  }
+
+  // ---------- capitoli ----------
+  const toast = document.getElementById("toast");
+  let tt = 0;
+  function avvisa(t) { toast.textContent = t; toast.classList.add("vedi"); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove("vedi"), 2800); }
+  document.querySelectorAll("[data-toast]").forEach((b) => b.addEventListener("click", () => avvisa(b.dataset.toast)));
+
+  document.getElementById("cita").addEventListener("click", (e) => {
+    const q = document.getElementById("cit-qui");
+    if (q.textContent) return;
+    q.innerHTML = ' <span class="cit">(Omero, trad. 1822, p. 212)</span>';
+    e.currentTarget.textContent = "Citata in APA ✓";
+    e.currentTarget.disabled = true;
+  });
+
+  const dorso = document.getElementById("dorso");
+  const esito = document.getElementById("esito-stampa");
+  const setStampa = (dopo) => {
+    dorso.classList.toggle("dopo", dopo);
+    document.getElementById("prima").setAttribute("aria-pressed", String(!dopo));
+    document.getElementById("dopo").setAttribute("aria-pressed", String(dopo));
+    esito.textContent = dopo ? "Sistemato: la riga è tornata sulla pagina prima e il buco è chiuso. Nessun problema." : "2 problemi su queste pagine. Premi «Dopo»: Scrivylo li sistema e ricontrolla.";
+  };
+  document.getElementById("prima").addEventListener("click", () => setStampa(false));
+  document.getElementById("dopo").addEventListener("click", () => setStampa(true));
+
+  const nuovo = document.getElementById("nuovo");
+  const prop = document.getElementById("prop");
+  document.getElementById("applica").addEventListener("click", () => {
+    prop.classList.remove("ignorata");
+    nuovo.textContent = "Era una notte buia e piena di vento, e le ore non passavano mai.";
+    nuovo.classList.add("fatto");
+    setTimeout(() => nuovo.classList.remove("fatto"), 1400);
+  });
+  document.getElementById("adatta").addEventListener("click", () => {
+    prop.classList.remove("ignorata");
+    nuovo.textContent = "Era una notte buia e piena di vento, e le ore non passavano mai.";
+    nuovo.contentEditable = "true";
+    nuovo.focus();
+    avvisa("Ora puoi ritoccare il testo nuovo come vuoi.");
+  });
+  document.getElementById("ignora").addEventListener("click", () => {
+    prop.classList.add("ignorata");
+    nuovo.textContent = "Era una notte buia e piena di vento, e la notte non passava mai.";
+    nuovo.contentEditable = "false";
+  });
+
+  let suona = null;
+  document.getElementById("play").addEventListener("click", (e) => {
+    const t = document.getElementById("traccia");
+    if (suona) { clearInterval(suona); suona = null; e.currentTarget.textContent = "▶"; return; }
+    e.currentTarget.textContent = "❚❚";
+    let w = parseFloat(t.style.width) || 18;
+    suona = setInterval(() => { w = w >= 100 ? 18 : w + 1.5; t.style.width = w + "%"; }, 300);
+  });
+  document.getElementById("manda").addEventListener("click", (e) => {
+    const box = document.getElementById("domande");
+    const s = document.createElement("span");
+    s.className = "dom";
+    s.textContent = "Capitolo 3 · «Chi accende la luce?»";
+    box.appendChild(s);
+    e.currentTarget.disabled = true;
+    e.currentTarget.textContent = "Arrivata sulla bacheca ✓";
+  });
+})();
+</script>
+</body>
+</html>
