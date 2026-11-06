@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nutrylo · la settimana in cucina, con la lista della spesa pronta</title>
+<meta name="description" content="Dici chi mangia, dove fai la spesa e che cosa hai in cucina: Nutrylo prepara la settimana, la spesa stimata e i passaggi per i tuoi elettrodomestici. E per i nutrizionisti, piani e guide per i pazienti. Un'app di Askylo.">
+<link rel="canonical" href="https://askylostudio.it/nutrylo/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Nutrylo · la settimana in cucina, con la lista della spesa pronta">
+<meta property="og:description" content="La settimana, la spesa stimata e i passaggi giusti per la tua cucina. Un'app di Askylo.">
+<meta property="og:url" content="https://askylostudio.it/nutrylo/">
+<meta name="theme-color" content="#1B2A12">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="/font/Fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/font/DMSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/font/caratteri.css">
+<style>
+/* Layout: in alto la cucina di sera (verde oliva profondo): a sinistra le tre scelte (chi mangia, che cosa hai in cucina,
+   dove fai la spesa), a destra la settimana che si compone con la spesa stimata e le piante contate. Sotto, su carta chiara:
+   la ricetta che cambia con l'elettrodomestico, il ricettario di casa, i nutrizionisti, la porta. */
+:root{
+  --carta:#FAF8F0; --superficie:#FFFFFF; --inchiostro:#1D2414; --muto:#5A6350; --linea:#E0DDCC;
+  --foglia:#4E7A2A; --foglia-testo:#3F6A1E; --giallo:#F2B705; --pomodoro:#C2462E;
+  --sera:#1B2A12; --sera-2:#2B4019; --sera-testo:#F3F1E4; --sera-muto:#BBC6A6;
+  --f-titolo:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-testo:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --carta:#11170B; --superficie:#1A2312; --inchiostro:#ECEEDF; --muto:#A9B396; --linea:#2C3820;
+    --foglia-testo:#A9D27A; --pomodoro:#EC8A72; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --carta:#11170B; --superficie:#1A2312; --inchiostro:#ECEEDF; --muto:#A9B396; --linea:#2C3820;
+  --foglia-testo:#A9D27A; --pomodoro:#EC8A72; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--carta);color:var(--inchiostro);font-family:var(--f-testo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-titolo);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--giallo);outline-offset:3px;border-radius:6px}
+
+.hero{background:radial-gradient(110% 90% at 85% 0%,var(--sera-2) 0%,var(--sera) 60%) var(--sera);color:var(--sera-testo);padding-block:max(14px,env(safe-area-inset-top,0px)) 46px}
+.testata{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.marchio{display:flex;align-items:center;gap:10px;text-decoration:none}
+.marchio svg{width:34px;height:34px;flex:none}
+.parola{font-family:var(--f-titolo);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.parola b{color:var(--giallo)}
+.by{font-size:12px;color:var(--sera-muto);letter-spacing:.04em}
+.salta{font-size:14px;text-decoration:none;border:1px solid rgba(243,241,228,.28);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.salta:hover{border-color:var(--giallo);color:#FFE7A0}
+.apertura{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:end;margin-top:34px}
+.occhiello{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#FFD86B;font-weight:500}
+.hero h1{font-size:clamp(34px,5.4vw,62px);line-height:1.02;margin-top:10px}
+.hero h1 em{font-style:italic;font-weight:400;color:#FFE08A}
+.sotto{color:var(--sera-muto);font-size:17px;max-width:46ch}
+.sotto strong{color:var(--sera-testo);font-weight:500}
+
+.cucina{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:18px;margin-top:28px;align-items:start}
+.scelte{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px;display:grid;gap:16px}
+.scelte h3{font-family:var(--f-testo);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#FFD86B;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips button{border:1px solid rgba(255,255,255,.2);background:transparent;color:var(--sera-muto);border-radius:999px;padding:6px 11px;font-size:13.5px}
+.chips button[aria-pressed="true"]{background:var(--giallo);border-color:var(--giallo);color:#1D2414;font-weight:700}
+.settimana{background:#FAF8F0;color:#1D2414;border-radius:18px;padding:16px;box-shadow:0 24px 50px rgba(0,0,0,.35);min-width:0}
+.settimana .top{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between}
+.settimana h3{font-size:22px}
+.conti{display:flex;flex-wrap:wrap;gap:8px}
+.conto{border-radius:12px;padding:6px 11px;background:#EEF0E2;font-size:13px}
+.conto b{font-family:var(--f-titolo);font-size:19px;display:block;font-variant-numeric:tabular-nums;line-height:1.1}
+.conto.piante b{color:#3F6A1E}
+.giorni{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.giorni li{border:1px solid #E0DDCC;border-radius:12px;padding:8px 7px;background:#fff;font-size:12.5px;line-height:1.3;min-width:0;animation:entra .5s cubic-bezier(.2,.8,.2,1) both}
+.giorni li b{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#7A6F3C}
+.giorni li span{display:block;margin-top:3px;font-weight:500}
+.giorni li small{display:block;margin-top:4px;color:#3F6A1E}
+@keyframes entra{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
+.spesa{margin-top:12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.reparto{border:1px dashed #D4CFB8;border-radius:12px;padding:8px 10px;font-size:13px}
+.reparto h4{font-family:var(--f-testo);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:#7A6F3C}
+.reparto ul{margin:4px 0 0;padding-left:16px}
+.nota-stima{margin-top:6px;font-size:12px;color:#6B7158}
+.nota-negozio{margin-top:10px;font-size:13px;color:#3F6A1E;font-weight:500}
+.reparto li span{color:#6B7158;font-variant-numeric:tabular-nums}
+.giorni li small em{font-style:normal;font-weight:700;background:#FBE7A1;color:#1D2414;border-radius:5px;padding:0 4px}
+
+.cap{padding-block:clamp(52px,8vw,96px);border-top:1px solid var(--linea)}
+.cap:first-of-type{border-top:0}
+.cap .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.cap.giro .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.cap.giro .testo{order:2}
+.etichetta{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--foglia-testo);font-weight:700}
+.cap h2{font-size:clamp(28px,3.6vw,42px);line-height:1.08;margin-top:10px}
+.cap .testo p{margin-top:14px;max-width:52ch;color:var(--muto);font-size:17px}
+.cap .testo p strong{color:var(--inchiostro);font-weight:500}
+.punti{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.punti li{font-size:13.5px;border:1px solid var(--linea);border-radius:999px;padding:4px 11px;background:var(--superficie)}
+.finestra{background:var(--superficie);border:1px solid var(--linea);border-radius:16px;box-shadow:0 18px 50px rgba(27,42,18,.12);overflow:hidden;min-width:0}
+.barra{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--linea);font-size:13px;color:var(--muto)}
+.barra .pallini{display:flex;gap:5px;margin-right:6px}
+.barra .pallini i{width:9px;height:9px;border-radius:50%;background:var(--linea);display:block}
+.barra .dx{margin-left:auto}
+.corpo{padding:16px}
+.ricetta h3{font-size:22px}
+.ricetta .meta{color:var(--muto);font-size:13.5px;margin-top:4px}
+.ricetta ol{margin:12px 0 0;padding-left:20px;display:grid;gap:6px}
+.ricetta li.cambia{background:color-mix(in srgb,var(--giallo) 22%,transparent);border-radius:6px;padding:0 4px}
+.attrezzi{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.attrezzi button{border:1px solid var(--linea);background:var(--carta);border-radius:999px;padding:5px 11px;font-size:13px}
+.attrezzi button[aria-pressed="true"]{background:var(--foglia);border-color:var(--foglia);color:#fff}
+.profili{display:flex;gap:10px;margin-bottom:12px}
+.profilo{display:flex;align-items:center;gap:8px;border:1px solid var(--linea);border-radius:999px;padding:4px 12px 4px 4px;font-size:14px}
+.profilo i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;color:#fff}
+.voce{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+.voce:last-child{border-bottom:0}
+.voce small{color:var(--muto)}
+.tag{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;background:color-mix(in srgb,var(--foglia) 16%,transparent);color:var(--foglia-testo);white-space:nowrap}
+.regole{display:grid;gap:8px}
+.regola{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;border:1px solid var(--linea);border-radius:12px;padding:10px 12px;background:var(--carta)}
+.regola span:first-child{font-size:18px;line-height:1.2}
+
+.insieme{background:var(--superficie);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding-block:30px}
+.insieme .wrap{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.insieme h3{font-size:22px;max-width:12ch}
+.insieme p{font-size:14.5px;color:var(--muto)}
+.insieme p b{color:var(--inchiostro);font-weight:500;display:block;font-family:var(--f-titolo);font-size:17px}
+.porta{background:var(--sera);color:var(--sera-testo);padding-block:clamp(56px,9vw,104px)}
+.porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
+.porta h2{font-size:clamp(30px,4.4vw,52px);line-height:1.04}
+.porta h2 em{color:#FFE08A;font-weight:400}
+.porta p{color:var(--sera-muto);margin-top:14px;font-size:17px;max-width:50ch}
+.porta .btns{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none}
+.btn.pieno{background:var(--giallo);color:#1D2414}
+.btn.pieno:hover{background:#FFC928}
+.btn.vuoto{background:transparent;color:var(--sera-testo);border-color:rgba(243,241,228,.3)}
+.piede{background:var(--sera);color:var(--sera-muto);font-size:13px;padding-block:18px max(26px,env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.08)}
+.piede .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.piede a{color:inherit;text-underline-offset:2px}
+
+@media (max-width:900px){
+  .cucina{grid-template-columns:1fr}
+  .giorni{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .insieme .wrap{grid-template-columns:1fr 1fr}
+  .insieme h3{grid-column:1/-1;max-width:none}
+}
+@media (max-width:860px){
+  .apertura,.cap .wrap,.cap.giro .wrap,.porta .wrap{grid-template-columns:1fr}
+  .cap.giro .testo{order:0}
+}
+@media (max-width:560px){
+  .giorni{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spesa{grid-template-columns:1fr}
+  .insieme .wrap{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(32px,9vw,44px)}
+}
+@media (prefers-reduced-motion:reduce){.giorni li{animation:none}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="testata">
+      <a class="marchio" href="./" aria-label="Nutrylo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#4E7A2A"/><path d="M9 7 16 15l7-8" fill="none" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 14.6v6" stroke="#F2B705" stroke-width="3" stroke-linecap="round"/><path d="M16 26.6c-4.6 0-6.4-3.2-6-6.2 3.4-.4 6 1.4 6 6.2zM16 26.6c4.6 0 6.4-3.2 6-6.2-3.4-.4-6 1.4-6 6.2z" fill="#F2B705"/></svg>
+        <span><span class="parola">Nutr<b>y</b>lo</span><br><span class="by">by Askylo</span></span>
+      </a>
+      <a class="salta" href="#inizia">Salta ↓</a>
+    </div>
+
+    <div class="apertura">
+      <div>
+        <p class="occhiello">Per chi cucina a casa · e per i nutrizionisti</p>
+        <h1>La settimana in cucina, <em>con la lista della spesa già pronta.</em></h1>
+      </div>
+      <p class="sotto">Dici chi mangia, che cosa hai in cucina e dove fai la spesa. Nutrylo prepara le cene della settimana, <strong>la lista della spesa con il prezzo stimato</strong> e i passaggi giusti per i tuoi elettrodomestici. Prova a cambiare le scelte.</p>
+    </div>
+
+    <div class="cucina">
+      <div class="scelte">
+        <div><h3>Chi mangia</h3><div class="chips" data-g="chi" role="group" aria-label="Chi mangia">
+          <button type="button" data-v="1">Una persona</button><button type="button" data-v="2">Due adulti</button><button type="button" data-v="3" aria-pressed="true">Due adulti e un bambino</button>
+        </div></div>
+        <div><h3>In cucina hai</h3><div class="chips" data-g="attrezzo" role="group" aria-label="Elettrodomestico principale">
+          <button type="button" data-v="forno" aria-pressed="true">Forno</button><button type="button" data-v="friggitrice">Friggitrice ad aria</button><button type="button" data-v="pressione">Pentola a pressione</button><button type="button" data-v="robot">Robot da cucina</button>
+        </div></div>
+        <div><h3>Dove fai la spesa</h3><div class="chips" data-g="negozio" role="group" aria-label="Negozio">
+          <button type="button" data-v="super" aria-pressed="true">Supermercato</button><button type="button" data-v="discount">Discount</button><button type="button" data-v="mercato">Mercato e bio</button>
+        </div></div>
+      </div>
+      <div class="settimana">
+        <div class="top">
+          <h3>Le cene della settimana</h3>
+          <div class="conti" aria-live="polite">
+            <span class="conto"><b id="costo">€ 0</b>spesa stimata</span>
+            <span class="conto piante"><b id="piante">0</b>piante diverse · obiettivo 30</span>
+          </div>
+        </div>
+        <ul class="giorni" id="giorni"></ul>
+        <div class="spesa" id="spesa"></div>
+        <p class="nota-negozio" id="negozio"></p>
+        <p class="nota-stima">Prezzi e nutrienti sono stime. Nutrylo non prescrive diete: per quello serve un professionista.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="cap" id="ricetta">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">La tua cucina, non una qualunque</p>
+        <h2>La stessa ricetta, scritta per i tuoi elettrodomestici.</h2>
+        <p>Robot da cucina e versione, friggitrice ad aria, pentola a pressione, il materiale delle pentole: Nutrylo <strong>riscrive i passaggi</strong> per quello che hai davvero.</p>
+        <p>E tiene il conto delle cose che contano: le piante diverse della settimana, le fibre, i 14 allergeni dell'Unione europea.</p>
+        <ul class="punti"><li>Passaggi per ogni elettrodomestico</li><li>30 piante a settimana</li><li>14 allergeni UE</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Ricetta<span class="dx" id="ricetta-per">per il forno</span></div>
+        <div class="corpo ricetta">
+          <h3>Polpette di ceci e zucchine</h3>
+          <p class="meta">4 porzioni · 6 piante · allergeni: glutine (nel pangrattato)</p>
+          <div class="attrezzi" role="group" aria-label="Cuoci con">
+            <button type="button" data-a="forno" aria-pressed="true">Forno</button><button type="button" data-a="friggitrice" aria-pressed="false">Friggitrice ad aria</button><button type="button" data-a="pressione" aria-pressed="false">Pentola a pressione</button><button type="button" data-a="robot" aria-pressed="false">Robot da cucina</button>
+          </div>
+          <ol id="passi"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="ricettario">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Il ricettario di casa</p>
+        <h2>Ognuno il suo ricettario. Tutti in un posto.</h2>
+        <p>Ogni persona di casa ha il suo profilo, le sue preferite e le sue cartelle, e può guardare quelle degli altri. Le ricette arrivano da un link, da un video, da una foto o dai post salvati.</p>
+        <p>Da un video lungo Nutrylo ricava <strong>tutte le ricette che ci sono dentro</strong>, con l'attrezzatura e le quantità.</p>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Le mie ricette<span class="dx">esempio</span></div>
+        <div class="corpo">
+          <div class="profili"><span class="profilo"><i style="background:#C2462E">A</i>Anna</span><span class="profilo"><i style="background:#4E7A2A">L</i>Luca</span></div>
+          <div class="voce"><span>🎬</span><span>Video di 35 minuti<br><small>13 ricette trovate, con attrezzatura e dosi</small></span><span class="tag">importato</span></div>
+          <div class="voce"><span>🔗</span><span>Risotto alla zucca<br><small>da un sito di ricette</small></span><span class="tag">pressione</span></div>
+          <div class="voce"><span>📷</span><span>La torta della nonna<br><small>da una foto del quaderno</small></span><span class="tag">forno</span></div>
+          <div class="voce"><span>📁</span><span>Cartella «Pranzi in ufficio»<br><small>9 ricette, colore verde</small></span><span class="tag">di Luca</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap" id="nutrizionisti">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Per i nutrizionisti</p>
+        <h2>Il tuo piano, nella cucina del paziente.</h2>
+        <p>Scrivi il piano come sempre. Il paziente lo ritrova <strong>con la spesa e le ricette adatte alla sua cucina</strong>, e tu vedi come va, senza fogli che si perdono.</p>
+        <p>Con Clientylo per le visite e l'agenda, nella stessa pagina del paziente.</p>
+        <ul class="punti"><li>In arrivo</li><li>Lista d'attesa aperta</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Le regole di Nutrylo</div>
+        <div class="corpo regole">
+          <div class="regola"><span aria-hidden="true">🩺</span><span>L'app non prescrive: piani e diete li decide il professionista.</span></div>
+          <div class="regola"><span aria-hidden="true">⚠️</span><span>I 14 allergeni dell'Unione europea, sempre in vista.</span></div>
+          <div class="regola"><span aria-hidden="true">🔢</span><span>Calorie e numeri si possono spegnere, per chi non vuole vederli.</span></div>
+          <div class="regola"><span aria-hidden="true">🌿</span><span>Nessuna promessa di salute: solo varietà, stagione e cucina vera.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="insieme">
+  <div class="wrap">
+    <h3>Con le altre app di Askylo</h3>
+    <p><b><a href="/clientylo/">Clientylo</a></b>Per i nutrizionisti: visite, agenda e la pagina del paziente.</p>
+    <p><b><a href="/scrivylo/">Scrivylo</a></b>Dal ricettario al libro di ricette, impaginato per la stampa.</p>
+    <p><b><a href="https://askylo.com/">Askylo Live</a></b>Le domande del pubblico ai tuoi incontri e corsi di cucina.</p>
+  </div>
+</section>
+
+<section class="porta" id="inizia">
+  <div class="wrap">
+    <div>
+      <h2>Prova la settimana <em>con la demo</em>.</h2>
+      <p>La demo è aperta a tutti, con un catalogo di ricette e negozi d'esempio. Nutrylo per tutti è in arrivo: lascia l'email e ti scriviamo quando parte.</p>
+    </div>
+    <div class="btns">
+      <a class="btn pieno" href="https://askylostudio.it/nutrylab/">Prova la demo</a>
+      <a class="btn vuoto" href="mailto:info@askylo.com?subject=Lista%20d%27attesa%20Nutrylo">Entra nella lista d'attesa</a>
+    </div>
+  </div>
+</section>
+<footer class="piede">
+  <div class="wrap"><span>Nutrylo, un'app di <a href="/">Askylo</a>.</span><span><a href="https://askylo.com/privacy">Privacy</a> · <a href="https://askylo.com/termini">Termini</a> · prezzi, ricette e nomi nella pagina sono esempi</span></div>
+</footer>
+
+<script>
+(() => {
+  // Le cene d'esempio: ogni ricetta con le sue piante (per contare la varietà), il costo a persona
+  // e gli elettrodomestici con cui si può fare (con gli altri resta la cottura di base).
+  const CENE = [
+    { n: "Polpette di ceci e zucchine", p: ["ceci", "zucchine", "prezzemolo", "cipolla", "aglio", "limone"], costo: 3.2, con: ["forno", "friggitrice", "pressione", "robot"], base: "in padella" },
+    { n: "Risotto alla zucca", p: ["zucca", "riso", "cipolla", "salvia"], costo: 2.9, con: ["pressione", "robot"], base: "in pentola" },
+    { n: "Salmone, patate e fagiolini", p: ["patate", "fagiolini", "rosmarino", "limone"], costo: 5.4, con: ["forno", "friggitrice", "robot"], base: "in padella" },
+    { n: "Pasta e lenticchie", p: ["lenticchie", "carota", "sedano", "pomodoro", "grano"], costo: 2.4, con: ["pressione", "robot"], base: "in pentola" },
+    { n: "Frittata di spinaci e piselli", p: ["spinaci", "piselli", "menta", "basilico"], costo: 2.8, con: ["forno", "friggitrice"], base: "in padella" },
+    { n: "Pollo al limone con broccoli", p: ["broccoli", "limone", "timo", "aglio", "orzo"], costo: 4.6, con: ["forno", "friggitrice", "pressione", "robot"], base: "in padella" },
+    { n: "Pizza in teglia con verdure", p: ["peperoni", "melanzane", "origano", "olive", "rucola", "farro"], costo: 3.6, con: ["forno"], base: "al forno" },
+  ];
+  const GIORNI = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
+  const PERSONE = { 1: 1, 2: 2, 3: 2.6 };
+  const NEGOZIO = { super: 1, discount: 0.83, mercato: 1.14 };
+  const ATTREZZO = { forno: "al forno", friggitrice: "in friggitrice", pressione: "a pressione", robot: "col robot" };
+  const NOTA_NEGOZIO = {
+    super: "Al supermercato: la lista è in ordine di reparto.",
+    discount: "Al discount: dove si può, il prodotto con il marchio del negozio.",
+    mercato: "Al mercato: frutta e verdura sfuse e di stagione.",
+  };
+  const scelta = { chi: "3", attrezzo: "forno", negozio: "super" };
+  const euro = (x) => "€ " + x.toFixed(2).replace(".", ",");
+
+  function settimana() {
+    const giorni = document.getElementById("giorni");
+    giorni.innerHTML = "";
+    let tot = 0;
+    const piante = new Set();
+    CENE.forEach((c, i) => {
+      const costo = c.costo * PERSONE[scelta.chi] * NEGOZIO[scelta.negozio];
+      tot += costo;
+      c.p.forEach((x) => piante.add(x));
+      const li = document.createElement("li");
+      li.style.animationDelay = i * 0.04 + "s";
+      const usa = c.con.includes(scelta.attrezzo);
+      li.innerHTML = "<b>" + GIORNI[i] + "</b><span>" + c.n + "</span><small>" + c.p.length + " piante · " + (usa ? "<em>" + ATTREZZO[scelta.attrezzo] + "</em>" : c.base) + "</small>";
+      giorni.appendChild(li);
+    });
+    // colazioni e pranzi aggiungono frutta e verdura di stagione: qui una stima fissa
+    const extra = ["mele", "pere", "kiwi", "arance", "insalata", "finocchi", "noci", "avena"];
+    extra.forEach((x) => piante.add(x));
+    document.getElementById("costo").textContent = euro(tot);
+    document.getElementById("piante").textContent = piante.size;
+    // quantità per una persona, in grammi (o a pezzi): la lista cresce con chi mangia
+    const reparti = {
+      "Frutta e verdura": [["zucchine", 250], ["zucca", 200], ["spinaci", 150], ["broccoli", 200], ["patate", 250], ["limoni", 1, " pz"]],
+      "Dispensa": [["ceci in scatola", 120], ["lenticchie", 80], ["riso", 80], ["pasta", 80], ["farina di farro", 125]],
+      "Banco fresco": [["uova", 2, " pz"], ["salmone", 150], ["petto di pollo", 150], ["parmigiano", 40]],
+    };
+    const quanto = (q, u) => {
+      const x = q * PERSONE[scelta.chi];
+      if (u) return Math.ceil(x) + u;
+      const g = Math.round(x / 50) * 50 || 50;
+      return g >= 1000 ? String(g / 1000).replace(".", ",") + " kg" : g + " g";
+    };
+    document.getElementById("spesa").innerHTML = Object.entries(reparti).map(([r, v]) => "<div class=\"reparto\"><h4>" + r + "</h4><ul>" + v.map(([x, q, u]) => "<li>" + x + " <span>" + quanto(q, u) + "</span></li>").join("") + "</ul></div>").join("");
+    document.getElementById("negozio").textContent = NOTA_NEGOZIO[scelta.negozio];
+  }
+
+  document.querySelectorAll(".chips").forEach((g) => g.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+    scelta[g.dataset.g] = b.dataset.v;
+    g.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    settimana();
+    if (g.dataset.g === "attrezzo") ricetta(b.dataset.v);
+  })));
+
+  // I passaggi della ricetta: quelli tra quadre cambiano con l'elettrodomestico e sono evidenziati.
+  const PREPARA = "Scola e sciacqua i ceci, grattugia le zucchine e strizzale bene.";
+  const FRULLA = "Frulla ceci, zucchine, prezzemolo, aglio e un cucchiaio di pangrattato.";
+  const FORMA = "Forma 16 polpette grandi come una noce.";
+  const PASSI = {
+    forno: { t: "per il forno", p: [PREPARA, FRULLA, FORMA, ["Forno ventilato a 200 °C, teglia con carta forno, un filo d'olio sopra."], ["Cuoci 20 minuti, girale a metà."]] },
+    friggitrice: { t: "per la friggitrice ad aria", p: [PREPARA, FRULLA, FORMA, ["Friggitrice ad aria a 190 °C, cestello unto appena."], ["Cuoci 12 minuti, scuoti il cestello a metà."]] },
+    pressione: { t: "per la pentola a pressione", p: [PREPARA, FRULLA, FORMA, ["Un bicchiere d'acqua sul fondo, le polpette nel cestello per il vapore."], ["Cuoci 6 minuti dal fischio, sfiata e passale 2 minuti in padella per la crosticina."]] },
+    robot: { t: "per il robot da cucina", p: [PREPARA, ["Nel boccale ceci, zucchine, prezzemolo e aglio: 20 secondi a velocità media, poi il pangrattato."], FORMA, ["Mezzo litro d'acqua nel boccale, le polpette nel cestello per il vapore."], ["Cuoci 20 minuti con la funzione vapore."]] },
+  };
+  function ricetta(a) {
+    const r = PASSI[a];
+    document.getElementById("ricetta-per").textContent = r.t;
+    document.getElementById("passi").innerHTML = r.p.map((x) => Array.isArray(x) ? "<li class=\"cambia\">" + x[0] + "</li>" : "<li>" + x + "</li>").join("");
+    document.querySelectorAll(".attrezzi button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.a === a)));
+  }
+  document.querySelectorAll(".attrezzi button").forEach((b) => b.addEventListener("click", () => ricetta(b.dataset.a)));
+
+  settimana();
+  ricetta("forno");
+})();
+</script>
+</body>
+</html>

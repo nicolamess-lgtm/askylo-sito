@@ -1,700 +1,400 @@
 <!doctype html>
-<html lang="it" data-theme="dark">
+<html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script>
-// la pre-home parte di notte; vale la scelta fatta col sole e la luna (stessa chiave di askylo.com)
-try { var p = localStorage.getItem('asky-theme'); if (p === 'light' || p === 'dark') document.documentElement.setAttribute('data-theme', p); } catch (e) {}
-</script>
-<!-- Pre-home: il cuore di Askylo e le app della famiglia. Il sito di prima sta in /sito/.
-     Nata come prototipo il 3/11/2026; l'account (cambia account, esci) è una prova che si accende con #prova. -->
-<meta name="description" content="Askylo raccoglie e ricorda le domande delle persone. Intorno, le app della famiglia: Studio, il gestionale per chi lavora con i clienti, Scriptorium per i libri, Yavi per il pianoforte, NutryLab per la cucina.">
-<meta name="theme-color" content="#12141C">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312141C'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' font-style='italic' font-weight='600' text-anchor='middle' fill='%23FFC61A'%3EA%3C/text%3E%3C/svg%3E">
-<title>Askylo · app per chi lavora con le persone</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap">
+<title>Askylo · la piazza delle domande e i mondi di chi crea</title>
+<meta name="description" content="Al centro le domande del pubblico, intorno le app per creare: Scrivylo per i libri, Suonylo per il pianoforte, Clientylo per gli studi, Nutrylo per la cucina.">
+<link rel="canonical" href="https://askylostudio.it/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Askylo · la piazza delle domande e i mondi di chi crea">
+<meta property="og:description" content="Al centro le domande del pubblico, intorno le app per creare: Scrivylo per i libri, Suonylo per il pianoforte, Clientylo per gli studi, Nutrylo per la cucina.">
+<meta property="og:url" content="https://askylostudio.it/">
+<meta name="theme-color" content="#111A2E">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/font/Fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/font/DMSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/font/caratteri.css">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}.piede a{color:inherit;text-underline-offset:2px}</style>
 <style>
-/* Layout: un palco quasi a tutto schermo. Al centro il cuore di Askylo che pulsa; intorno le finestre delle app,
-   legate al cuore da molle: si trascinano, si lanciano, tornano. Sotto, la frase e i due pulsanti.
-   System design Asky: di giorno «Carta», di notte «Sala». */
-:root {
-  --bg: #FAF7F0; --card: #FFFFFF; --secondary: #F1ECDF; --line: #E7E1D2; --line-forte: #D9D1BC;
-  --ink: #1A2233; --muted: #6B7280;
-  --giallo: #F2B705; --giallo-ink: #1A2233; --accento: #8A6400; --accento-soft: #FFF3C4;
-  --ombra: 0 1px 2px rgba(26,34,51,.06), 0 18px 40px -16px rgba(26,34,51,.22);
-  --ombra-su: 0 2px 4px rgba(26,34,51,.08), 0 30px 60px -20px rgba(26,34,51,.32);
-  --filo: rgba(196,140,0,.55);
-  --serif: Fraunces, Georgia, "Times New Roman", serif;
-  --sans: "DM Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+/* Layout: una notte d'inchiostro; al centro la piazza di Askylo che pulsa e lancia domande, intorno i quattro mondi in orbita
+   legati dai fili della mappa di Nicola. A destra la scheda del mondo scelto con la porta verso la sua prehome. Poi la porta per la piazza. */
+:root{
+  --notte:#111A2E; --notte-2:#1B2747; --testo:#F5F1E8; --muto:#AEB6CB; --linea:rgba(255,255,255,.12);
+  --giallo:#F2B705; --carta:#FAF7F0; --inchiostro:#1A2233;
+  --scrivylo:#3D6FD1; --suonylo:#8E5BC4; --clientylo:#1E9C8E; --nutrylo:#7FAE3F;
+  --f-titolo:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-testo:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
-    --ink: #F3EFE6; --muted: #9AA0B4;
-    --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
-    --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
-    --ombra-su: 0 2px 4px rgba(0,0,0,.35), 0 34px 70px -20px rgba(0,0,0,.85);
-    --filo: rgba(255,198,26,.5);
-    color-scheme: dark;
-  }
+*{box-sizing:border-box}
+body{background:var(--notte);color:var(--testo);font-family:var(--f-testo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--notte)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-titolo);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--giallo);outline-offset:3px;border-radius:8px}
+
+.hero{background:radial-gradient(90% 70% at 50% 38%,var(--notte-2) 0%,var(--notte) 70%);padding-block:14px 30px}
+.testata{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.marchio{display:flex;align-items:center;gap:10px;text-decoration:none}
+.marchio .a{width:34px;height:34px;border-radius:9px;background:var(--giallo);color:var(--inchiostro);display:grid;place-items:center;font-family:var(--f-titolo);font-weight:700;font-size:21px}
+.parola{font-family:var(--f-titolo);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.salta{font-size:14px;text-decoration:none;border:1px solid rgba(245,241,232,.28);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.salta:hover{border-color:var(--giallo);color:#FFE7A0}
+.apertura{text-align:left;margin-top:30px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px;align-items:end}
+.occhiello{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#FFD86B;font-weight:500}
+h1{font-size:clamp(34px,5.4vw,62px);line-height:1.02;margin-top:10px}
+h1 em{font-style:italic;font-weight:400;color:#FFE08A}
+.sotto{color:var(--muto);font-size:17px;max-width:48ch}
+.sotto strong{color:var(--testo);font-weight:500}
+
+.cielo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,330px);gap:20px;margin-top:22px;align-items:stretch}
+.orbita{position:relative;container-type:inline-size;aspect-ratio:16/11;border-radius:22px;overflow:hidden;
+  background:radial-gradient(circle at 50% 52%,rgba(242,183,5,.10) 0 9%,transparent 30%),radial-gradient(rgba(255,255,255,.06) 1px,transparent 1.4px) 0 0/26px 26px;
+  border:1px solid var(--linea)}
+.anello{position:absolute;left:50%;top:52%;width:76%;height:70%;transform:translate(-50%,-50%);border:1px dashed rgba(255,255,255,.1);border-radius:50%;pointer-events:none}
+.fili{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.fili line{stroke:rgba(255,255,255,.16);stroke-width:1.4;transition:stroke .3s,opacity .3s}
+.fili line.acceso{stroke:var(--giallo);stroke-width:2.2}
+.fili line.spento{opacity:.25}
+.etic{position:absolute;transform:translate(-50%,-50%);font-size:clamp(10px,1.15cqi,12.5px);background:#1B2747;border:1px solid rgba(242,183,5,.6);color:#FFE7A0;border-radius:999px;padding:2px 8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .3s;z-index:4}
+.etic.vedi{opacity:1}
+
+.cuore{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:17cqi;height:17cqi;min-width:96px;min-height:96px;border-radius:50%;border:0;
+  background:radial-gradient(circle at 40% 35%,#FFD45A,var(--giallo) 55%,#D99A00);color:var(--inchiostro);display:grid;place-items:center;text-align:center;z-index:3;
+  box-shadow:0 0 0 0 rgba(242,183,5,.5);animation:batte 2.4s ease-out infinite}
+.cuore b{font-family:var(--f-titolo);font-size:clamp(15px,2.2cqi,22px);display:block;line-height:1}
+.cuore small{font-size:clamp(9.5px,1.1cqi,12px);font-weight:500;display:block;margin-top:3px}
+@keyframes batte{0%{box-shadow:0 0 0 0 rgba(242,183,5,.45)}70%{box-shadow:0 0 0 3.2cqi rgba(242,183,5,0)}100%{box-shadow:0 0 0 0 rgba(242,183,5,0)}}
+
+.mondo{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%) scale(var(--s,1));width:22cqi;min-width:150px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--c) 34%,#121a2e),#141d33);padding:10px 11px 11px;text-align:left;z-index:2;transition:transform .35s,box-shadow .35s,opacity .3s;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.mondo:hover,.mondo.scelto{--s:1.06;box-shadow:0 0 0 2px var(--c),0 16px 34px rgba(0,0,0,.45);z-index:5}
+.mondo.lontano{opacity:.45}
+.mondo .riga{display:flex;align-items:center;gap:8px}
+.mondo svg{width:26px;height:26px;flex:none}
+.mondo .nome{font-family:var(--f-titolo);font-weight:700;font-size:clamp(15px,1.8cqi,19px)}
+.mondo .nome b{color:var(--giallo)}
+.mondo .frase{display:block;font-size:clamp(11px,1.15cqi,13px);color:var(--muto);margin-top:4px;line-height:1.3}
+.mondo .arrivo{display:inline-block;margin-top:6px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#FFD86B;border:1px dashed rgba(255,216,107,.55);border-radius:999px;padding:1px 8px}
+.scena{margin-top:8px;height:clamp(34px,4.6cqi,48px);border-radius:9px;background:rgba(0,0,0,.25);position:relative;overflow:hidden}
+
+/* scene in miniatura */
+.sc-scr i{position:absolute;width:24%;height:42%;background:#FBF8F1;border-radius:3px;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.sc-scr i:nth-child(1){left:6%;top:14%}.sc-scr i:nth-child(2){left:40%;top:44%}.sc-scr i:nth-child(3){left:72%;top:12%}
+.sc-scr svg{position:absolute;inset:0;width:100%;height:100%}
+.sc-scr line{stroke:var(--giallo);stroke-width:1.4;stroke-dasharray:60;stroke-dashoffset:60;animation:filo 3.2s ease-in-out infinite}
+@keyframes filo{40%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-60}}
+.sc-suo{display:flex;gap:2px;padding:4px 6px}
+.sc-suo i{flex:1;background:#FBF7EE;border-radius:0 0 3px 3px;animation:tasto 2.4s infinite}
+.sc-suo i:nth-child(2){animation-delay:.15s}.sc-suo i:nth-child(3){animation-delay:.3s}.sc-suo i:nth-child(4){animation-delay:.45s}.sc-suo i:nth-child(5){animation-delay:.6s}.sc-suo i:nth-child(6){animation-delay:.75s}.sc-suo i:nth-child(7){animation-delay:.9s}.sc-suo i:nth-child(8){animation-delay:1.05s}
+@keyframes tasto{0%,12%,100%{background:#FBF7EE}5%{background:#FFC86A}}
+.sc-age{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px}
+.sc-age span{border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:2px 9px;animation:prenota 3.4s infinite}
+@keyframes prenota{0%,45%{background:transparent;color:var(--testo)}55%,100%{background:var(--clientylo);border-color:var(--clientylo);color:#fff}}
+.sc-age span::after{content:"gio 18:30";animation:testo-prenota 3.4s infinite}
+@keyframes testo-prenota{0%,45%{content:"gio 18:30"}55%,100%{content:"✓ prenotato"}}
+.sc-nut{display:flex;align-items:center;gap:4px;padding:0 8px}
+.sc-nut i{width:10%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.15);animation:pianta 3.6s infinite}
+.sc-nut i:nth-child(2){animation-delay:.25s}.sc-nut i:nth-child(3){animation-delay:.5s}.sc-nut i:nth-child(4){animation-delay:.75s}.sc-nut i:nth-child(5){animation-delay:1s}.sc-nut i:nth-child(6){animation-delay:1.25s}.sc-nut i:nth-child(7){animation-delay:1.5s}
+.sc-nut b{margin-left:auto;font-size:11px;color:#CFE5A8;font-weight:500;white-space:nowrap}
+@keyframes pianta{0%,10%{background:rgba(255,255,255,.15)}25%,85%{background:#7FAE3F}100%{background:rgba(255,255,255,.15)}}
+
+.domanda{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:clamp(10px,1.2cqi,13px);background:var(--carta);color:var(--inchiostro);border-radius:12px 12px 12px 3px;padding:4px 9px;white-space:nowrap;
+  z-index:1;pointer-events:none;transition:left 2.6s cubic-bezier(.3,.6,.3,1),top 2.6s cubic-bezier(.3,.6,.3,1),opacity 2.6s;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+
+.scheda{border:1px solid var(--linea);border-radius:22px;padding:20px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:10px;min-width:0}
+.scheda .eti{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#FFD86B}
+.scheda h2{font-size:clamp(26px,3vw,34px);line-height:1.05}
+.scheda h2 b{color:var(--giallo)}
+.scheda p{color:var(--muto)}
+.scheda ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.scheda .porta-mondo{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:10px 16px;font-weight:700;text-decoration:none;background:var(--giallo);color:var(--inchiostro);border:0}
+.scheda .porta-mondo.presto{background:transparent;border:1px dashed rgba(255,255,255,.35);color:var(--muto);cursor:default}
+.scheda .fili-lista{font-size:13.5px;color:var(--muto)}
+.scheda .fili-lista b{color:var(--testo);font-weight:500}
+
+.account{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding-block:26px;background:rgba(255,255,255,.02)}
+.account .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+.account h3{font-size:22px}
+.account p{color:var(--muto);max-width:62ch}
+.entra-con{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:8px 14px;background:var(--carta);color:var(--inchiostro);font-weight:700;font-size:14px;white-space:nowrap}
+.entra-con i{width:20px;height:20px;border-radius:6px;background:var(--giallo);display:grid;place-items:center;font-style:normal;font-family:var(--f-titolo);font-size:13px}
+
+.porta{padding-block:clamp(56px,9vw,104px)}
+.porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
+.porta h2{font-size:clamp(30px,4.4vw,52px);line-height:1.04}
+.porta h2 em{color:#FFE08A;font-weight:400}
+.porta p{color:var(--muto);margin-top:14px;font-size:17px;max-width:52ch}
+.porta .btns{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none}
+.btn.pieno{background:var(--giallo);color:var(--inchiostro)}
+.btn.pieno:hover{background:#FFC928}
+.btn.vuoto{background:transparent;border-color:rgba(245,241,232,.3)}
+.piede{color:var(--muto);font-size:13px;padding-block:18px 26px;border-top:1px solid var(--linea)}
+.piede .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--carta);color:var(--inchiostro);border-radius:12px;padding:10px 14px;font-size:14px;max-width:min(92vw,460px);z-index:40;transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.vedi{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:900px){
+  .cielo{grid-template-columns:1fr}
+  .apertura,.porta .wrap{grid-template-columns:1fr}
 }
-:root[data-theme="dark"] {
-  --bg: #12141C; --card: #1B1E2A; --secondary: #242838; --line: rgba(255,255,255,.10); --line-forte: rgba(255,255,255,.18);
-  --ink: #F3EFE6; --muted: #9AA0B4;
-  --giallo: #FFC61A; --giallo-ink: #12141C; --accento: #FFC61A; --accento-soft: rgba(255,198,26,.14);
-  --ombra: 0 1px 2px rgba(0,0,0,.3), 0 22px 48px -18px rgba(0,0,0,.7);
-  --ombra-su: 0 2px 4px rgba(0,0,0,.35), 0 34px 70px -20px rgba(0,0,0,.85);
-  --filo: rgba(255,198,26,.5);
-  color-scheme: dark;
+@media (max-width:640px){
+  .orbita{aspect-ratio:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:radial-gradient(circle at 50% 18%,rgba(242,183,5,.12) 0 14%,transparent 40%)}
+  .anello,.fili,.etic,.domanda{display:none}
+  .cuore{position:relative;left:auto;top:auto;transform:none;grid-column:1/-1;justify-self:center;width:130px;height:130px;margin-bottom:6px}
+  .cuore b{font-size:20px}.cuore small{font-size:12px}
+  .mondo{position:relative;left:auto;top:auto;transform:scale(var(--s,1));width:auto;min-width:0}
+  .mondo .nome{font-size:17px}.mondo .frase{font-size:12px}
+  .scena{height:40px}
+  h1{font-size:clamp(32px,9vw,44px)}
 }
-* { box-sizing: border-box; }
-[hidden] { display: none !important; }
-body { margin: 0; }
-html, body { background: var(--bg); }
-body { color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.5; overflow-x: hidden; }
-
-.barra {
-  position: relative; z-index: 5;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 16px;
+@media (prefers-reduced-motion:reduce){
+  .cuore,.sc-scr line,.sc-suo i,.sc-age span,.sc-age span::after,.sc-nut i{animation:none!important}
+  .domanda{display:none}
 }
-.marchio { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 600; font-size: 21px; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-.marchio .segno { width: 32px; height: 32px; border-radius: 9px; background: var(--giallo); color: var(--giallo-ink); display: grid; place-items: center; font-style: italic; font-size: 21px; line-height: 1; }
-.marchio small { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); }
-.azioni { display: flex; align-items: center; gap: 8px; }
-.salta { font-size: 14px; color: var(--muted); text-decoration: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line); }
-.salta:hover { color: var(--ink); border-color: var(--line-forte); }
-.tema { width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
-.tema svg { width: 18px; height: 18px; }
-/* account: un solo accesso, più account come su Instagram */
-.conto { position: relative; }
-.entra { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; border-radius: 999px; background: var(--giallo); color: var(--giallo-ink); font-weight: 700; font-size: 14px; text-decoration: none; border: 0; cursor: pointer; font-family: var(--sans); }
-.entra.dentro { background: var(--card); color: var(--ink); border: 1px solid var(--line); padding: 0 12px 0 4px; }
-.avatar { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--giallo); color: var(--giallo-ink); letter-spacing: .02em; }
-.avatar.studio { background: var(--ink); color: var(--bg); }
-.avatar.piu { background: var(--secondary); color: var(--ink); font-size: 18px; font-weight: 500; }
-.menu { position: absolute; right: 0; top: calc(100% + 10px); width: min(290px, calc(100vw - 32px)); z-index: 20; background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--ombra-su); padding: 8px; display: flex; flex-direction: column; gap: 2px; }
-.menu-titolo { margin: 4px 10px 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.voce { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 12px; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 14.5px; text-align: left; cursor: pointer; }
-.voce:hover { background: var(--secondary); }
-.voce .chi { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
-.voce .chi small { color: var(--muted); font-size: 12.5px; }
-.voce .ok { color: var(--accento); font-weight: 700; }
-.menu hr { border: 0; border-top: 1px solid var(--line); margin: 6px 4px; }
-.menu-nota { margin: 6px 10px 4px; font-size: 12px; color: var(--muted); }
-.finestra .badge.apri { background: var(--giallo); color: var(--giallo-ink); }
-@media (max-width: 480px) { .salta { display: none; } }
-
-a:focus-visible, button:focus-visible, .finestra:focus-visible, .cuore:focus-visible { outline: 2px solid var(--giallo); outline-offset: 3px; }
-
-/* palco */
-.palco { position: relative; height: clamp(560px, 78svh, 820px); margin-top: -70px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-.palco canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-.cuore {
-  position: absolute; left: 0; top: 0; width: 132px; height: 132px; margin: -66px 0 0 -66px;
-  border-radius: 50%; border: 0; padding: 0; cursor: grab; z-index: 3;
-  background: radial-gradient(circle at 38% 32%, #FFE27A 0%, var(--giallo) 46%, #D99A00 100%);
-  color: var(--giallo-ink); display: grid; place-items: center; touch-action: none;
-  box-shadow: 0 0 0 10px var(--accento-soft), 0 24px 60px -12px rgba(242,183,5,.7);
-}
-.cuore .a { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 66px; line-height: 1; transform: translateY(-4px); }
-.cuore .nome { position: absolute; top: calc(100% + 18px); left: 50%; transform: translateX(-50%); white-space: nowrap; font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--ink); }
-.cuore .nome small { display: block; text-align: center; font-family: var(--sans); font-size: 12.5px; font-weight: 500; color: var(--muted); letter-spacing: .02em; }
-
-/* i tre usi di Askylo girano attaccati al cuore: fanno parte di lui */
-.satellite {
-  position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none;
-  padding: 5px 11px; border-radius: 999px; white-space: nowrap;
-  background: var(--card); border: 1.5px solid var(--giallo); color: var(--ink);
-  font-size: 12.5px; font-weight: 700; letter-spacing: .02em; box-shadow: var(--ombra);
-}
-
-/* nutrylab */
-.piatti { display: grid; grid-template-columns: 34px 1fr; gap: 5px 10px; align-items: center; }
-.piatti b { font-size: 11.5px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
-.piatti span { padding: 5px 9px; border-radius: 9px; background: var(--secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.piante { height: 7px; border-radius: 99px; background: var(--secondary); overflow: hidden; }
-.piante i { display: block; height: 100%; background: var(--giallo); border-radius: 99px; transition: width .4s; }
-
-.finestra {
-  position: absolute; left: 0; top: 0; width: 264px; z-index: 2;
-  background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--ombra);
-  cursor: grab; touch-action: none; will-change: transform; overflow: hidden;
-  transition: box-shadow .2s; display: flex; flex-direction: column;
-}
-.finestra.presa { cursor: grabbing; box-shadow: var(--ombra-su); z-index: 4; }
-.finestra:hover { box-shadow: var(--ombra-su); }
-.titolo { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--secondary); }
-.pallini { display: flex; gap: 5px; }
-.pallini i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-forte); }
-.pallini i:first-child { background: var(--giallo); }
-.titolo b { font-family: var(--serif); font-weight: 600; font-size: 14.5px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accento); background: var(--accento-soft); padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
-.corpo { flex: 1; padding: 12px 14px 14px; display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 13px; }
-.per { font-size: 12px; color: var(--muted); }
-
-/* sala */
-.dom { display: flex; align-items: center; gap: 10px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 10px; }
-.dom span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dom em { font-style: normal; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accento); font-size: 12px; }
-.dom.nuova { border-color: var(--giallo); background: var(--accento-soft); }
-.conta { font-family: var(--serif); font-size: 26px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
-.riga { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-
-/* studio */
-/* gli appuntamenti si allungano fino a riempire la finestra */
-.app { flex: 1; display: grid; grid-template-columns: 46px 1fr; grid-auto-rows: 1fr; gap: 6px 10px; align-items: stretch; }
-.app time { display: flex; align-items: center; }
-.app time { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 12.5px; }
-.app div { display: flex; align-items: center; padding: 6px 9px; border-radius: 9px; background: var(--secondary); border-left: 3px solid var(--giallo); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.app div.ora { background: var(--accento-soft); }
-
-/* scriptorium */
-.pagina { display: grid; grid-template-columns: 1fr 52px; gap: 12px; align-items: end; }
-.testo { display: flex; flex-direction: column; gap: 5px; }
-.testo h4 { margin: 0 0 2px; font-family: var(--serif); font-size: 15px; font-weight: 600; }
-.testo i { display: block; height: 5px; border-radius: 3px; background: var(--line-forte); }
-.qr { width: 52px; height: 52px; border-radius: 6px; padding: 4px; background: #fff; border: 1px solid var(--line); display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; }
-.qr b { background: #1A2233; border-radius: 1px; }
-.qr b.v { background: transparent; }
-
-/* il libro che si sfoglia */
-/* il libro cresce con la finestra; la penna resta sulle prime quattro righe */
-.libro { position: relative; flex: 1; min-height: 92px; display: grid; grid-template-columns: 1fr 1fr; perspective: 700px; filter: drop-shadow(0 6px 10px rgba(26,34,51,.18)); }
-.facciata, .fronte, .retro { background: var(--secondary); padding: 9px 9px 0; display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
-.facciata i, .fronte i, .retro i { display: block; height: 4px; border-radius: 2px; background: var(--line-forte); }
-.facciata h4 { margin: 0 0 1px; font-family: var(--serif); font-size: 12.5px; font-weight: 600; line-height: 1.1; }
-.sx { border-radius: 7px 0 0 7px; box-shadow: inset -10px 0 12px -10px rgba(0,0,0,.35); }
-.dx { border-radius: 0 7px 7px 0; box-shadow: inset 10px 0 12px -10px rgba(0,0,0,.35); }
-.foglio { position: absolute; top: 0; bottom: 0; left: 50%; width: 50%; transform-origin: left center; transform-style: preserve-3d; animation: sfoglia 5s cubic-bezier(.55,.05,.35,1) infinite; }
-/* la penna scrive le quattro righe della pagina di destra, poi la pagina si gira (un giro ogni 5 s) */
-.fronte i { transform-origin: left center; animation: 5s linear infinite; }
-.fronte .r1 { animation-name: riga1; } .fronte .r2 { animation-name: riga2; }
-.fronte .r3 { animation-name: riga3; } .fronte .r4 { animation-name: riga4; }
-@keyframes riga1 { 0%, 4% { transform: scaleX(0); } 16%, 100% { transform: scaleX(1); } }
-@keyframes riga2 { 0%, 18% { transform: scaleX(0); } 28%, 100% { transform: scaleX(1); } }
-@keyframes riga3 { 0%, 30% { transform: scaleX(0); } 42%, 100% { transform: scaleX(1); } }
-@keyframes riga4 { 0%, 44% { transform: scaleX(0); } 50%, 100% { transform: scaleX(1); } }
-.penna { position: absolute; width: 20px; height: 20px; z-index: 2; transform: translate(-2px, -18px); pointer-events: none; animation: scrive 5s linear infinite; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
-@keyframes scrive {
-  0%   { left: calc(50% + 9px); top: 11px; opacity: 0; }
-  4%   { left: calc(50% + 9px); top: 11px; opacity: 1; }
-  16%  { left: calc(100% - 9px); top: 11px; }
-  18%  { left: calc(50% + 9px); top: 20px; }
-  28%  { left: calc(50% + 9px + (50% - 18px) * .88); top: 20px; }
-  30%  { left: calc(50% + 9px); top: 29px; }
-  42%  { left: calc(100% - 9px); top: 29px; }
-  44%  { left: calc(50% + 9px); top: 38px; }
-  50%  { left: calc(50% + 9px + (50% - 18px) * .5); top: 38px; opacity: 1; }
-  56%, 100% { left: calc(50% + 9px + (50% - 18px) * .5); top: 30px; opacity: 0; }
-}
-.fronte, .retro { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-.fronte { border-radius: 0 7px 7px 0; }
-.retro { transform: rotateY(180deg); border-radius: 7px 0 0 7px; }
-@keyframes sfoglia { 0%, 58% { transform: rotateY(0deg); } 90%, 100% { transform: rotateY(-180deg); } }
-.lettori { display: inline-flex; align-items: center; gap: 8px; }
-.qr.mini { width: 26px; height: 26px; padding: 2px; border-radius: 4px; }
-
-/* yavi */
-/* la tastiera cresce con la finestra: i tasti stanno nella metà bassa, le note scendono da tutta quella alta */
-.tasti { position: relative; flex: 1; min-height: 74px; display: flex; align-items: flex-end; gap: 2px; border-radius: 8px; overflow: hidden; background: var(--secondary); }
-.tasti > i { flex: 1; height: 54%; background: #fff; border: 1px solid var(--line-forte); border-radius: 0 0 4px 4px; position: relative; z-index: 1; }
-.tasti > i.su { background: var(--accento-soft); border-color: var(--giallo); }
-.nota { position: absolute; top: -14px; width: 10%; height: 14px; border-radius: 4px; background: var(--giallo); z-index: 2; animation: scende 2.4s linear infinite; }
-@keyframes scende { from { top: -14px; } to { top: calc(46% - 14px); opacity: .2; } }
-.stelle { color: var(--accento); letter-spacing: 2px; font-size: 14px; }
-
-/* testo sotto il palco */
-.sotto {
-  position: relative; z-index: 3; max-width: 760px; margin: 0 auto; text-align: center;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 8px 56px; display: flex; flex-direction: column; align-items: center; gap: 18px;
-}
-h1 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: clamp(2.1rem, 5.4vw, 3.6rem); line-height: 1.06; letter-spacing: -0.02em; text-wrap: balance; }
-h1 em { font-style: italic; color: var(--accento); }
-.lead { margin: 0; font-size: 1.08rem; color: var(--muted); max-width: 54ch; }
-.cta { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 14px; font-weight: 700; text-decoration: none; font-size: 15px; }
-.btn.pieno { background: var(--giallo); color: var(--giallo-ink); }
-.btn.vuoto { border: 1px solid var(--line-forte); color: var(--ink); }
-.btn:hover { filter: brightness(1.05); }
-.suggerimento { font-size: 13px; color: var(--muted); }
-.suggerimento kbd { font-family: var(--sans); font-weight: 700; color: var(--accento); }
-
-@media (max-width: 640px) {
-  .palco { height: clamp(520px, 74svh, 680px); margin-top: -60px; }
-  .finestra { width: 172px; border-radius: 14px; }
-  .titolo { padding: 7px 9px; gap: 6px; }
-  .titolo b { font-size: 12px; }
-  .pallini i { width: 7px; height: 7px; }
-  .badge { display: none; }
-  .corpo { padding: 8px 9px 10px; gap: 6px; font-size: 11px; }
-  .per, .dom:nth-child(n+4), .app > :nth-child(n+5) { display: none; }
-  .conta { font-size: 20px; }
-  .dom { padding: 5px 7px; }
-  .tasti { min-height: 54px; }
-  .facciata, .fronte, .retro { padding: 6px 6px 0; gap: 4px; }
-  .facciata h4 { font-size: 10px; }
-  .facciata i:nth-of-type(n+3), .fronte i:nth-child(n+4), .retro i:nth-child(n+4) { display: none; }
-  .qr.mini { display: none; }
-  .libro { min-height: 64px; }
-  .penna { width: 15px; height: 15px; transform: translate(-2px, -13px); }
-  .cuore { width: 96px; height: 96px; margin: -48px 0 0 -48px; }
-  .cuore .a { font-size: 48px; }
-  .cuore .nome { font-size: 16px; top: calc(100% + 10px); }
-  .satellite { font-size: 10.5px; padding: 3px 8px; }
-  .piatti { grid-template-columns: 28px 1fr; gap: 4px 6px; }
-  .piatti > :nth-child(n+5) { display: none; }
-  .marchio small { display: none; }
-}
-@media (prefers-reduced-motion: reduce) { .nota, .foglio, .fronte i { animation: none; } .penna { display: none; } }
 </style>
 </head>
 <body>
-<header class="barra">
-  <a class="marchio" href="https://askylostudio.it/" translate="no"><span class="segno">A</span>Askylo <small>la famiglia</small></a>
-  <div class="azioni">
-    <a class="salta" href="https://askylostudio.it/sito/">Entra nel sito</a>
-    <div class="conto">
-      <a class="entra" id="entra" href="https://app.askylostudio.it"><span class="avatar" id="avatar" hidden></span><span id="entraTesto">Entra</span></a>
-      <div class="menu" id="menu" role="menu" hidden>
-        <p class="menu-titolo">Account</p>
-        <div id="elencoConti"></div>
-        <button type="button" class="voce" id="aggiungi" role="menuitem"><span class="avatar piu">+</span><span>Aggiungi un account</span></button>
-        <hr>
-        <button type="button" class="voce" id="esci" role="menuitem"><span>Esci da <b id="esciNome"></b></span></button>
-        <button type="button" class="voce" id="esciTutti" role="menuitem"><span>Esci da tutti gli account</span></button>
-        <p class="menu-nota">Prova: un solo accesso per tutte le app Askylo, non ancora attivo.</p>
-      </div>
+<header class="hero">
+  <div class="wrap">
+    <div class="testata">
+      <a class="marchio" href="https://askylo.com/" aria-label="Askylo"><span class="a" aria-hidden="true">A</span><span class="parola">Askylo</span></a>
+      <a class="salta" href="#inizia">Salta ↓</a>
     </div>
-    <button class="tema" id="tema" type="button" aria-label="Cambia giorno e notte">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-    </button>
+
+    <div class="apertura">
+      <div>
+        <p class="occhiello">Una piazza, quattro mondi</p>
+        <h1>Al centro le domande. Intorno, <em>i mondi di chi crea.</em></h1>
+      </div>
+      <p class="sotto">Askylo è la piazza dove il pubblico chiede e <strong>chi crea risponde</strong>. Intorno girano le app per creare: libri, musica, studi e cucina. Tocca un mondo per vedere che cosa fa e con chi si parla.</p>
+    </div>
+
+    <div class="cielo">
+      <div class="orbita" id="orbita" aria-label="La piazza di Askylo e i quattro mondi">
+        <div class="anello" aria-hidden="true"></div>
+        <svg class="fili" id="fili" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <button class="cuore" type="button" id="cuore" aria-label="Askylo Live, la piazza"><span><b>Askylo</b><small>la piazza delle domande</small></span></button>
+      </div>
+      <aside class="scheda" id="scheda" aria-live="polite"></aside>
+    </div>
   </div>
 </header>
 
-<div class="palco" id="palco">
-  <canvas id="fili" aria-hidden="true"></canvas>
-
-  <button class="cuore" id="cuore" type="button" aria-label="Askylo: tocca per mandare una domanda">
-    <span class="a" aria-hidden="true">A</span>
-    <span class="nome" translate="no">Askylo<small>le domande delle persone</small></span>
-  </button>
-
-  <span class="satellite" aria-hidden="true">Eventi</span>
-  <span class="satellite" aria-hidden="true">Libri</span>
-  <span class="satellite" aria-hidden="true">Assemblee</span>
-
-  <article class="finestra" data-angolo="214" data-app="/nutrylab/" data-info="/nutrylab/" tabindex="0" aria-label="NutryLab: la settimana di pasti per la tua cucina, demo da provare">
-    <div class="titolo"><span class="pallini"><i></i><i></i><i></i></span><b translate="no">NutryLab</b><span class="badge">nutrizione</span></div>
-    <div class="corpo">
-      <span class="per">La settimana, per la tua cucina</span>
-      <div class="piatti">
-        <b>Lun</b><span>Pasta e ceci · pentola a pressione</span>
-        <b>Mar</b><span>Orzo e verdure · Bimby</span>
-        <b>Mer</b><span>Salmone e patate · friggitrice</span>
-      </div>
-      <div class="riga"><span class="per">Piante diverse</span><span class="conta"><span id="contaPiante">21</span><small style="font-size:.55em;color:var(--muted)">/30</small></span></div>
-      <div class="piante"><i id="barraPiante" style="width:70%"></i></div>
+<section class="account">
+  <div class="wrap">
+    <div>
+      <h3>Un account Askylo, sempre più app.</h3>
+      <p>Con l'account Askylo entri già in Askylo e in Scrivylo; le altre app arrivano una alla volta. Ogni app tiene i suoi dati per conto suo.</p>
     </div>
-  </article>
-
-  <article class="finestra" data-angolo="326" data-app="https://app.askylostudio.it" data-info="https://askylostudio.it/sito/" tabindex="0" aria-label="Studio: il gestionale">
-    <div class="titolo"><span class="pallini"><i></i><i></i><i></i></span><b translate="no">Studio</b><span class="badge">gestionale</span></div>
-    <div class="corpo">
-      <span class="per">Oggi · per chi lavora con i clienti</span>
-      <div class="app">
-        <time>9:30</time><div>Giulia · drenante</div>
-        <time>11:00</time><div class="ora">Marco · sportivo</div>
-        <time>15:30</time><div>Sara · prima visita</div>
-      </div>
-    </div>
-  </article>
-
-  <article class="finestra" data-angolo="34" data-app="/scriptorium/" data-info="/scriptorium/" tabindex="0" aria-label="Scriptorium: scrivere e impaginare libri, a breve">
-    <div class="titolo"><span class="pallini"><i></i><i></i><i></i></span><b translate="no">Scriptorium</b><span class="badge">libri</span></div>
-    <div class="corpo">
-      <div class="libro" aria-hidden="true">
-        <div class="facciata sx"><h4>Capitolo 3</h4><i></i><i style="width:90%"></i><i></i><i style="width:60%"></i><i></i><i style="width:84%"></i><i></i><i style="width:92%"></i><i style="width:40%"></i></div>
-        <div class="facciata dx"><i></i><i style="width:94%"></i><i></i><i style="width:72%"></i></div>
-        <div class="foglio">
-          <div class="fronte"><i class="r1"></i><i class="r2" style="width:88%"></i><i class="r3"></i><i class="r4" style="width:50%"></i></div>
-          <div class="retro"><i></i><i></i><i style="width:80%"></i><i style="width:66%"></i><i></i><i style="width:88%"></i><i></i><i style="width:54%"></i></div>
-        </div>
-        <svg class="penna" viewBox="0 0 24 24"><path d="M2 22 L4.5 15.5 L17 3 a2.1 2.1 0 0 1 3 0 l1 1 a2.1 2.1 0 0 1 0 3 L8.5 19.5 Z" fill="var(--giallo)" stroke="var(--ink)" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 22 L4.5 15.5 L8.5 19.5 Z" fill="var(--ink)"/></svg>
-      </div>
-      <div class="riga"><span class="lettori"><span class="qr mini" id="qr" aria-hidden="true"></span><span class="per">Domande dei lettori</span></span><span class="conta" id="contaLibro">12</span></div>
-    </div>
-  </article>
-
-  <article class="finestra" data-angolo="146" data-app="/yavi/" data-info="/yavi/" tabindex="0" aria-label="Yavi: suonare e ascoltare il pianoforte, gratis">
-    <div class="titolo"><span class="pallini"><i></i><i></i><i></i></span><b translate="no">Yavi</b><span class="badge">musica</span></div>
-    <div class="corpo">
-      <div class="tasti" aria-hidden="true">
-        <span class="nota" style="left:12%"></span><span class="nota" style="left:52%;animation-delay:-.9s"></span><span class="nota" style="left:76%;animation-delay:-1.7s"></span>
-        <i></i><i class="su"></i><i></i><i></i><i></i><i class="su"></i><i></i><i></i>
-      </div>
-      <div class="riga"><span class="per">Fra Martino</span><span class="stelle">★★☆</span></div>
-    </div>
-  </article>
-</div>
-
-<section class="sotto">
-  <h1>Fatte per chi lavora <em>con le persone</em>.</h1>
-  <p class="lead">Al centro ci sono le domande dei tuoi clienti, allievi e lettori. Intorno, le app che le raccolgono, le ricordano e ti aiutano a rispondere.</p>
-  <div class="cta">
-    <a class="btn pieno" href="https://app.askylostudio.it">Prova Askylo Studio</a>
-    <a class="btn vuoto" href="https://askylo.com">Scopri Askylo</a>
+    <span class="entra-con"><i aria-hidden="true">A</i>Entra con Askylo</span>
   </div>
-  <p class="suggerimento">Trascina e lancia le finestre. <kbd>Tocca il cuore</kbd> per mandare una domanda.</p>
 </section>
 
+<section class="porta" id="inizia">
+  <div class="wrap">
+    <div>
+      <h2>Ora, <em>la piazza</em>.</h2>
+      <p>Eventi in programma, libri, persone a cui chiedere. Questa pagina si vede una volta sola: da domani askylo.com si apre direttamente sulla piazza.</p>
+    </div>
+    <div class="btns">
+      <a class="btn pieno" href="https://askylo.com/">Entra nella piazza</a>
+      <a class="btn vuoto" href="#orbita">Scegli un mondo</a>
+    </div>
+  </div>
+</section>
+<footer class="piede">
+  <div class="wrap"><span>Askylo, e le sue app: Scrivylo, Suonylo, Clientylo, Nutrylo.</span><span><a href="https://askylo.com/privacy">Privacy</a> · <a href="https://askylo.com/termini">Termini</a></span></div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
 <script>
-(function () {
-  var root = document.documentElement;
-  // tema: stesso nome di chiave di askylo.com
-  var temaBtn = document.getElementById('tema');
-  function scuro() {
-    var t = root.getAttribute('data-theme');
-    return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-  temaBtn.addEventListener('click', function () {
-    var n = scuro() ? 'light' : 'dark';
-    root.setAttribute('data-theme', n);
-    try { localStorage.setItem('asky-theme', n); } catch (e) {}
-    leggiColori();
-  });
+(() => {
+  const toast = document.getElementById("toast");
+  let tt = 0;
+  const avvisa = (t) => { toast.textContent = t; toast.classList.add("vedi"); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove("vedi"), 3000); };
+  document.querySelectorAll("[data-toast]").forEach((b) => b.addEventListener("click", () => avvisa(b.dataset.toast)));
 
-  // QR finto, sempre uguale
-  var qr = document.getElementById('qr'), schema = '111011101001100110011101001011111010110100101101';
-  for (var q = 0; q < 36; q++) { var b = document.createElement('b'); if (schema[q] === '0') b.className = 'v'; qr.appendChild(b); }
-
-  // Account: un solo accesso per tutte le app, più account come su Instagram.
-  // Finché l'accesso unico non esiste è una prova: si accende solo con #prova o ?prova nell'indirizzo.
-  // Senza prova «Entra» porta al login vero di Askylo Studio e le finestre alla loro pagina informativa.
-  var PROVA = /prova/.test(location.hash + location.search);
-  var CONTI = {
-    nicola: { nome: 'Nicola Messina', tipo: 'personale', ini: 'NM' },
-    detensionami: { nome: 'Detensionami', tipo: 'studio', ini: 'D', studio: true },
-    ballo: { nome: 'Scuola di ballo Ritmo', tipo: 'studio · esempio', ini: 'R', studio: true }
+  const LOGO = (c, extra) => `<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="${c}"/><path d="M9 7 16 15l7-8" fill="none" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>${extra}</svg>`;
+  const MONDI = {
+    scrivylo: {
+      nome: "Scriv<b>y</b>lo", testo: "Scrivylo", c: "#1F4FA3", col: "var(--scrivylo)", angolo: -150,
+      frase: "Scrivi, impagina e fai leggere il tuo libro.",
+      cose: ["La bacheca con personaggi, luoghi e linea del tempo", "Impaginazione automatica per la stampa e l'ebook", "I primi lettori con un link, prima di pubblicare"],
+      url: "/scrivylo/",
+      logo: '<path d="M16 15v5" stroke="#F2B705" stroke-width="3" stroke-linecap="round"/><path d="M12.8 20 16 26.6l3.2-6.6z" fill="#F2B705"/>',
+      scena: '<div class="scena sc-scr"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><line x1="18" y1="14" x2="52" y2="27"/><line x1="52" y1="27" x2="84" y2="13"/></svg><i></i><i></i><i></i></div>',
+    },
+    suonylo: {
+      nome: "Suon<b>y</b>lo", testo: "Suonylo", c: "#3A1D52", col: "var(--suonylo)", angolo: -30,
+      frase: "Il pianoforte che respira: ascolti, impari, suoni.",
+      cose: ["Un MIDI piatto suonato come un pianista", "Medley a sorpresa e playlist legate dai ponti", "Game, lezioni dieci minuti al giorno e Canta"],
+      url: "/suonylo/",
+      logo: '<path d="M16 14.6v8.8" stroke="#F2B705" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="13.2" cy="24.2" rx="3.6" ry="2.6" transform="rotate(-22 13.2 24.2)" fill="#F2B705"/>',
+      scena: '<div class="scena sc-suo"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>',
+    },
+    clientylo: {
+      nome: "Client<b>y</b>lo", testo: "Clientylo", c: "#137067", col: "var(--clientylo)", angolo: 30,
+      frase: "Il gestionale per chi lavora con le persone.",
+      cose: ["La pagina del cliente, bella come un sito", "Un gestionale che risponde alle tue domande", "Un gestionale diverso per ogni mestiere"],
+      url: "/clientylo/",
+      logo: '<path d="M16 14.6v3.6" stroke="#F2B705" stroke-width="3" stroke-linecap="round"/><rect x="10.6" y="18.4" width="10.8" height="8.4" rx="2.2" fill="none" stroke="#F2B705" stroke-width="2.2"/>',
+      scena: '<div class="scena sc-age"><span></span></div>',
+    },
+    nutrylo: {
+      nome: "Nutr<b>y</b>lo", testo: "Nutrylo", c: "#4E7A2A", col: "var(--nutrylo)", angolo: 150,
+      frase: "La settimana in cucina, con la spesa già fatta.",
+      cose: ["Il menù della settimana con la spesa stimata per negozio", "Ricette adattate a Bimby, friggitrice e pentole", "Per i nutrizionisti: piani e guide per i pazienti"],
+      url: "/nutrylo/",
+      arrivo: true,
+      logo: '<path d="M16 14.6v6" stroke="#F2B705" stroke-width="3" stroke-linecap="round"/><path d="M16 26.6c-4.6 0-6.4-3.2-6-6.2 3.4-.4 6 1.4 6 6.2zM16 26.6c4.6 0 6.4-3.2 6-6.2-3.4-.4-6 1.4-6 6.2z" fill="#F2B705"/>',
+      scena: '<div class="scena sc-nut"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><b>30 piante</b></div>',
+    },
   };
-  var conto = { entrati: [], attivo: null };
-  try { var salvato = JSON.parse(localStorage.getItem('askylo-conti-prova') || 'null'); if (PROVA && salvato) conto = salvato; } catch (e) {}
-  var entraEl = document.getElementById('entra'), menuEl = document.getElementById('menu');
-  function salva() { try { localStorage.setItem('askylo-conti-prova', JSON.stringify(conto)); } catch (e) {} }
-  function avatar(id) { var c = CONTI[id]; return '<span class="avatar' + (c.studio ? ' studio' : '') + '">' + c.ini + '</span>'; }
-  function disegnaConto() {
-    var c = conto.attivo && CONTI[conto.attivo];
-    var av = document.getElementById('avatar');
-    entraEl.classList.toggle('dentro', !!c);
-    av.hidden = !c;
-    if (c) { av.textContent = c.ini; av.className = 'avatar' + (c.studio ? ' studio' : ''); }
-    document.getElementById('entraTesto').textContent = c ? c.nome.split(' ')[0] : 'Entra';
-    entraEl.setAttribute('aria-haspopup', PROVA ? 'menu' : 'false');
-    document.getElementById('esciNome').textContent = c ? c.nome : '';
-    document.getElementById('elencoConti').innerHTML = conto.entrati.map(function (id) {
-      var x = CONTI[id];
-      return '<button type="button" class="voce" role="menuitem" data-conto="' + id + '">' + avatar(id) +
-        '<span class="chi">' + x.nome + '<small>' + x.tipo + '</small></span>' + (id === conto.attivo ? '<span class="ok">✓</span>' : '') + '</button>';
-    }).join('');
-    document.getElementById('aggiungi').hidden = conto.entrati.length >= Object.keys(CONTI).length;
-    finestre.forEach(function (f) {
-      if (!f.badge) return;
-      if (!f.badge.dataset.prima) f.badge.dataset.prima = f.badge.textContent;
-      f.badge.textContent = c ? 'apri' : f.badge.dataset.prima;
-      f.badge.classList.toggle('apri', !!c);
-    });
-  }
-  function apriMenu(si) { menuEl.hidden = !si; entraEl.setAttribute('aria-expanded', si ? 'true' : 'false'); }
-  function entraCome(id) {
-    if (conto.entrati.indexOf(id) < 0) conto.entrati.push(id);
-    conto.attivo = id; salva(); disegnaConto();
-  }
-  function esci(id) {
-    conto.entrati = conto.entrati.filter(function (x) { return x !== id; });
-    conto.attivo = conto.entrati[0] || null; salva(); disegnaConto();
-    if (!conto.attivo) apriMenu(false);
-  }
-  if (PROVA) {
-    entraEl.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (!conto.attivo) { entraCome('nicola'); return; }
-      apriMenu(menuEl.hidden);
-    });
-    menuEl.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-conto]');
-      if (b) { entraCome(b.dataset.conto); apriMenu(false); }
-    });
-    document.getElementById('aggiungi').addEventListener('click', function () {
-      var nuovo = Object.keys(CONTI).filter(function (id) { return conto.entrati.indexOf(id) < 0; })[0];
-      if (nuovo) entraCome(nuovo);
-    });
-    document.getElementById('esci').addEventListener('click', function () { esci(conto.attivo); });
-    document.getElementById('esciTutti').addEventListener('click', function () { conto = { entrati: [], attivo: null }; salva(); disegnaConto(); apriMenu(false); });
-    document.addEventListener('click', function (e) { if (!e.target.closest('.conto')) apriMenu(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') apriMenu(false); });
-  }
+  const ASKYLO = {
+    nome: "Askylo <b>Live</b>", frase: "Il pubblico chiede, chi parla risponde. E le domande restano.",
+    cose: ["Domande dal vivo, sondaggi e temi agli eventi", "Le domande ai libri, con il QR stampato", "Relatori, autori e professionisti a cui chiedere"],
+  };
+  const FILI = [
+    ["suonylo", "scrivylo", "canzoni e metodi"],
+    ["suonylo", "askylo", "saggi e concerti"],
+    ["suonylo", "clientylo", "insegnanti di musica"],
+    ["scrivylo", "askylo", "QR nei libri e domande dei lettori"],
+    ["askylo", "clientylo", "eventi e alloggi"],
+    ["nutrylo", "clientylo", "nutrizionisti"],
+    ["nutrylo", "scrivylo", "ricettari"],
+  ];
+  const DOMANDE = [
+    ["Quando esce il secondo libro?", "scrivylo"], ["Che brano porto al saggio?", "suonylo"], ["Posso spostare a giovedì?", "clientylo"],
+    ["Si può fare senza Bimby?", "nutrylo"], ["Le slide le trovo dopo?", "askylo"], ["Chi accende la luce nel capitolo 3?", "scrivylo"],
+    ["Quante proteine a cena?", "nutrylo"], ["Il recupero lo faccio sabato?", "clientylo"], ["Mi suona Clair de lune?", "suonylo"],
+  ];
 
-  var palco = document.getElementById('palco');
-  var canvas = document.getElementById('fili'), ctx = canvas.getContext('2d');
-  var cuoreEl = document.getElementById('cuore');
-  var calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W = 0, H = 0, dpr = 1, stretto = false;
-  var colori = {};
-  function leggiColori() {
-    var s = getComputedStyle(root);
-    colori.filo = s.getPropertyValue('--filo').trim();
-    colori.giallo = s.getPropertyValue('--giallo').trim();
-    colori.ink = s.getPropertyValue('--ink').trim();
+  const orbita = document.getElementById("orbita");
+  const fili = document.getElementById("fili");
+  const scheda = document.getElementById("scheda");
+  const piccolo = window.matchMedia("(max-width: 640px)");
+  const fermo = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const el = {};
+  for (const [id, m] of Object.entries(MONDI)) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mondo";
+    b.style.setProperty("--c", m.col);
+    b.setAttribute("aria-label", m.testo + (m.arrivo ? ", in arrivo" : "") + ": " + m.frase);
+    b.innerHTML = `<span class="riga">${LOGO(m.c, m.logo)}<span class="nome">${m.nome}</span></span><span class="frase">${m.frase}</span>${m.arrivo ? '<span class="arrivo">In arrivo</span>' : ""}${m.scena}`;
+    b.addEventListener("click", () => scegli(id));
+    b.addEventListener("mouseenter", () => { if (!piccolo.matches) pausa = true; });
+    b.addEventListener("mouseleave", () => { if (!scelto) pausa = false; });
+    orbita.appendChild(b);
+    el[id] = b;
   }
-  leggiColori();
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', leggiColori);
-
-  var cuore = { x: 0, y: 0, vx: 0, vy: 0, r: 66, preso: false };
-  var finestre = Array.prototype.map.call(document.querySelectorAll('.finestra'), function (el) {
-    return { el: el, ang: +el.dataset.angolo * Math.PI / 180, x: 0, y: 0, vx: 0, vy: 0, w: 0, h: 0, rot: 0, preso: false, app: el.dataset.app, info: el.dataset.info, badge: el.querySelector(".badge") };
+  const linee = FILI.map(([a, b, t]) => {
+    const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    l.setAttribute("vector-effect", "non-scaling-stroke");
+    fili.appendChild(l);
+    const e = document.createElement("span");
+    e.className = "etic";
+    e.textContent = t;
+    orbita.appendChild(e);
+    return { a, b, l, e };
   });
 
-  var satelliti = Array.prototype.map.call(document.querySelectorAll('.satellite'), function (el, i) {
-    return { el: el, fase: i * Math.PI * 2 / 3 - Math.PI / 2, w: 0, h: 0 };
-  });
-  function anello() { return cuore.r + (stretto ? 30 : 46); }
-
-  function misura() {
-    var r = palco.getBoundingClientRect();
-    W = r.width; H = r.height; stretto = W < 640;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    cuore.r = stretto ? 48 : 66;
-    // tutte le finestre alte come la più alta
-    finestre.forEach(function (f) { f.el.style.height = ''; });
-    var alta = Math.max.apply(null, finestre.map(function (f) { return f.el.offsetHeight; }));
-    finestre.forEach(function (f) { f.el.style.height = alta + 'px'; f.w = f.el.offsetWidth; f.h = alta; });
-    satelliti.forEach(function (s) { s.w = s.el.offsetWidth; s.h = s.el.offsetHeight; });
-  }
-  function centro() { return { x: W / 2, y: H * (stretto ? 0.5 : 0.52) }; }
-  function riposo(f) {
-    var rx = stretto ? Math.min(W * 0.27, 130) : Math.min(W * 0.33, 400);
-    var ry = stretto ? H * 0.31 : Math.min(H * 0.3, 240);
-    return { x: cuore.x + Math.cos(f.ang) * rx, y: cuore.y + Math.sin(f.ang) * ry };
-  }
-  function sistema() {
-    misura();
-    var c = centro(); cuore.x = c.x; cuore.y = c.y;
-    finestre.forEach(function (f) { var p = riposo(f); f.x = p.x; f.y = p.y; f.vx = f.vy = 0; });
-    disegnaDom(0);
-  }
-
-  // battito: due colpi ravvicinati, poi pausa
-  var PERIODO = 1.45, ultimoBattito = -1, onde = [];
-  function battito(t) {
-    var u = t % PERIODO;
-    var g = function (c, s) { return Math.exp(-Math.pow((u - c) / s, 2)); };
-    return 0.075 * g(0.06, 0.05) + 0.045 * g(0.27, 0.05);
-  }
-  function colpo(forza) {
-    onde.push({ r: cuore.r, a: 0.55 * forza });
-    finestre.forEach(function (f) {
-      if (f.preso) return;
-      var dx = f.x - cuore.x, dy = f.y - cuore.y, d = Math.hypot(dx, dy) || 1;
-      var k = 120 * forza * (stretto ? 0.6 : 1);
-      f.vx += dx / d * k; f.vy += dy / d * k;
-    });
-  }
-
-  // domande che viaggiano lungo i fili
-  var domande = [], prossima = 0.6;
-  function lancia(verso, dalCuore) {
-    var f = verso || finestre[Math.floor(Math.random() * finestre.length)];
-    domande.push({ f: f, t: 0, v: 0.55 + Math.random() * 0.35, su: dalCuore === false });
-  }
-  function arriva(d) {
-    var f = d.f;
-    f.vy -= 70; f.vx += (Math.random() - 0.5) * 60;
-    if (f.el.querySelector('#contaLibro')) incrementa('contaLibro');
-    if (f.el.querySelector('#contaPiante')) {
-      var e = document.getElementById('contaPiante'), n = +e.textContent >= 30 ? 21 : +e.textContent + 1;
-      e.textContent = n; document.getElementById('barraPiante').style.width = (n / 30 * 100) + '%';
+  const pos = { askylo: [50, 52] };
+  let giro = 0, pausa = false, scelto = null;
+  function colloca() {
+    for (const [id, m] of Object.entries(MONDI)) {
+      const ang = ((m.angolo + giro) * Math.PI) / 180;
+      const x = 50 + Math.cos(ang) * 36, y = 52 + Math.sin(ang) * 33;
+      pos[id] = [x, y];
+      el[id].style.setProperty("--x", x + "%");
+      el[id].style.setProperty("--y", y + "%");
+    }
+    for (const k of linee) {
+      const [x1, y1] = pos[k.a], [x2, y2] = pos[k.b];
+      k.l.setAttribute("x1", x1); k.l.setAttribute("y1", y1); k.l.setAttribute("x2", x2); k.l.setAttribute("y2", y2);
+      // l'etichetta di un filo che va alla piazza sta più vicina al centro, lontana dalla scheda del mondo
+      const t = k.a === "askylo" ? 0.36 : k.b === "askylo" ? 0.64 : 0.5;
+      k.e.style.left = x1 + (x2 - x1) * t + "%";
+      k.e.style.top = y1 + (y2 - y1) * t + "%";
     }
   }
-  function incrementa(id) { var e = document.getElementById(id); e.textContent = (+e.textContent + 1); }
-
-  function curva(f, tempo) {
-    var ax = cuore.x, ay = cuore.y, bx = f.x, by = f.y;
-    var mx = (ax + bx) / 2, my = (ay + by) / 2;
-    var nx = -(by - ay), ny = bx - ax, n = Math.hypot(nx, ny) || 1;
-    var onda = Math.sin(tempo * 1.3 + f.ang * 3) * 18 + 22;
-    return { ax: ax, ay: ay, bx: bx, by: by, cx: mx + nx / n * onda, cy: my + ny / n * onda };
+  function passo() {
+    if (!pausa && !fermo && !piccolo.matches) giro += 0.035;
+    colloca();
+    requestAnimationFrame(passo);
   }
-  function punto(c, t) {
-    var u = 1 - t;
-    return { x: u * u * c.ax + 2 * u * t * c.cx + t * t * c.bx, y: u * u * c.ay + 2 * u * t * c.cy + t * t * c.by };
-  }
+  colloca();
+  requestAnimationFrame(passo);
 
-  function passo(dt, tempo) {
-    // il cuore torna al centro con una molla
-    var c = centro();
-    if (!cuore.preso) {
-      cuore.vx += ((c.x - cuore.x) * 28 - cuore.vx * 7) * dt;
-      cuore.vy += ((c.y - cuore.y) * 28 - cuore.vy * 7) * dt;
-      cuore.x += cuore.vx * dt; cuore.y += cuore.vy * dt;
+  function scegli(id) {
+    scelto = id;
+    pausa = true;
+    for (const k of Object.keys(MONDI)) {
+      el[k].classList.toggle("scelto", k === id);
+      el[k].classList.toggle("lontano", id !== "askylo" && k !== id && !FILI.some(([a, b]) => (a === id && b === k) || (b === id && a === k)));
     }
-    finestre.forEach(function (f) {
-      if (f.preso) return;
-      var p = riposo(f);
-      var k = 34, smorza = 5.2;
-      f.vx += ((p.x - f.x) * k - f.vx * smorza) * dt;
-      f.vy += ((p.y - f.y) * k - f.vy * smorza) * dt;
-      // respiro leggero
-      f.vy += Math.sin(tempo * 0.9 + f.ang * 2) * 6 * dt;
-    });
-    // urti fra finestre (rettangoli) e col cuore (cerchio)
-    for (var i = 0; i < finestre.length; i++) {
-      var a = finestre[i];
-      for (var j = i + 1; j < finestre.length; j++) {
-        var b = finestre[j];
-        var ox = (a.w + b.w) / 2 + 10 - Math.abs(a.x - b.x);
-        var oy = (a.h + b.h) / 2 + 10 - Math.abs(a.y - b.y);
-        if (ox > 0 && oy > 0) {
-          var sa = a.preso ? 0 : (b.preso ? 1 : 0.5), sb = 1 - sa;
-          if (a.preso && b.preso) continue;
-          if (ox < oy) { var s = a.x < b.x ? -1 : 1; a.x += s * ox * sa; b.x -= s * ox * sb; var rv = (a.vx - b.vx) * 0.6; if (!a.preso) a.vx -= rv * sa * 2; if (!b.preso) b.vx += rv * sb * 2; }
-          else { var s2 = a.y < b.y ? -1 : 1; a.y += s2 * oy * sa; b.y -= s2 * oy * sb; var rv2 = (a.vy - b.vy) * 0.6; if (!a.preso) a.vy -= rv2 * sa * 2; if (!b.preso) b.vy += rv2 * sb * 2; }
-        }
-      }
-      if (!a.preso) {
-        var px = Math.max(a.x - a.w / 2, Math.min(cuore.x, a.x + a.w / 2));
-        var py = Math.max(a.y - a.h / 2, Math.min(cuore.y, a.y + a.h / 2));
-        var dx = px - cuore.x, dy = py - cuore.y, d = Math.hypot(dx, dy), min = anello() + 26;
-        if (d < min) {
-          if (d < 0.01) { dx = a.x - cuore.x; dy = a.y - cuore.y; d = Math.hypot(dx, dy) || 1; }
-          var spinta = (min - d);
-          a.x += dx / d * spinta; a.y += dy / d * spinta;
-          a.vx += dx / d * spinta * 8; a.vy += dy / d * spinta * 8;
-        }
-        a.x += a.vx * dt; a.y += a.vy * dt;
-        // bordi del palco, con rimbalzo
-        var mxw = a.w / 2 + 4, mxh = a.h / 2 + 4;
-        if (a.x < mxw) { a.x = mxw; a.vx = Math.abs(a.vx) * 0.5; }
-        if (a.x > W - mxw) { a.x = W - mxw; a.vx = -Math.abs(a.vx) * 0.5; }
-        if (a.y < mxh + 60) { a.y = mxh + 60; a.vy = Math.abs(a.vy) * 0.5; }
-        if (a.y > H - mxh) { a.y = H - mxh; a.vy = -Math.abs(a.vy) * 0.5; }
-      }
-      var obiettivo = Math.max(-9, Math.min(9, a.vx * 0.022));
-      a.rot += (obiettivo - a.rot) * Math.min(1, dt * 10);
+    for (const k of linee) {
+      const mio = k.a === id || k.b === id;
+      k.l.classList.toggle("acceso", mio);
+      k.l.classList.toggle("spento", !mio);
+      k.e.classList.toggle("vedi", mio);
     }
-    onde.forEach(function (o) { o.r += 210 * dt; o.a -= 0.42 * dt; });
-    onde = onde.filter(function (o) { return o.a > 0; });
-    domande.forEach(function (d) { d.t += d.v * dt; if (d.t >= 1 && !d.fatto) { d.fatto = true; if (!d.su) arriva(d); } });
-    domande = domande.filter(function (d) { return d.t < 1; });
-  }
-
-  var giroSatelliti = 0;
-  function disegnaDom(scala) {
-    cuoreEl.style.transform = 'translate(' + cuore.x + 'px,' + cuore.y + 'px) scale(' + (1 + scala) + ')';
-    var ra = anello() * (1 + scala * 0.6);
-    satelliti.forEach(function (s) {
-      var a = s.fase + giroSatelliti;
-      s.el.style.transform = 'translate(' + (cuore.x + Math.cos(a) * ra - s.w / 2) + 'px,' + (cuore.y + Math.sin(a) * ra * 0.92 - s.h / 2) + 'px)';
+    const m = id === "askylo" ? ASKYLO : MONDI[id];
+    const legami = FILI.filter(([a, b]) => a === id || b === id).map(([a, b, t]) => {
+      const altro = a === id ? b : a;
+      return `<b>${altro === "askylo" ? "Askylo Live" : MONDI[altro].testo}</b>: ${t}`;
     });
-    finestre.forEach(function (f) {
-      f.el.style.transform = 'translate(' + (f.x - f.w / 2) + 'px,' + (f.y - f.h / 2) + 'px) rotate(' + f.rot.toFixed(2) + 'deg)';
-    });
+    const porta = id === "askylo"
+      ? `<a class="porta-mondo" href="#inizia">Entra nella piazza ↓</a>`
+      : m.url
+        ? `<a class="porta-mondo" href="${m.url}" target="_blank" rel="noopener">${m.arrivo ? "Scopri " + m.testo + ", in arrivo" : "Entra in " + m.testo} →</a>`
+        : `<span class="porta-mondo presto">La prehome di Nutrylo è la prossima</span>`;
+    scheda.innerHTML =
+      `<p class="eti">${id === "askylo" ? "Il centro" : m.arrivo ? "Un mondo di Askylo · in arrivo" : "Un mondo di Askylo"}</p><h2>${m.nome}</h2><p>${m.frase}</p>` +
+      `<ul>${m.cose.map((c) => `<li>${c}</li>`).join("")}</ul>` +
+      (legami.length ? `<p class="fili-lista">Si parla con: ${legami.join(" · ")}</p>` : "") + porta;
   }
-
-  function disegnaFili(tempo) {
-    ctx.clearRect(0, 0, W, H);
-    onde.forEach(function (o) {
-      ctx.beginPath(); ctx.arc(cuore.x, cuore.y, o.r, 0, Math.PI * 2);
-      ctx.strokeStyle = colori.giallo; ctx.globalAlpha = o.a; ctx.lineWidth = 2; ctx.stroke();
-    });
-    ctx.globalAlpha = 1;
-    finestre.forEach(function (f) {
-      var c = curva(f, tempo);
-      ctx.beginPath(); ctx.moveTo(c.ax, c.ay); ctx.quadraticCurveTo(c.cx, c.cy, c.bx, c.by);
-      ctx.strokeStyle = colori.filo; ctx.lineWidth = 1.6; ctx.setLineDash([2, 7]); ctx.lineCap = 'round'; ctx.stroke();
-    });
-    ctx.setLineDash([]);
-    domande.forEach(function (d) {
-      var c = curva(d.f, tempo), t = d.su ? 1 - d.t : d.t, p = punto(c, t);
-      var r = stretto ? 9 : 12;
-      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = colori.giallo; ctx.globalAlpha = 0.95; ctx.fill();
-      ctx.globalAlpha = 1; ctx.fillStyle = '#1A2233';
-      ctx.font = '700 ' + (stretto ? 11 : 14) + 'px Fraunces, Georgia, serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText('?', p.x, p.y + 1);
-    });
+  function benvenuto() {
+    scheda.innerHTML =
+      `<p class="eti">Come funziona</p><h2>Tocca un mondo.</h2>` +
+      `<p>Al centro c'è Askylo, la piazza delle domande. Intorno le app per creare, legate dai fili di quello che si scambiano.</p>` +
+      `<ul><li>Le domande del pubblico arrivano a chi può rispondere</li><li>Ogni mondo ha la sua pagina da provare</li><li>Un account Askylo, sempre più app</li></ul>` +
+      `<a class="porta-mondo" href="#inizia">Vai alla piazza ↓</a>`;
   }
-
-  // trascinamento e lancio
-  function prendi(corpo, el, e) {
-    e.preventDefault();
-    el.setPointerCapture(e.pointerId);
-    var r = palco.getBoundingClientRect();
-    var ox = e.clientX - r.left - corpo.x, oy = e.clientY - r.top - corpo.y;
-    var storia = [], partenza = { x: e.clientX, y: e.clientY }, mosso = false;
-    corpo.preso = true; el.classList.add('presa');
-    function muovi(ev) {
-      var rr = palco.getBoundingClientRect();
-      corpo.x = ev.clientX - rr.left - ox; corpo.y = ev.clientY - rr.top - oy;
-      storia.push({ x: corpo.x, y: corpo.y, t: performance.now() });
-      if (storia.length > 6) storia.shift();
-      if (Math.hypot(ev.clientX - partenza.x, ev.clientY - partenza.y) > 6) mosso = true;
-    }
-    function lascia() {
-      el.removeEventListener('pointermove', muovi); el.removeEventListener('pointerup', lascia); el.removeEventListener('pointercancel', lascia);
-      corpo.preso = false; el.classList.remove('presa');
-      if (storia.length > 1) {
-        var a = storia[0], b = storia[storia.length - 1], dt = Math.max(16, b.t - a.t) / 1000;
-        corpo.vx = Math.max(-2400, Math.min(2400, (b.x - a.x) / dt));
-        corpo.vy = Math.max(-2400, Math.min(2400, (b.y - a.y) / dt));
-      }
-      if (!mosso) tocco(corpo);
-    }
-    el.addEventListener('pointermove', muovi); el.addEventListener('pointerup', lascia); el.addEventListener('pointercancel', lascia);
-  }
-  function tocco(corpo) {
-    if (corpo === cuore) { colpo(1.6); finestre.forEach(function (f) { lancia(f); }); }
-    else if (corpo.app) { var dove = conto.attivo ? corpo.app : corpo.info; lancia(corpo, false); setTimeout(function () { var a = document.createElement("a"); a.href = dove; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); }, 420); }
-  }
-  cuoreEl.addEventListener('pointerdown', function (e) { prendi(cuore, cuoreEl, e); });
-  cuoreEl.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocco(cuore); } });
-  finestre.forEach(function (f) {
-    f.el.addEventListener('pointerdown', function (e) { prendi(f, f.el, e); });
-    f.el.addEventListener('keydown', function (e) { if (e.key === 'Enter') tocco(f); });
+  benvenuto();
+  document.getElementById("cuore").addEventListener("click", () => scegli("askylo"));
+  orbita.addEventListener("click", (e) => {
+    if (e.target === orbita) { scelto = null; pausa = false; benvenuto(); for (const k of Object.keys(MONDI)) el[k].classList.remove("scelto", "lontano"); for (const k of linee) { k.l.classList.remove("acceso", "spento"); k.e.classList.remove("vedi"); } }
   });
 
-  disegnaConto();
-  sistema();
-  var rimisura;
-  window.addEventListener('resize', function () { clearTimeout(rimisura); rimisura = setTimeout(sistema, 120); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sistema);
-
-  if (calmo) { disegnaFili(0); return; }
-
-  var prima = performance.now(), avanzo = 0, tempo = 0;
-  function giro(ora) {
-    var dt = Math.min(0.05, (ora - prima) / 1000); prima = ora;
-    avanzo += dt;
-    while (avanzo >= 1 / 120) { passo(1 / 120, tempo); avanzo -= 1 / 120; tempo += 1 / 120; }
-    var n = Math.floor(tempo / PERIODO);
-    if (n !== ultimoBattito) { ultimoBattito = n; colpo(0.5); }
-    giroSatelliti += dt * 0.22;
-    prossima -= dt;
-    if (prossima <= 0 && !document.hidden) { lancia(); prossima = 1.1 + Math.random() * 1.4; }
-    disegnaDom(cuore.preso ? 0.06 : battito(tempo));
-    disegnaFili(tempo);
-    requestAnimationFrame(giro);
+  // le domande partono dalla piazza e vanno verso il mondo che sa rispondere
+  let n = 0;
+  function lancia() {
+    if (fermo || piccolo.matches || document.hidden) return;
+    const [q, dove] = DOMANDE[n++ % DOMANDE.length];
+    const d = document.createElement("span");
+    d.className = "domanda";
+    d.textContent = q;
+    orbita.appendChild(d);
+    const [x, y] = pos[dove] || [50, 16];
+    const meta = dove === "askylo" ? [50, 14] : [50 + (x - 50) * 0.78, 52 + (y - 52) * 0.78];
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      d.style.left = meta[0] + "%";
+      d.style.top = meta[1] + "%";
+      d.style.opacity = "0";
+    }));
+    setTimeout(() => d.remove(), 2800);
   }
-  requestAnimationFrame(giro);
+  setInterval(lancia, 1700);
+  piccolo.addEventListener("change", colloca);
 })();
 </script>
 </body>

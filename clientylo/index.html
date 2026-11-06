@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clientylo · il gestionale per chi lavora con le persone</title>
+<meta name="description" content="Ogni cliente ha una pagina tutta sua, bella come un sito, e tu un gestionale che risponde alle tue domande. Un gestionale per ogni mestiere. Un'app di Askylo, prima Askylo Studio.">
+<link rel="canonical" href="https://askylostudio.it/clientylo/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="Clientylo · il gestionale per chi lavora con le persone">
+<meta property="og:description" content="Ogni cliente ha una pagina tutta sua, bella come un sito, e tu un gestionale che risponde alle tue domande. Un gestionale per ogni mestiere. Un'app di Askylo, prima Askylo Studio.">
+<meta property="og:url" content="https://askylostudio.it/clientylo/">
+<meta name="theme-color" content="#0B2E2D">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="/font/Fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/font/DMSans-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/font/caratteri.css">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}.piede a{color:inherit;text-underline-offset:2px}</style>
+<style>
+/* Layout: in alto lo studio di sera (verde profondo): a sinistra il telefono del cliente con la sua pagina, da toccare;
+   a destra l'agenda dello studio che riceve la prenotazione. Sotto, su carta: le domande al gestionale, i mestieri, «tuo e cresce con te». */
+:root{
+  --carta:#F6F7F2; --superficie:#FFFFFF; --inchiostro:#16231F; --muto:#55635E; --linea:#DCE2DA;
+  --studio:#137067; --studio-testo:#0F5F57; --giallo:#F2B705; --rosso:#B9412C; --segno:#FFF1B8;
+  --sera:#0B2E2D; --sera-2:#12463F; --sera-testo:#EEF4EF; --sera-muto:#A8C2BB;
+  --f-titolo:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-testo:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --carta:#0B1715; --superficie:#13221F; --inchiostro:#E8EFEB; --muto:#A3B5AF; --linea:#22352F;
+    --studio-testo:#7FD1C4; --rosso:#E8907A; --segno:#3F3A1A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --carta:#0B1715; --superficie:#13221F; --inchiostro:#E8EFEB; --muto:#A3B5AF; --linea:#22352F;
+  --studio-testo:#7FD1C4; --rosso:#E8907A; --segno:#3F3A1A; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--carta);color:var(--inchiostro);font-family:var(--f-testo);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--sera)}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-titolo);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--giallo);outline-offset:3px;border-radius:6px}
+
+.hero{background:radial-gradient(110% 90% at 85% 0%,var(--sera-2) 0%,var(--sera) 60%) var(--sera);color:var(--sera-testo);padding-block:14px 46px}
+.testata{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.marchio{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.marchio svg{width:34px;height:34px;flex:none}
+.parola{font-family:var(--f-titolo);font-weight:700;font-size:23px;letter-spacing:-.02em}
+.parola b{color:var(--giallo)}
+.by{font-size:12px;color:var(--sera-muto);letter-spacing:.04em}
+.salta{font-size:14px;color:var(--sera-testo);text-decoration:none;border:1px solid rgba(238,244,239,.28);padding:6px 12px;border-radius:999px;white-space:nowrap}
+.salta:hover{border-color:var(--giallo);color:#FFE7A0}
+.apertura{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;align-items:end;margin-top:34px}
+.occhiello{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#FFD86B;font-weight:500}
+.hero h1{font-size:clamp(34px,5.4vw,62px);line-height:1.02;margin-top:10px}
+.hero h1 em{font-style:italic;font-weight:400;color:#FFE08A}
+.sotto{color:var(--sera-muto);font-size:17px;max-width:46ch}
+.sotto strong{color:var(--sera-testo);font-weight:500}
+
+.mestieri{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.mestieri button{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:var(--sera-muto);border-radius:999px;padding:7px 14px;font-size:14px}
+.mestieri button[aria-pressed="true"]{background:var(--giallo);border-color:var(--giallo);color:#16231F;font-weight:700}
+.scena{display:grid;grid-template-columns:minmax(0,330px) minmax(0,1fr);gap:28px;align-items:start;margin-top:18px}
+
+.telefono{background:#0A0F0E;border-radius:38px;padding:11px;box-shadow:0 30px 60px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.08);max-width:330px;width:100%}
+.schermo{border-radius:28px;overflow:hidden;background:var(--m-bg);color:var(--m-fg);min-height:600px;display:flex;flex-direction:column;transition:background .5s,color .5s;font-size:14px}
+.m-testa{padding:22px 18px 16px;background:var(--m-acc);color:var(--m-su-acc);transition:background .5s,color .5s}
+.m-testa small{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.m-testa h3{font-size:24px;margin-top:4px;line-height:1.1}
+.m-testa p{margin-top:8px;font-family:var(--f-titolo);font-size:17px;font-style:italic}
+.m-corpo{padding:14px;display:grid;gap:10px}
+.m-card{background:var(--m-card);border-radius:16px;padding:12px 13px;transition:background .5s}
+.m-card h4{font-family:var(--f-testo);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--m-acc-testo);font-weight:700}
+.m-card ul{margin:6px 0 0;padding-left:17px}
+.m-card li{margin-top:2px}
+.m-card p{margin-top:6px}
+.slot{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.slot button{border:1px solid var(--m-acc-testo);background:transparent;color:var(--m-fg);border-radius:999px;padding:6px 10px;font-size:13px}
+.slot button:hover{background:var(--m-acc);color:var(--m-su-acc);border-color:var(--m-acc)}
+.m-pulsante{width:100%;border:0;border-radius:12px;padding:11px;font-weight:700;background:var(--m-acc);color:var(--m-su-acc);transition:background .5s}
+.fatto{display:flex;gap:8px;align-items:center;font-weight:700;color:var(--m-acc-testo)}
+.wa{display:flex;align-items:center;gap:8px;justify-content:center;border:1px solid var(--m-linea);border-radius:12px;padding:9px;font-size:13.5px}
+.wa i{width:18px;height:18px;border-radius:50%;background:#25D366;display:inline-block}
+
+.lato{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:16px;min-width:0}
+.lato h3{font-size:22px}
+.lato .eti{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#FFD86B}
+.oggi{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}
+.oggi li{display:flex;gap:10px;align-items:baseline;border-radius:10px;padding:9px 11px;background:rgba(255,255,255,.05);font-size:14.5px}
+.oggi li b{font-variant-numeric:tabular-nums;color:#FFE08A;font-weight:600;min-width:46px}
+.oggi li.libero{color:var(--sera-muto);font-style:italic}
+.oggi li.nuova{background:rgba(242,183,5,.16);box-shadow:inset 0 0 0 1px rgba(242,183,5,.55);animation:arriva .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes arriva{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
+.riassunto{margin-top:12px;font-size:14px;color:var(--sera-muto)}
+.riassunto strong{color:var(--sera-testo);font-weight:500}
+.filo{margin-top:14px;font-size:13px;color:var(--sera-muto);border-top:1px dashed rgba(255,255,255,.15);padding-top:12px}
+
+/* capitoli */
+.cap{padding-block:clamp(52px,8vw,96px);border-top:1px solid var(--linea)}
+.cap:first-of-type{border-top:0}
+.cap .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,64px);align-items:center}
+.cap.giro .wrap{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.cap.giro .testo{order:2}
+.etichetta{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--studio-testo);font-weight:700}
+.cap h2{font-size:clamp(28px,3.6vw,42px);line-height:1.08;margin-top:10px}
+.cap .testo p{margin-top:14px;max-width:52ch;color:var(--muto);font-size:17px}
+.cap .testo p strong{color:var(--inchiostro);font-weight:500}
+.punti{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.punti li{font-size:13.5px;border:1px solid var(--linea);border-radius:999px;padding:4px 11px;background:var(--superficie)}
+.finestra{background:var(--superficie);border:1px solid var(--linea);border-radius:16px;box-shadow:0 18px 50px rgba(11,46,45,.12);overflow:hidden;min-width:0}
+.barra{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--linea);font-size:13px;color:var(--muto)}
+.barra .pallini{display:flex;gap:5px;margin-right:6px}
+.barra .pallini i{width:9px;height:9px;border-radius:50%;background:var(--linea);display:block}
+.barra .dx{margin-left:auto}
+.corpo{padding:16px}
+.piccolo{font-size:12.5px;color:var(--muto)}
+
+/* chiedi */
+.domanda{display:flex;align-items:center;gap:8px;border:1px solid var(--linea);border-radius:12px;padding:10px 12px;background:var(--carta);font-size:15px;min-height:46px}
+.domanda .cursore{width:2px;height:18px;background:var(--studio-testo);animation:lampeggia 1s steps(1) infinite}
+@keyframes lampeggia{50%{opacity:0}}
+.pronte{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pronte button{border:1px solid var(--linea);background:var(--superficie);border-radius:999px;padding:5px 11px;font-size:13px}
+.pronte button[aria-pressed="true"]{background:var(--studio);border-color:var(--studio);color:#fff}
+.risposta{margin-top:12px;border-radius:12px;background:var(--carta);border:1px solid var(--linea);padding:12px 14px;min-height:118px}
+.risposta h4{font-size:19px}
+.risposta ul{margin:8px 0 0;padding-left:18px}
+.risposta li{margin-top:3px}
+.risposta .tabella{display:grid;grid-template-columns:1fr auto;gap:4px 16px;margin-top:8px;font-variant-numeric:tabular-nums}
+.risposta .azione{margin-top:10px;border:1px solid var(--linea);background:var(--superficie);border-radius:999px;padding:5px 12px;font-size:13px}
+.claude{margin-top:12px;display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muto)}
+.claude b{color:var(--inchiostro);font-weight:500}
+
+/* mestieri */
+.griglia{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:24px}
+.mest{border:1px solid var(--linea);background:var(--superficie);border-radius:14px;padding:14px;min-width:0}
+.mest .ico{font-size:22px;line-height:1}
+.mest h3{font-size:18px;margin-top:8px}
+.mest p{font-size:14px;color:var(--muto);margin-top:6px}
+.mest.presto{background:transparent;border-style:dashed}
+.mest.presto h3::after{content:" · in arrivo";font-family:var(--f-testo);font-size:12px;color:var(--muto);font-weight:500}
+.cap-largo .wrap{display:block}
+.cap-largo .intro{margin-top:12px;color:var(--muto);font-size:17px;max-width:62ch}
+
+/* tuo */
+.due{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.voce{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+.voce:last-child{border-bottom:0}
+.voce span:first-child{font-size:18px;line-height:1.2}
+.richiesta{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--linea);font-size:14px}
+.richiesta:last-child{border-bottom:0}
+.richiesta code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;color:var(--muto)}
+.stato{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.stato.lavoro{background:#FFF1B8;color:#7A5A00}
+.stato.fatta{background:#DDF1E8;color:#1F6B48}
+.stato.arrivata{background:#E4ECFB;color:#1F4FA3}
+
+.insieme{background:var(--superficie);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding-block:30px}
+.insieme .wrap{display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+.insieme h3{font-size:22px;max-width:12ch}
+.insieme p{font-size:14.5px;color:var(--muto)}
+.insieme p b{color:var(--inchiostro);font-weight:500;display:block;font-family:var(--f-titolo);font-size:17px}
+
+.porta{background:var(--sera);color:var(--sera-testo);padding-block:clamp(56px,9vw,104px)}
+.porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
+.porta h2{font-size:clamp(30px,4.4vw,52px);line-height:1.04}
+.porta h2 em{color:#FFE08A;font-weight:400}
+.porta p{color:var(--sera-muto);margin-top:14px;font-size:17px;max-width:50ch}
+.porta .btns{display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent}
+.btn.pieno{background:var(--giallo);color:#16231F}
+.btn.pieno:hover{background:#FFC928}
+.btn.vuoto{background:transparent;color:var(--sera-testo);border-color:rgba(238,244,239,.3)}
+.piede{background:var(--sera);color:var(--sera-muto);font-size:13px;padding-block:18px 26px;border-top:1px solid rgba(255,255,255,.08)}
+.piede .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:#16231F;color:#EEF4EF;border-radius:12px;padding:10px 14px;font-size:14px;max-width:min(92vw,460px);z-index:40;transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.vedi{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:900px){
+  .griglia{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .insieme .wrap{grid-template-columns:1fr 1fr}
+  .insieme h3{grid-column:1/-1;max-width:none}
+}
+@media (max-width:860px){
+  .apertura{grid-template-columns:1fr;gap:14px}
+  .scena{grid-template-columns:1fr;justify-items:center}
+  .lato{width:100%}
+  .cap .wrap,.cap.giro .wrap,.porta .wrap{grid-template-columns:1fr}
+  .cap.giro .testo{order:0}
+  .due{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .griglia,.insieme .wrap{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(32px,9vw,44px)}
+  .schermo{min-height:540px}
+}
+@media (prefers-reduced-motion:reduce){
+  .oggi li.nuova,.domanda .cursore{animation:none!important}
+  .schermo,.m-testa,.m-card,.m-pulsante{transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="testata">
+      <a class="marchio" href="./" aria-label="Clientylo">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#137067"/><path d="M9 6.5 16 14.5l7-8" fill="none" stroke="#F2B705" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 14.2v4" stroke="#F2B705" stroke-width="3" stroke-linecap="round"/><rect x="10.5" y="18.4" width="11" height="8.6" rx="2.2" fill="none" stroke="#F2B705" stroke-width="2.2"/><circle cx="16" cy="22.8" r="1.5" fill="#F2B705"/></svg>
+        <span><span class="parola">Client<b>y</b>lo</span><br><span class="by">by Askylo</span></span>
+      </a>
+      <a class="salta" href="#inizia">Salta ↓</a>
+    </div>
+
+    <div class="apertura">
+      <div>
+        <p class="occhiello">Il gestionale per chi lavora con le persone</p>
+        <h1>I tuoi clienti hanno <em>una pagina tutta loro.</em></h1>
+      </div>
+      <p class="sotto">Bella come un sito, sul loro telefono: il percorso, le prenotazioni, il pacchetto, i messaggi. Tu, dall'altra parte, hai <strong>un gestionale che risponde alle tue domande</strong>. Scegli un mestiere e prova a prenotare.</p>
+    </div>
+
+    <div class="mestieri" role="group" aria-label="Mestiere">
+      <button type="button" data-m="massaggi" aria-pressed="true">Massaggi e benessere</button>
+      <button type="button" data-m="personal" aria-pressed="false">Personal trainer</button>
+      <button type="button" data-m="musica" aria-pressed="false">Insegnante di musica</button>
+      <button type="button" data-m="campeggio" aria-pressed="false">Campeggio e B&amp;B</button>
+    </div>
+
+    <div class="scena">
+      <div class="telefono">
+        <div class="schermo" id="schermo" aria-live="polite"></div>
+      </div>
+      <div class="lato">
+        <p class="eti">Dall'altra parte · il tuo gestionale</p>
+        <h3 id="lato-titolo">Oggi, in trenta secondi</h3>
+        <ul class="oggi" id="oggi"></ul>
+        <p class="riassunto" id="riassunto"></p>
+        <p class="filo">Quello che il cliente fa sulla sua pagina arriva qui da solo. Prova: prenota dal telefono.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="cap" id="chiedi">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Un gestionale che risponde</p>
+        <h2>Chiedi, e il gestionale ti risponde.</h2>
+        <p>Chi non viene da un mese? Quanto hai incassato? Quali pacchetti stanno finendo? Le <strong>domande pronte</strong> rispondono subito, con i conti fatti sul tuo dispositivo.</p>
+        <p>Con parole tue lo chiedi a <strong>Claude</strong>: il connettore legge la tua agenda, ma non può cambiarla.</p>
+        <ul class="punti"><li>Domande pronte</li><li>Connettore per Claude, in sola lettura</li><li>«Oggi» in trenta secondi</li></ul>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Chiedi · Studio Lume<span class="dx">dati d'esempio</span></div>
+        <div class="corpo">
+          <div class="domanda"><span id="testo-domanda">Scegli una domanda</span><span class="cursore" aria-hidden="true"></span></div>
+          <div class="pronte" role="group" aria-label="Domande pronte">
+            <button type="button" data-q="assenti">Chi non viene da un mese?</button>
+            <button type="button" data-q="incasso">Quanto ho incassato a ottobre?</button>
+            <button type="button" data-q="pacchetti">Quali pacchetti stanno finendo?</button>
+            <button type="button" data-q="liberi">Che orari ho liberi giovedì?</button>
+          </div>
+          <div class="risposta" id="risposta"><p class="piccolo">La risposta arriva qui, con i nomi e i numeri veri del tuo studio.</p></div>
+          <div class="claude"><span aria-hidden="true">✳︎</span><span><b>Anche da Claude.</b> «Chi tra i clienti del martedì ha il pacchetto quasi finito?» Claude legge l'agenda dal connettore e risponde con parole sue.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap cap-largo" id="mestieri">
+    <div class="wrap">
+      <p class="etichetta">Ogni mestiere, il suo gestionale</p>
+      <h2>Non un'agenda uguale per tutti.</h2>
+      <p class="intro">Ogni mestiere ha la sua struttura e la sua grafica, pensate parlando con chi lo fa. In comune restano l'accesso, i dati al sicuro e la pagina del cliente.</p>
+      <div class="griglia">
+        <div class="mest"><span class="ico" aria-hidden="true">🌿</span><h3>Massaggi e benessere</h3><p>Il percorso a tappe, i pacchetti con il risparmio, i referti InBody che il cliente apre dalla sua pagina.</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">🏋️</span><h3>Personal trainer</h3><p>Schede, carichi proposti, l'allenamento a casa. Con la nutrizionista, anche «A tavola».</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">🧠</span><h3>Psicologia</h3><p>Note cifrate sul tuo dispositivo, consenso firmato col dito, pagina del paziente senza il nome nel link.</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">🎹</span><h3>Insegnanti di musica</h3><p>Lezioni fisse, recuperi calcolati, il posto liberato offerto dalla pagina, il saggio. Con Suonylo per i compiti.</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">💃</span><h3>Scuole di ballo</h3><p>Corsi, presenze e la lezione fatta con chi c'era: musica, foto e video.</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">🍦</span><h3>Gelaterie</h3><p>Tessere e timbri, i gusti del giorno, le torte su ordinazione.</p></div>
+        <div class="mest"><span class="ico" aria-hidden="true">⛺</span><h3>Campeggi e B&amp;B</h3><p>Tableau, mappa, la pagina del soggiorno con il check-in e il programma della sera.</p></div>
+        <div class="mest presto"><span class="ico" aria-hidden="true">🧸</span><h3>E poi</h3><p>Asili nido, ripetizioni, artigiani, maneggi: schede e prototipi pronti, prima le interviste.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cap giro" id="tuo">
+    <div class="wrap">
+      <div class="testo">
+        <p class="etichetta">Tuo, e cresce con te</p>
+        <h2>I clienti restano tuoi. Il gestionale impara da te.</h2>
+        <p>Una copia di tutto sul tuo dispositivo, il cestino per i ripensamenti, un backup ogni domenica. <strong>Nessuno</strong> usa i tuoi clienti per altro.</p>
+        <p>Hai un'idea? La scrivi nel gestionale e ricevi un numero d'arrivo. Vedi a che punto è finché non te la ritrovi nell'app.</p>
+      </div>
+      <div class="finestra">
+        <div class="barra"><span class="pallini"><i></i><i></i><i></i></span>Il tuo studio</div>
+        <div class="corpo due">
+          <div>
+            <div class="voce"><span aria-hidden="true">📱</span><span>Tutto anche sul dispositivo: funziona pure senza rete.</span></div>
+            <div class="voce"><span aria-hidden="true">🗑️</span><span>Hai cancellato per sbaglio? Il cestino lo ridà.</span></div>
+            <div class="voce"><span aria-hidden="true">📦</span><span>Ogni domenica un backup intero, scaricabile.</span></div>
+          </div>
+          <div>
+            <h4 style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muto);font-family:var(--f-testo)">Le tue idee</h4>
+            <div class="richiesta"><code>#14</code><span>Promemoria il giorno prima</span><span class="stato lavoro">in lavorazione</span></div>
+            <div class="richiesta"><code>#15</code><span>Colori diversi per i pacchetti</span><span class="stato fatta">fatta</span></div>
+            <div class="richiesta"><code>#16</code><span id="nuova-idea">Prenotazioni di gruppo</span><span class="stato arrivata">arrivata</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="insieme">
+  <div class="wrap">
+    <h3>Con le altre app di Askylo</h3>
+    <p><b><a href="https://askylo.com/">Askylo Live</a></b>Le domande del pubblico ai tuoi eventi, e il riquadro «Domande alla struttura» nella pagina del soggiorno.</p>
+    <p><b><a href="/suonylo/">Suonylo</a></b>Per gli insegnanti di musica: i brani e i compiti dell'allievo, con il pianoforte.</p>
+    <p><b><a href="/nutrylo/">Nutrylo</a></b>Per i nutrizionisti: piani, ricette e spesa, dentro la pagina del cliente.</p>
+  </div>
+</section>
+
+<section class="porta" id="inizia">
+  <div class="wrap">
+    <div>
+      <h2>Scegli il tuo mestiere <em>e provalo</em>.</h2>
+      <p>Ogni mestiere ha la sua demo, con uno studio d'esempio già pieno: apri, tocca, prenota. Quando ti convince, lo usi per i tuoi clienti.</p>
+    </div>
+    <div class="btns">
+      <a class="btn pieno" href="https://app.askylostudio.it/demo/">Guarda la demo</a>
+      <a class="btn vuoto" href="https://app.askylostudio.it/">Prova gratis</a>
+    </div>
+  </div>
+</section>
+<footer class="piede">
+  <div class="wrap"><span>Clientylo, prima Askylo Studio. Un'app di <a href="/">Askylo</a>.</span><span><a href="https://askylo.com/privacy">Privacy</a> · <a href="https://askylo.com/termini">Termini</a> · studi, clienti e numeri nella pagina sono esempi</span></div>
+</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+  const toast = document.getElementById("toast");
+  let tt = 0;
+  const avvisa = (t) => { toast.textContent = t; toast.classList.add("vedi"); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove("vedi"), 2800); };
+  document.querySelectorAll("[data-toast]").forEach((b) => b.addEventListener("click", () => avvisa(b.dataset.toast)));
+
+  const MESTIERI = {
+    massaggi: {
+      stile: { bg: "#F4EDE4", fg: "#3A2A22", acc: "#8A5A44", su: "#FFF8F0", accTesto: "#8A5A44", card: "#FBF6EF", linea: "#E3D5C6" },
+      piccolo: "Massaggi e benessere", nome: "Studio Lume", ciao: "Ciao Giulia, bentornata.",
+      card: { t: "Il tuo percorso", righe: ["Tappa 2 di 5 · schiena e collo", "Ultima seduta: 28 ottobre", "Per te: 10 minuti di allungamento la sera"] },
+      extra: { t: "Il tuo pacchetto", p: "3 sedute fatte su 10 · hai risparmiato € 45" },
+      azione: "Prenota la prossima seduta", slot: ["gio 6 · 10:00", "gio 6 · 18:30", "ven 7 · 17:00"],
+      cliente: "Giulia R.", cosa: "massaggio decontratturante", wa: "Il WhatsApp dello studio",
+      lato: "Oggi, in trenta secondi",
+      oggi: [["9:00", "Anna F. · massaggio rilassante"], ["11:00", "Pietro L. · seduta 4 di 10"], ["15:30", "libero", 1], ["17:00", "Chiara V. · prima visita"]],
+      riassunto: "<strong>3 sedute</strong>, un buco alle 15:30 e un pacchetto che finisce: Pietro ha ancora 6 sedute.",
+    },
+    personal: {
+      stile: { bg: "#141414", fg: "#F5F1E6", acc: "#F2C200", su: "#141414", accTesto: "#F2C200", card: "#222222", linea: "#333333" },
+      piccolo: "Personal trainer", nome: "Ferro Training", ciao: "Ciao Marco, oggi si lavora a casa.",
+      card: { t: "Allenamento di oggi a casa", righe: ["Squat a corpo libero · 3 × 15", "Plank · 3 × 40 secondi", "Recupero 60 secondi tra le serie"] },
+      extra: { t: "Progressi", p: "Squat in palestra: da 60 a 72 kg in 8 settimane" },
+      azione: "Prenota la seduta in palestra", slot: ["lun 10 · 7:30", "mar 11 · 19:00", "gio 13 · 13:00"],
+      cliente: "Marco B.", cosa: "seduta in palestra", wa: "Scrivi a Luca su WhatsApp",
+      lato: "Oggi, in trenta secondi",
+      oggi: [["7:30", "Elisa P. · gambe"], ["12:30", "Davide R. · valutazione"], ["18:00", "libero", 1], ["19:00", "Sara T. · forza"]],
+      riassunto: "<strong>3 sedute</strong>. Attenzione: Davide ha segnato un dolore al ginocchio nell'ultima scheda.",
+    },
+    musica: {
+      stile: { bg: "#FBF7EE", fg: "#2B1E36", acc: "#5B2D86", su: "#FFFFFF", accTesto: "#5B2D86", card: "#F2EADB", linea: "#E2D6C2" },
+      piccolo: "Pianoforte e canto", nome: "Scuola Armonia", ciao: "Ciao Sofia, ecco i compiti della settimana.",
+      card: { t: "Il tuo brano", righe: ["Per Elisa · mano destra, battute 1-8", "Velocità: 70%", "Dieci minuti al giorno con Suonylo"] },
+      extra: { t: "Posto liberato", p: "Giovedì alle 17:00 si è liberato un posto. Lo vuoi per il recupero di martedì?" },
+      azione: "Prendi il posto liberato", slot: ["gio 6 · 17:00"],
+      cliente: "Sofia M.", cosa: "recupero di pianoforte", wa: "Il WhatsApp della scuola",
+      lato: "Oggi, in trenta secondi",
+      oggi: [["15:00", "Leo T. · pianoforte"], ["16:00", "Irene C. · canto"], ["17:00", "posto liberato da Matteo", 1], ["18:00", "Nina G. · pianoforte"]],
+      riassunto: "<strong>3 lezioni</strong> e un posto liberato, già offerto a chi deve recuperare. Il saggio è tra 5 settimane.",
+    },
+    campeggio: {
+      stile: { bg: "#EEF3EC", fg: "#1E3326", acc: "#1F6B48", su: "#FFFFFF", accTesto: "#1F6B48", card: "#FFFFFF", linea: "#D3E0D0" },
+      piccolo: "Il tuo soggiorno", nome: "Camping Pineta Aurora", ciao: "Benvenuti! La piazzola vi aspetta.",
+      card: { t: "Piazzola 42", righe: ["Dal 4 all'11 agosto · 2 adulti, 1 bambino", "Il Wi-Fi compare qui durante il soggiorno", "Dalla mappa: 2 minuti dal mare"] },
+      extra: { t: "Stasera", p: "Cinema all'aperto alle 21:30. Le domande per il regista si fanno su Askylo." },
+      azione: "Partecipa a un'attività", slot: ["Cinema · 21:30", "Yoga · 8:00", "Gita in barca · 10:00"],
+      cliente: "Famiglia Rossi", cosa: "iscrizione all'attività", wa: "Qualcosa non va? Scrivici",
+      lato: "Oggi alla reception",
+      oggi: [["Arrivi", "6 · partenze 4"], ["42", "check-in fatto online"], ["B", "segnalazione: doccia del blocco B", 1], ["21:30", "cinema · 38 iscritti"]],
+      riassunto: "<strong>6 arrivi</strong>, una segnalazione aperta e il cinema quasi pieno.",
+    },
+  };
+
+  const schermo = document.getElementById("schermo");
+  const oggi = document.getElementById("oggi");
+  let m = "massaggi";
+
+  function rendi() {
+    const d = MESTIERI[m];
+    const s = schermo.style;
+    s.setProperty("--m-bg", d.stile.bg); s.setProperty("--m-fg", d.stile.fg); s.setProperty("--m-acc", d.stile.acc);
+    s.setProperty("--m-su-acc", d.stile.su); s.setProperty("--m-acc-testo", d.stile.accTesto); s.setProperty("--m-card", d.stile.card); s.setProperty("--m-linea", d.stile.linea);
+    schermo.innerHTML =
+      '<div class="m-testa"><small>' + d.piccolo + '</small><h3>' + d.nome + '</h3><p>' + d.ciao + '</p></div>' +
+      '<div class="m-corpo">' +
+      '<div class="m-card"><h4>' + d.card.t + '</h4><ul>' + d.card.righe.map((r) => "<li>" + r + "</li>").join("") + '</ul></div>' +
+      '<div class="m-card"><h4>' + d.extra.t + '</h4><p>' + d.extra.p + '</p></div>' +
+      '<div class="m-card" id="prenota-card"><h4>' + d.azione + '</h4><div class="slot">' + d.slot.map((x, i) => '<button type="button" data-i="' + i + '">' + x + "</button>").join("") + '</div></div>' +
+      '<div class="wa"><i aria-hidden="true"></i>' + d.wa + '</div>' +
+      '</div>';
+    schermo.querySelectorAll(".slot button").forEach((b) => b.addEventListener("click", () => prenota(+b.dataset.i)));
+    document.getElementById("lato-titolo").textContent = d.lato;
+    oggi.innerHTML = d.oggi.map(([o, t, lib]) => '<li class="' + (lib ? "libero" : "") + '"><b>' + o + "</b><span>" + t + "</span></li>").join("");
+    document.getElementById("riassunto").innerHTML = d.riassunto;
+  }
+
+  function prenota(i) {
+    const d = MESTIERI[m];
+    const scelta = d.slot[i];
+    const card = document.getElementById("prenota-card");
+    card.innerHTML = '<h4>' + d.azione + '</h4><p class="fatto">✓ Fatto: ' + scelta + '</p><p style="margin-top:4px;font-size:13px;opacity:.8">Ti arriva il promemoria. Puoi spostare o disdire da qui.</p>';
+    const li = document.createElement("li");
+    li.className = "nuova";
+    li.innerHTML = "<b>Nuova</b><span>" + d.cliente + " · " + d.cosa + " · " + scelta + " · dalla sua pagina</span>";
+    oggi.prepend(li);
+  }
+
+  document.querySelectorAll(".mestieri button").forEach((b) => b.addEventListener("click", () => {
+    m = b.dataset.m;
+    document.querySelectorAll(".mestieri button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    rendi();
+  }));
+  rendi();
+
+  // ---------- chiedi ----------
+  const RISPOSTE = {
+    assenti: { d: "Chi non viene da un mese?", h: '<h4>4 clienti non vengono da più di 30 giorni</h4><div class="tabella"><span>Marta R.</span><span>41 giorni</span><span>Paolo B.</span><span>38 giorni</span><span>Sara T.</span><span>35 giorni</span><span>Luca D.</span><span>33 giorni</span></div><button class="azione" type="button" data-toast-in="Nell’app prepara un messaggio per ognuno: lo mandi tu.">Prepara un messaggio</button>' },
+    incasso: { d: "Quanto ho incassato a ottobre?", h: '<h4>€ 3.240 a ottobre, il 12% più di settembre</h4><div class="tabella"><span>Carta</span><span>€ 1.760</span><span>Contanti</span><span>€ 980</span><span>Bonifico</span><span>€ 500</span></div>' },
+    pacchetti: { d: "Quali pacchetti stanno finendo?", h: '<h4>3 pacchetti finiscono nelle prossime due settimane</h4><ul><li>Pietro L. · ultima seduta il 12</li><li>Chiara V. · 1 seduta rimasta</li><li>Anna F. · scade il 18</li></ul>' },
+    liberi: { d: "Che orari ho liberi giovedì?", h: '<h4>Giovedì hai 3 orari liberi</h4><ul><li>10:00 · un’ora</li><li>15:30 · un’ora e mezza</li><li>19:00 · mezz’ora</li></ul>' },
+  };
+  const risposta = document.getElementById("risposta");
+  const testoDomanda = document.getElementById("testo-domanda");
+  let scrive = 0;
+  document.querySelectorAll(".pronte button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".pronte button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    const r = RISPOSTE[b.dataset.q];
+    clearInterval(scrive);
+    let k = 0;
+    testoDomanda.textContent = "";
+    risposta.innerHTML = '<p class="piccolo">…</p>';
+    scrive = setInterval(() => {
+      k++;
+      testoDomanda.textContent = r.d.slice(0, k);
+      if (k >= r.d.length) {
+        clearInterval(scrive);
+        risposta.innerHTML = r.h;
+        risposta.querySelectorAll("[data-toast-in]").forEach((x) => x.addEventListener("click", () => avvisa(x.dataset.toastIn)));
+      }
+    }, 22);
+  }));
+})();
+</script>
+</body>
+</html>
