@@ -166,6 +166,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .insieme h3{font-size:22px;max-width:12ch}
 .insieme p{font-size:14.5px;color:var(--muto)}
 .insieme p b{color:var(--inchiostro);font-weight:500;display:block;font-family:var(--f-titolo);font-size:17px}
+.insieme p b a{color:inherit;text-underline-offset:2px}
 
 .porta{background:var(--sera);color:var(--sera-testo);padding-block:clamp(56px,9vw,104px)}
 .porta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:32px;align-items:end}
@@ -173,7 +174,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 .porta h2 em{color:#FFE08A;font-weight:400}
 .porta p{color:var(--sera-muto);margin-top:14px;font-size:17px;max-width:50ch}
 .porta .btns{display:flex;flex-direction:column;gap:10px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent}
+.porta .demo{list-style:none;padding:0;margin:22px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.porta .demo a{display:inline-block;color:var(--sera-testo);text-decoration:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);border-radius:999px;padding:8px 14px;font-size:14.5px}
+.porta .demo a:hover{background:var(--giallo);border-color:var(--giallo);color:#16231F}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid transparent;text-decoration:none}
 .btn.pieno{background:var(--giallo);color:#16231F}
 .btn.pieno:hover{background:#FFC928}
 .btn.vuoto{background:transparent;color:var(--sera-testo);border-color:rgba(238,244,239,.3)}
@@ -333,11 +337,20 @@ button{font:inherit;color:inherit;cursor:pointer}
   <div class="wrap">
     <div>
       <h2>Scegli il tuo mestiere <em>e provalo</em>.</h2>
-      <p>Ogni mestiere ha la sua demo, con uno studio d'esempio già pieno: apri, tocca, prenota. Quando ti convince, lo usi per i tuoi clienti.</p>
+      <p>Ogni demo ha uno studio d'esempio già pieno: apri, tocca, prenota. Quando ti convince, lo usi per i tuoi clienti.</p>
+      <ul class="demo" aria-label="Le demo, una per mestiere">
+        <li><a href="https://app.askylostudio.it/?demo=olistico">Massaggi e benessere</a></li>
+        <li><a href="https://app.askylostudio.it/?demo=massofisio">Massofisioterapia</a></li>
+        <li><a href="https://app.askylostudio.it/?demo=estetista">Estetica</a></li>
+        <li><a href="https://app.askylostudio.it/demo/personal-trainer/">Personal trainer</a></li>
+        <li><a href="https://app.askylostudio.it/demo/musica/">Insegnanti di musica</a></li>
+        <li><a href="https://app.askylostudio.it/demo/ballo/">Scuole di ballo</a></li>
+        <li><a href="https://app.askylostudio.it/demo/gelateria/">Gelaterie</a></li>
+        <li><a href="https://app.askylostudio.it/demo/ospitalita/">Campeggi e B&amp;B</a></li>
+      </ul>
     </div>
     <div class="btns">
-      <a class="btn pieno" href="https://app.askylostudio.it/demo/">Guarda la demo</a>
-      <a class="btn vuoto" href="https://app.askylostudio.it/">Prova gratis</a>
+      <a class="btn pieno" href="https://app.askylostudio.it/">Prova gratis</a>
     </div>
   </div>
 </section>
